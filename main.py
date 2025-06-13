@@ -24,6 +24,7 @@ import psycopg2
 import psycopg2.extras
 from datetime import datetime, date
 import csv
+from dotenv import load_dotenv
 import os
 from typing import Dict, List, Any, Tuple
 
@@ -175,14 +176,18 @@ def insert_data_from_csv(cursor, csv_file: str, table_name: str, column_mapping:
 
 def main():
     """Main function to run the database population process."""
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Retrieve database credentials from environment variables
     db_credentials = {
-        "host": "localhost",
-        "dbname": "Car_Bussiness",
-        "user": "postgres",
-        "password": "12345678",
-        "port": "5432"
+        "host": os.getenv("DB_HOST"),
+        "dbname": os.getenv("DB_NAME"),
+        "user": os.getenv("DB_USER"),
+        "password": os.getenv("DB_PASSWORD"),
+        "port": os.getenv("DB_PORT")
     }
-    
+
     conn = connect_to_db(db_credentials)
     if not conn:
         return
