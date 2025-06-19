@@ -1,0 +1,5 @@
+order_id,car_id,unit_price_jpy,quantity,item_status,customs_documentation_status
+1,1,7000000,1,allocated,completed
+2,2,6500000,1,allocated,in_progress
+3,4,2800000,1,allocated,pending
+4,5,5500000,1,allocated,completed

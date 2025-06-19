@@ -1,0 +1,5 @@
+first_name,last_name,email,password_hash,phone_number,address_line1,city,state_province,postal_code,country,last_login_date,total_orders_count,total_spent_jpy,last_activity_date,loyalty_score,preferred_contact_method
+Alice,Smith,alice.smith@email.com,hash_alice,09012345678,1-2-3 Sakura St,Tokyo,Tokyo,100-0001,Japan,2023-10-25T10:00:00,2,1500000,2023-10-26T14:30:00,150,Email
+Bob,Johnson,bob.j@email.com,hash_bob,08098765432,4-5-6 Maple Ave,Osaka,Osaka,530-0002,Japan,2023-10-24T09:15:00,1,800000,2023-10-24T11:00:00,80,Phone
+Charlie,Brown,charlie.b@email.com,hash_charlie,07011223344,7-8-9 Oak Rd,Kyoto,Kyoto,600-8003,Japan,2023-10-26T11:00:00,0,0,2023-10-26T11:05:00,10,Email
+Diana,Prince,diana.p@email.com,hash_diana,,,,,,,2023-10-20T18:00:00,3,2500000,2023-10-22T10:00:00,250,Email

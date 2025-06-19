@@ -1,0 +1,5 @@
+customer_id,total_amount_jpy,order_status,payment_status,currency,exchange_rate_at_order_time,managed_by_employee_id
+1,7000000,confirmed,paid,JPY,1.0,2
+2,6500000,shipped,paid,JPY,1.0,2
+1,2800000,pending_confirmation,pending,JPY,1.0,3
+4,5500000,completed,paid,JPY,1.0,2

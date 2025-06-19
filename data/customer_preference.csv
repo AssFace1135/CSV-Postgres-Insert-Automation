@@ -1,0 +1,4 @@
+customer_id,preferred_make,preferred_model,min_year,max_year,max_budget_jpy,preferred_specs,preferred_condition
+1,Nissan,"Skyline GT-R",1995,2002,8000000,Manual,A
+2,Toyota,Supra,1993,2000,7000000,Twin-Turbo,B
+3,Subaru,"Impreza WRX STI",2000,,4000000,AWD,Any

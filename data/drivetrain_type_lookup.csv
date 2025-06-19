@@ -1,0 +1,5 @@
+type_name,description
+RWD,"Rear-Wheel Drive"
+FWD,"Front-Wheel Drive"
+AWD,"All-Wheel Drive"
+4WD,"Four-Wheel Drive"

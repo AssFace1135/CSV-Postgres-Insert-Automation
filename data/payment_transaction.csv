@@ -1,0 +1,5 @@
+order_id,amount_jpy,payment_method,transaction_status,payment_gateway_ref_id
+1,7000000,"Credit Card",completed,PAY_REF_001
+2,6500000,"Bank Transfer",completed,PAY_REF_002
+3,2800000,PayPal,pending,PAY_REF_003
+4,5500000,"Credit Card",completed,PAY_REF_004

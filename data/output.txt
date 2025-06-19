@@ -1,0 +1,255 @@
+[Running] python -u "c:\Users\damar\Desktop\Project Sveta\Posgres_data_Insert_automation\main.py"
+Connecting to the database...
+Connection successful!
+
+Starting database population process...
+
+Inserting data into Car_Condition_Rating...
+Finished processing Car_Condition_Rating. Inserted 5 new rows out of 5 attempted.
+
+Inserting data into Engine_Type_Lookup...
+Finished processing Engine_Type_Lookup. Inserted 5 new rows out of 5 attempted.
+
+Inserting data into Transmission_Type_Lookup...
+Finished processing Transmission_Type_Lookup. Inserted 4 new rows out of 4 attempted.
+
+Inserting data into Drivetrain_Type_Lookup...
+Finished processing Drivetrain_Type_Lookup. Inserted 4 new rows out of 4 attempted.
+
+Inserting data into Auction_Supplier...
+Finished processing Auction_Supplier. Inserted 3 new rows out of 3 attempted.
+
+Inserting data into Employee...
+Finished processing Employee. Inserted 3 new rows out of 3 attempted.
+
+Inserting data into Customer...
+Finished processing Customer. Inserted 4 new rows out of 4 attempted.
+
+Inserting data into Car...
+Warning: Skipping row in table 'Car' due to other integrity violation. CSV row (approx): {'vin': 'VIN001NISSANR34', 'chassis_code': 'BNR34', 'make': 'Nissan', 'model': 'Skyline GT-R', 'year': '1999', 'color': 'Blue', 'engine_type_id': '1', 'transmission_type_id': '1', 'drivetrain_type_id': '3', 'steering_side': 'RHD', 'mileage_km': '75000', 'condition_id': '1', 'current_listing_price_jpy': '7000000', 'photos_url': 'http://example.com/r34.jpg', 'description': 'Classic JDM sports car', 'status': 'Available', 'auction_lot_number': 'T1234', 'supplier_id': '1', 'view_count': '150', 'add_to_cart_count': '5', 'add_to_wishlist': '10'}. Details: insert or update on table "Car" violates foreign key constraint "Car_supplier_id_fkey"
+DETAIL:  Key (supplier_id)=(1) is not present in table "Auction_Supplier".
+
+Warning: Skipping row in table 'Car' due to other integrity violation. CSV row (approx): {'vin': 'VIN002TOYOTASUP', 'chassis_code': 'JZA80', 'make': 'Toyota', 'model': 'Supra', 'year': '1998', 'color': 'Red', 'engine_type_id': '2', 'transmission_type_id': '1', 'drivetrain_type_id': '1', 'steering_side': 'RHD', 'mileage_km': '92000', 'condition_id': '2', 'current_listing_price_jpy': '6500000', 'photos_url': 'http://example.com/supra.jpg', 'description': 'Iconic 2JZ engine', 'status': 'Reserved', 'auction_lot_number': 'O5678', 'supplier_id': '2', 'view_count': '220', 'add_to_cart_count': '8', 'add_to_wishlist': '15'}. Details: insert or update on table "Car" violates foreign key constraint "Car_supplier_id_fkey"
+DETAIL:  Key (supplier_id)=(2) is not present in table "Auction_Supplier".
+
+Warning: Skipping row in table 'Car' due to other integrity violation. CSV row (approx): {'vin': 'VIN003SUBARUWRX', 'chassis_code': 'GDB', 'make': 'Subaru', 'model': 'Impreza WRX STI', 'year': '2004', 'color': 'White', 'engine_type_id': '4', 'transmission_type_id': '1', 'drivetrain_type_id': '3', 'steering_side': 'RHD', 'mileage_km': '110000', 'condition_id': '2', 'current_listing_price_jpy': '3500000', 'photos_url': 'http://example.com/wrx.jpg', 'description': 'Rally legend', 'status': 'Available', 'auction_lot_number': 'N9101', 'supplier_id': '3', 'view_count': '180', 'add_to_cart_count': '3', 'add_to_wishlist': '7'}. Details: insert or update on table "Car" violates foreign key constraint "Car_supplier_id_fkey"
+DETAIL:  Key (supplier_id)=(3) is not present in table "Auction_Supplier".
+
+Warning: Skipping row in table 'Car' due to other integrity violation. CSV row (approx): {'vin': 'VIN004HONDACIVR', 'chassis_code': 'EK9', 'make': 'Honda', 'model': 'Civic Type R', 'year': '1999', 'color': 'Yellow', 'engine_type_id': '5', 'transmission_type_id': '1', 'drivetrain_type_id': '2', 'steering_side': 'RHD', 'mileage_km': '88000', 'condition_id': '1', 'current_listing_price_jpy': '2800000', 'photos_url': 'http://example.com/ek9.jpg', 'description': 'Lightweight pocket rocket', 'status': 'Sold', 'auction_lot_number': 'T1121', 'supplier_id': '1', 'view_count': '300', 'add_to_cart_count': '12', 'add_to_wishlist': '20'}. Details: insert or update on table "Car" violates foreign key constraint "Car_supplier_id_fkey"
+DETAIL:  Key (supplier_id)=(1) is not present in table "Auction_Supplier".
+
+Warning: Skipping row in table 'Car' due to other integrity violation. CSV row (approx): {'vin': 'VIN005MAZDARX7F', 'chassis_code': 'FD3S', 'make': 'Mazda', 'model': 'RX-7', 'year': '2001', 'color': 'Black', 'engine_type_id': '', 'transmission_type_id': '1', 'drivetrain_type_id': '1', 'steering_side': 'RHD', 'mileage_km': '65000', 'condition_id': '1', 'current_listing_price_jpy': '5500000', 'photos_url': 'http://example.com/rx7.jpg', 'description': 'Rotary power', 'status': 'Available', 'auction_lot_number': 'O3141', 'supplier_id': '2', 'view_count': '250', 'add_to_cart_count': '7', 'add_to_wishlist': '12'}. Details: insert or update on table "Car" violates foreign key constraint "Car_supplier_id_fkey"
+DETAIL:  Key (supplier_id)=(2) is not present in table "Auction_Supplier".
+
+Finished processing Car. Inserted 0 new rows out of 5 attempted.
+
+Inserting data into Salary...
+Warning: Skipping row in table 'Salary' due to other integrity violation. CSV row (approx): {'employee_id': '1', 'salary_amount': '7000000', 'from_date': '2023-01-01', 'to_date': ''}. Details: insert or update on table "Salary" violates foreign key constraint "Salary_employee_id_fkey"
+DETAIL:  Key (employee_id)=(1) is not present in table "Employee".
+
+Warning: Skipping row in table 'Salary' due to other integrity violation. CSV row (approx): {'employee_id': '2', 'salary_amount': '6000000', 'from_date': '2023-01-01', 'to_date': ''}. Details: insert or update on table "Salary" violates foreign key constraint "Salary_employee_id_fkey"
+DETAIL:  Key (employee_id)=(2) is not present in table "Employee".
+
+Warning: Skipping row in table 'Salary' due to other integrity violation. CSV row (approx): {'employee_id': '3', 'salary_amount': '4500000', 'from_date': '2023-01-01', 'to_date': ''}. Details: insert or update on table "Salary" violates foreign key constraint "Salary_employee_id_fkey"
+DETAIL:  Key (employee_id)=(3) is not present in table "Employee".
+
+Warning: Skipping row in table 'Salary' due to other integrity violation. CSV row (approx): {'employee_id': '1', 'salary_amount': '7200000', 'from_date': '2024-01-01', 'to_date': ''}. Details: insert or update on table "Salary" violates foreign key constraint "Salary_employee_id_fkey"
+DETAIL:  Key (employee_id)=(1) is not present in table "Employee".
+
+Finished processing Salary. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Saved_Address...
+Warning: Skipping row in table 'Saved_Address' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'shipping_address_line1': '1-2-3 Sakura St', 'shipping_address_line2': 'Apt 101', 'shipping_city': 'Tokyo', 'shipping_state_province': 'Tokyo', 'shipping_postal_code': '100-0001', 'shipping_country': 'Japan'}. Details: insert or update on table "Saved_Address" violates foreign key constraint "Saved_Address_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Saved_Address' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'shipping_address_line1': '4-5-6 Maple Ave', 'shipping_address_line2': '', 'shipping_city': 'Osaka', 'shipping_state_province': 'Osaka', 'shipping_postal_code': '530-0002', 'shipping_country': 'Japan'}. Details: insert or update on table "Saved_Address" violates foreign key constraint "Saved_Address_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Finished processing Saved_Address. Inserted 0 new rows out of 2 attempted.
+
+Inserting data into Customer_Preference...
+Warning: Skipping row in table 'Customer_Preference' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'preferred_make': 'Nissan', 'preferred_model': 'Skyline GT-R', 'min_year': '1995', 'max_year': '2002', 'max_budget_jpy': '8000000', 'preferred_specs': 'Manual', 'preferred_condition': 'A'}. Details: insert or update on table "Customer_Preference" violates foreign key constraint "Customer_Preference_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Customer_Preference' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'preferred_make': 'Toyota', 'preferred_model': 'Supra', 'min_year': '1993', 'max_year': '2000', 'max_budget_jpy': '7000000', 'preferred_specs': 'Twin-Turbo', 'preferred_condition': 'B'}. Details: insert or update on table "Customer_Preference" violates foreign key constraint "Customer_Preference_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Customer_Preference' due to other integrity violation. CSV row (approx): {'customer_id': '3', 'preferred_make': 'Subaru', 'preferred_model': 'Impreza WRX STI', 'min_year': '2000', 'max_year': '', 'max_budget_jpy': '4000000', 'preferred_specs': 'AWD', 'preferred_condition': 'Any'}. Details: insert or update on table "Customer_Preference" violates foreign key constraint "Customer_Preference_customer_id_fkey"
+DETAIL:  Key (customer_id)=(3) is not present in table "Customer".
+
+Finished processing Customer_Preference. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Shopping_Cart...
+Warning: Skipping row in table 'Shopping_Cart' due to other integrity violation. CSV row (approx): {'customer_id': '1'}. Details: insert or update on table "Shopping_Cart" violates foreign key constraint "Shopping_Cart_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Shopping_Cart' due to other integrity violation. CSV row (approx): {'customer_id': '2'}. Details: insert or update on table "Shopping_Cart" violates foreign key constraint "Shopping_Cart_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Shopping_Cart' due to other integrity violation. CSV row (approx): {'customer_id': '3'}. Details: insert or update on table "Shopping_Cart" violates foreign key constraint "Shopping_Cart_customer_id_fkey"
+DETAIL:  Key (customer_id)=(3) is not present in table "Customer".
+
+Finished processing Shopping_Cart. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Wishlist...
+Warning: Skipping row in table 'Wishlist' due to other integrity violation. CSV row (approx): {'customer_id': '1'}. Details: insert or update on table "Wishlist" violates foreign key constraint "Wishlist_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Wishlist' due to other integrity violation. CSV row (approx): {'customer_id': '2'}. Details: insert or update on table "Wishlist" violates foreign key constraint "Wishlist_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Wishlist' due to other integrity violation. CSV row (approx): {'customer_id': '4'}. Details: insert or update on table "Wishlist" violates foreign key constraint "Wishlist_customer_id_fkey"
+DETAIL:  Key (customer_id)=(4) is not present in table "Customer".
+
+Finished processing Wishlist. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Search_History...
+Warning: Skipping row in table 'Search_History' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'search_query': 'Nissan Skyline R34', 'search_timestamp': '2023-10-26T10:00:00', 'result_count': '5', 'filter_applied': 'year:1999-2002'}. Details: insert or update on table "Search_History" violates foreign key constraint "Search_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Search_History' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'search_query': 'Toyota Supra JZA80', 'search_timestamp': '2023-10-26T10:05:00', 'result_count': '3', 'filter_applied': 'color:Red'}. Details: insert or update on table "Search_History" violates foreign key constraint "Search_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Search_History' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'search_query': 'Mazda RX-7 FD', 'search_timestamp': '2023-10-25T14:00:00', 'result_count': '2', 'filter_applied': ''}. Details: insert or update on table "Search_History" violates foreign key constraint "Search_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Finished processing Search_History. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Customer_Activity_Log...
+Warning: Skipping row in table 'Customer_Activity_Log' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'activity_type': 'LOGIN', 'activity_timestamp': '2023-10-25T10:00:00', 'details': 'Successful login', 'ip_address': '192.168.1.10', 'user_agent': 'Chrome/100'}. Details: insert or update on table "Customer_Activity_Log" violates foreign key constraint "Customer_Activity_Log_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Customer_Activity_Log' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'activity_type': 'VIEW_CAR', 'activity_timestamp': '2023-10-25T10:02:00', 'details': 'Viewed car_id 1', 'ip_address': '192.168.1.10', 'user_agent': 'Chrome/100'}. Details: insert or update on table "Customer_Activity_Log" violates foreign key constraint "Customer_Activity_Log_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Customer_Activity_Log' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'activity_type': 'ADD_TO_CART', 'activity_timestamp': '2023-10-24T09:20:00', 'details': 'Added car_id 2 to cart', 'ip_address': '192.168.1.12', 'user_agent': 'Firefox/98'}. Details: insert or update on table "Customer_Activity_Log" violates foreign key constraint "Customer_Activity_Log_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Customer_Activity_Log' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'activity_type': 'SEARCH', 'activity_timestamp': '2023-10-26T10:00:00', 'details': 'Searched for Nissan Skyline R34', 'ip_address': '192.168.1.10', 'user_agent': 'Chrome/100'}. Details: insert or update on table "Customer_Activity_Log" violates foreign key constraint "Customer_Activity_Log_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Finished processing Customer_Activity_Log. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Order...
+Warning: Skipping row in table 'Order' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'total_amount_jpy': '7000000', 'order_status': 'Confirmed', 'payment_status': 'Paid', 'currency': 'JPY', 'exchange_rate_at_order_time': '1.0', 'managed_by_employee_id': '2'}. Details: insert or update on table "Order" violates foreign key constraint "Order_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Order' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'total_amount_jpy': '6500000', 'order_status': 'Shipped', 'payment_status': 'Paid', 'currency': 'JPY', 'exchange_rate_at_order_time': '1.0', 'managed_by_employee_id': '2'}. Details: insert or update on table "Order" violates foreign key constraint "Order_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Order' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'total_amount_jpy': '2800000', 'order_status': 'Pending Confirmation', 'payment_status': 'Pending', 'currency': 'JPY', 'exchange_rate_at_order_time': '1.0', 'managed_by_employee_id': '3'}. Details: insert or update on table "Order" violates foreign key constraint "Order_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Order' due to other integrity violation. CSV row (approx): {'customer_id': '4', 'total_amount_jpy': '5500000', 'order_status': 'Completed', 'payment_status': 'Paid', 'currency': 'JPY', 'exchange_rate_at_order_time': '1.0', 'managed_by_employee_id': '2'}. Details: insert or update on table "Order" violates foreign key constraint "Order_customer_id_fkey"
+DETAIL:  Key (customer_id)=(4) is not present in table "Customer".
+
+Finished processing Order. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Cart_Item...
+Warning: Skipping row in table 'Cart_Item' due to other integrity violation. CSV row (approx): {'cart_id': '1', 'car_id': '3', 'quantity': '1'}. Details: insert or update on table "Cart_Item" violates foreign key constraint "Cart_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(3) is not present in table "Car".
+
+Warning: Skipping row in table 'Cart_Item' due to other integrity violation. CSV row (approx): {'cart_id': '1', 'car_id': '5', 'quantity': '1'}. Details: insert or update on table "Cart_Item" violates foreign key constraint "Cart_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(5) is not present in table "Car".
+
+Warning: Skipping row in table 'Cart_Item' due to other integrity violation. CSV row (approx): {'cart_id': '2', 'car_id': '1', 'quantity': '1'}. Details: insert or update on table "Cart_Item" violates foreign key constraint "Cart_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(1) is not present in table "Car".
+
+Finished processing Cart_Item. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Wishlist_Item...
+Warning: Skipping row in table 'Wishlist_Item' due to other integrity violation. CSV row (approx): {'wishlist_id': '1', 'car_id': '2', 'notification_preference': 'Price Drop'}. Details: insert or update on table "Wishlist_Item" violates foreign key constraint "Wishlist_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(2) is not present in table "Car".
+
+Warning: Skipping row in table 'Wishlist_Item' due to other integrity violation. CSV row (approx): {'wishlist_id': '1', 'car_id': '4', 'notification_preference': 'Back in Stock'}. Details: insert or update on table "Wishlist_Item" violates foreign key constraint "Wishlist_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(4) is not present in table "Car".
+
+Warning: Skipping row in table 'Wishlist_Item' due to other integrity violation. CSV row (approx): {'wishlist_id': '2', 'car_id': '3', 'notification_preference': 'Any Update'}. Details: insert or update on table "Wishlist_Item" violates foreign key constraint "Wishlist_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(3) is not present in table "Car".
+
+Finished processing Wishlist_Item. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Product_View_History...
+Warning: Skipping row in table 'Product_View_History' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'car_id': '1', 'view_timestamp': '2023-10-25T10:02:00', 'time_on_page_seconds': '120', 'source': 'Direct'}. Details: insert or update on table "Product_View_History" violates foreign key constraint "Product_View_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Product_View_History' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'car_id': '2', 'view_timestamp': '2023-10-25T10:05:00', 'time_on_page_seconds': '180', 'source': 'Search'}. Details: insert or update on table "Product_View_History" violates foreign key constraint "Product_View_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Product_View_History' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'car_id': '2', 'view_timestamp': '2023-10-24T09:18:00', 'time_on_page_seconds': '90', 'source': 'Homepage'}. Details: insert or update on table "Product_View_History" violates foreign key constraint "Product_View_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Product_View_History' due to other integrity violation. CSV row (approx): {'customer_id': '3', 'car_id': '5', 'view_timestamp': '2023-10-26T11:10:00', 'time_on_page_seconds': '60', 'source': 'Recommendation'}. Details: insert or update on table "Product_View_History" violates foreign key constraint "Product_View_History_customer_id_fkey"
+DETAIL:  Key (customer_id)=(3) is not present in table "Customer".
+
+Finished processing Product_View_History. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Review...
+Warning: Skipping row in table 'Review' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'car_id': '1', 'rating': '5', 'comment': 'Excellent car, true classic!', 'is_approved': 'true'}. Details: insert or update on table "Review" violates foreign key constraint "Review_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Warning: Skipping row in table 'Review' due to other integrity violation. CSV row (approx): {'customer_id': '2', 'car_id': '2', 'rating': '4', 'comment': 'Great condition, fast shipping.', 'is_approved': 'true'}. Details: insert or update on table "Review" violates foreign key constraint "Review_customer_id_fkey"
+DETAIL:  Key (customer_id)=(2) is not present in table "Customer".
+
+Warning: Skipping row in table 'Review' due to other integrity violation. CSV row (approx): {'customer_id': '1', 'car_id': '4', 'rating': '3', 'comment': 'Was okay, some minor issues.', 'is_approved': 'false'}. Details: insert or update on table "Review" violates foreign key constraint "Review_customer_id_fkey"
+DETAIL:  Key (customer_id)=(1) is not present in table "Customer".
+
+Finished processing Review. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Order_Item...
+Warning: Skipping row in table 'Order_Item' due to other integrity violation. CSV row (approx): {'order_id': '1', 'car_id': '1', 'unit_price_jpy': '7000000', 'quantity': '1', 'item_status': 'Allocated', 'customs_documentation_status': 'Completed'}. Details: insert or update on table "Order_Item" violates foreign key constraint "Order_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(1) is not present in table "Car".
+
+Warning: Skipping row in table 'Order_Item' due to other integrity violation. CSV row (approx): {'order_id': '2', 'car_id': '2', 'unit_price_jpy': '6500000', 'quantity': '1', 'item_status': 'Allocated', 'customs_documentation_status': 'In Progress'}. Details: insert or update on table "Order_Item" violates foreign key constraint "Order_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(2) is not present in table "Car".
+
+Warning: Skipping row in table 'Order_Item' due to other integrity violation. CSV row (approx): {'order_id': '3', 'car_id': '4', 'unit_price_jpy': '2800000', 'quantity': '1', 'item_status': 'Allocated', 'customs_documentation_status': 'Pending'}. Details: insert or update on table "Order_Item" violates foreign key constraint "Order_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(4) is not present in table "Car".
+
+Warning: Skipping row in table 'Order_Item' due to other integrity violation. CSV row (approx): {'order_id': '4', 'car_id': '5', 'unit_price_jpy': '5500000', 'quantity': '1', 'item_status': 'Allocated', 'customs_documentation_status': 'Completed'}. Details: insert or update on table "Order_Item" violates foreign key constraint "Order_Item_car_id_fkey"
+DETAIL:  Key (car_id)=(5) is not present in table "Car".
+
+Finished processing Order_Item. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Payment_Transaction...
+Warning: Skipping row in table 'Payment_Transaction' due to other integrity violation. CSV row (approx): {'order_id': '1', 'amount_jpy': '7000000', 'payment_method': 'Credit Card', 'transaction_status': 'Completed', 'payment_gateway_ref_id': 'PAY_REF_001'}. Details: insert or update on table "Payment_Transaction" violates foreign key constraint "Payment_Transaction_order_id_fkey"
+DETAIL:  Key (order_id)=(1) is not present in table "Order".
+
+Warning: Skipping row in table 'Payment_Transaction' due to other integrity violation. CSV row (approx): {'order_id': '2', 'amount_jpy': '6500000', 'payment_method': 'Bank Transfer', 'transaction_status': 'Completed', 'payment_gateway_ref_id': 'PAY_REF_002'}. Details: insert or update on table "Payment_Transaction" violates foreign key constraint "Payment_Transaction_order_id_fkey"
+DETAIL:  Key (order_id)=(2) is not present in table "Order".
+
+Warning: Skipping row in table 'Payment_Transaction' due to other integrity violation. CSV row (approx): {'order_id': '3', 'amount_jpy': '2800000', 'payment_method': 'PayPal', 'transaction_status': 'Pending', 'payment_gateway_ref_id': 'PAY_REF_003'}. Details: insert or update on table "Payment_Transaction" violates foreign key constraint "Payment_Transaction_order_id_fkey"
+DETAIL:  Key (order_id)=(3) is not present in table "Order".
+
+Warning: Skipping row in table 'Payment_Transaction' due to other integrity violation. CSV row (approx): {'order_id': '4', 'amount_jpy': '5500000', 'payment_method': 'Credit Card', 'transaction_status': 'Completed', 'payment_gateway_ref_id': 'PAY_REF_004'}. Details: insert or update on table "Payment_Transaction" violates foreign key constraint "Payment_Transaction_order_id_fkey"
+DETAIL:  Key (order_id)=(4) is not present in table "Order".
+
+Finished processing Payment_Transaction. Inserted 0 new rows out of 4 attempted.
+
+Inserting data into Shipping_Logistics...
+Warning: Skipping row in table 'Shipping_Logistics' due to other integrity violation. CSV row (approx): {'order_id': '1', 'car_id': '1', 'shipping_company_name': 'Nippon Express', 'tracking_number': 'NE12345JP', 'ship_date': '2023-10-28T00:00:00', 'estimated_arrival_date': '2023-11-15T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Yokohama', 'shipping_cost_jpy': '150000', 'delivery_status': 'In Transit', 'container_id': 'CONT001'}. Details: insert or update on table "Shipping_Logistics" violates foreign key constraint "Shipping_Logistics_car_id_fkey"
+DETAIL:  Key (car_id)=(1) is not present in table "Car".
+
+Warning: Skipping row in table 'Shipping_Logistics' due to other integrity violation. CSV row (approx): {'order_id': '2', 'car_id': '2', 'shipping_company_name': 'DHL Global', 'tracking_number': 'DHL67890US', 'ship_date': '2023-10-29T00:00:00', 'estimated_arrival_date': '2023-11-20T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Osaka', 'shipping_cost_jpy': '180000', 'delivery_status': 'In Transit', 'container_id': 'CONT002'}. Details: insert or update on table "Shipping_Logistics" violates foreign key constraint "Shipping_Logistics_car_id_fkey"
+DETAIL:  Key (car_id)=(2) is not present in table "Car".
+
+Warning: Skipping row in table 'Shipping_Logistics' due to other integrity violation. CSV row (approx): {'order_id': '4', 'car_id': '5', 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'FX001122DE', 'ship_date': '2023-10-20T00:00:00', 'estimated_arrival_date': '2023-11-05T00:00:00', 'actual_arrival_date': '2023-11-04T00:00:00', 'current_location': 'Delivered to Customer', 'shipping_cost_jpy': '160000', 'delivery_status': 'Delivered', 'container_id': 'CONT003'}. Details: insert or update on table "Shipping_Logistics" violates foreign key constraint "Shipping_Logistics_car_id_fkey"
+DETAIL:  Key (car_id)=(5) is not present in table "Car".
+
+Finished processing Shipping_Logistics. Inserted 0 new rows out of 3 attempted.
+
+Inserting data into Activity_Data...
+Warning: Skipping row in table 'Activity_Data' due to other integrity violation. CSV row (approx): {'activity_data_id': '1001', 'activity_id': '2', 'wishlist_item_id': '', 'cart_item_id': '', 'from_date': '2023-10-25T10:02:00', 'to_date': '2023-10-25T10:04:00'}. Details: insert or update on table "Activity_Data" violates foreign key constraint "Activity_Data_activity_id_fkey"
+DETAIL:  Key (activity_id)=(2) is not present in table "Customer_Activity_Log".
+
+Warning: Skipping row in table 'Activity_Data' due to other integrity violation. CSV row (approx): {'activity_data_id': '1002', 'activity_id': '3', 'wishlist_item_id': '', 'cart_item_id': '2', 'from_date': '2023-10-24T09:20:00', 'to_date': ''}. Details: insert or update on table "Activity_Data" violates foreign key constraint "Activity_Data_activity_id_fkey"
+DETAIL:  Key (activity_id)=(3) is not present in table "Customer_Activity_Log".
+
+Finished processing Activity_Data. Inserted 0 new rows out of 2 attempted.
+
+Database population successful. All changes have been committed.
+
+Database connection closed.
+
+[Done] exited with code=0 in 0.54 seconds
+

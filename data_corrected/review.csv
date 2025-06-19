@@ -1,0 +1,4 @@
+customer_id,car_id,rating,comment,is_approved
+48,1,5,"Excellent car, true classic!",true
+49,2,4,"Great condition, fast shipping.",true
+48,4,3,"Was okay, some minor issues.",false

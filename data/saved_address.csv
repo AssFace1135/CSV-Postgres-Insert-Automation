@@ -1,0 +1,3 @@
+customer_id,address_label,shipping_address_line1,shipping_address_line2,shipping_city,shipping_state_province,shipping_postal_code,shipping_country
+1,Home,"1-2-3 Sakura St","Apt 101",Tokyo,Tokyo,100-0001,Japan
+2,Work,"4-5-6 Maple Ave",,Osaka,Osaka,530-0002,Japan

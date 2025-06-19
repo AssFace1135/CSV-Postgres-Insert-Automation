@@ -1,0 +1,5 @@
+customer_id,activity_type,activity_timestamp,details,ip_address,user_agent
+1,LOGIN,2023-10-25T10:00:00,"Successful login",192.168.1.10,"Chrome/100"
+1,VIEW_CAR,2023-10-25T10:02:00,"Viewed car_id 1",192.168.1.10,"Chrome/100"
+2,ADD_TO_CART,2023-10-24T09:20:00,"Added car_id 2 to cart",192.168.1.12,"Firefox/98"
+1,SEARCH,2023-10-26T10:00:00,"Searched for Nissan Skyline R34",192.168.1.10,"Chrome/100"

@@ -1,0 +1,6 @@
+vin,chassis_code,make,model,year,color,engine_type_id,transmission_type_id,drivetrain_type_id,steering_side,mileage_km,condition_id,current_listing_price_jpy,photos_url,description,status,auction_lot_number,supplier_id,view_count,add_to_cart_count,add_to_wishlist
+VIN001NISSANR34,BNR34,Nissan,Skyline GT-R,1999,Blue,1,1,3,RHD,75000,1,7000000,http://example.com/r34.jpg,"Classic JDM sports car",available,T1234,1,150,5,10
+VIN002TOYOTASUP,JZA80,Toyota,Supra,1998,Red,2,1,1,RHD,92000,2,6500000,http://example.com/supra.jpg,"Iconic 2JZ engine",reserved,O5678,2,220,8,15
+VIN003SUBARUWRX,GDB,Subaru,Impreza WRX STI,2004,White,4,1,3,RHD,110000,2,3500000,http://example.com/wrx.jpg,"Rally legend",available,N9101,3,180,3,7
+VIN004HONDACIVR,EK9,Honda,Civic Type R,1999,Yellow,5,1,2,RHD,88000,1,2800000,http://example.com/ek9.jpg,"Lightweight pocket rocket",sold,T1121,1,300,12,20
+VIN005MAZDARX7F,FD3S,Mazda,RX-7,2001,Black,,1,1,RHD,65000,1,5500000,http://example.com/rx7.jpg,"Rotary power",available,O3141,2,250,7,12
