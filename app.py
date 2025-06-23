@@ -133,20 +133,25 @@ def get_sales_performance_data(_conn):
     return df
 
 @st.cache_data(ttl=600)
-def get_sales_by_make_data(_conn):
-    """Fetches sales data grouped by car make, limited to the top 15."""
+def get_sales_by_make_data(_conn, limit: int = 15, sort_column: str = 'units_sold', sort_order: str = 'DESC'):
+    """Fetches sales data grouped by car make, with dynamic limit and sorting."""
     query = """
         SELECT
             c.make,
             COUNT(oi.order_item_id) AS units_sold,
             SUM(oi.unit_price_jpy) AS total_revenue_jpy
         FROM order_item oi
-        JOIN car c ON oi.car_id = c.car_id
+        JOIN car c ON oi.car_id = c.car_id -- Assuming car_id is the correct join key
         GROUP BY c.make
-        ORDER BY units_sold DESC
-        LIMIT 15;
+        ORDER BY {sort_column} {sort_order}
+        LIMIT %s;
     """
-    df = pd.read_sql_query(query, _conn)
+    # Use psycopg2.sql.SQL for safe dynamic query construction
+    formatted_query = sql.SQL(query).format(
+        sort_column=sql.Identifier(sort_column),
+        sort_order=sql.SQL(sort_order)
+    )
+    df = pd.read_sql_query(formatted_query.as_string(_conn), _conn, params=(limit,))
     return df
 
 @st.cache_data(ttl=600)
