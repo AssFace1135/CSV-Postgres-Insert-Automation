@@ -34,3 +34,44 @@ VIN032ISUZUPIAZZA,JR120,Isuzu,Piazza Turbo,1988,White,3,1,1,RHD,130000,4,850000,
 VIN033TOYOTACROWN,JZS171,Toyota,Crown Athlete V,2001,Pearl White,2,2,1,RHD,88000,2,2200000,http://example.com/crown.jpg,"Luxury sedan with 1JZ-GTE",available,O8092,2,180,7,13
 VIN034NISSANLAUREL,HC35,Nissan,Laurel Club S,1999,Silver,1,2,1,RHD,105000,2,1400000,http://example.com/laurel.jpg,"RB25DE powered sedan",available,N9101,3,90,3,6
 VIN035MAZDAEUNOS,JC,Eunos,Cosmo 20B,1992,Black,1,2,1,RHD,75000,1,4500000,http://example.com/cosmo.jpg,"The only production 3-rotor car",sold,T1210,1,300,15,22
+VIN036HONDANSXR,NA2,Honda,NSX-R,2005,Championship White,5,1,1,RHD,30000,5,18000000,http://example.com/nsxr.jpg,"The ultimate NSX. A true collector's item.",sold,T1313,1,1000,50,150
+VIN037TOYARISTO,JZS161,Toyota,Aristo V300,2000,Silver,2,2,1,RHD,95000,2,2800000,http://example.com/aristo.jpg,"The sedan version of the Supra.",available,T1414,1,200,8,12
+VIN038NISSTAGEA,WGNC34,Nissan,Stagea 260RS,1998,White,1,1,3,RHD,120000,2,4500000,http://example.com/stagea.jpg,"Autech version with GT-R running gear.",available,O2121,2,350,15,20
+VIN039HONACCORD,CL7,Honda,Accord Euro R,2004,Blue,5,1,2,RHD,88000,1,1800000,http://example.com/accord.jpg,"High-revving family sedan.",sold,N4141,3,150,10,5
+VIN040MITPAJEVO,V55W,Mitsubishi,Pajero Evolution,1997,Red,,2,4,RHD,110000,3,3200000,http://example.com/pajeroevo.jpg,"A true off-road monster.",available,T5151,1,280,12,18
+VIN041TOYCENTURY,GZG50,Toyota,Century,2005,Black,,2,1,RHD,75000,1,4000000,http://example.com/century.jpg,"Japan's only production V12 engine.",reserved,O3232,2,400,20,30
+VIN042DAICOPEN,L880K,Daihatsu,Copen,2003,Yellow,,1,2,RHD,92000,2,850000,http://example.com/copen.jpg,"Electric hardtop kei car.",available,N5252,3,110,6,10
+VIN043NISCIMA,F50,Nissan,Cima 450XV,2002,Pearl White,,2,1,RHD,85000,2,1500000,http://example.com/cima.jpg,"Luxury VIP sedan.",available,T6262,1,90,3,5
+VIN044SUZJIMNY,JB23,Suzuki,Jimny,2008,Green,,1,4,RHD,105000,3,950000,http://example.com/jimny.jpg,"Mountain goat in a small package.",sold,O4343,2,250,18,15
+VIN045TOYALTEZZA,SXE10,Toyota,Altezza RS200,1999,Silver,,1,1,RHD,98000,2,1600000,http://example.com/altezza.jpg,"BEAMS engine and 6-speed manual.",available,N6363,3,180,7,11
+VIN046MAZBONGO,SGLW,Mazda,Bongo Friendee,1999,Green/Silver,,2,4,RHD,150000,3,1200000,http://example.com/bongo.jpg,"Auto Free Top camper van.",available,T7373,1,130,9,14
+VIN047NIS350Z,Z33,Nissan,Fairlady Z,2003,Orange,,1,1,RHD,82000,2,2300000,http://example.com/350z.jpg,"Classic V6 sports coupe.",available,O5454,2,220,11,16
+VIN048TOYMARKII,JZX100,Toyota,Mark II Tourer V,1997,Dark Green,2,1,1,RHD,125000,3,3500000,http://example.com/markii.jpg,"Manual swapped Tourer V.",reserved,N7474,3,300,14,19
+VIN049SUBFORESTER,SG9,Subaru,Forester STI,2005,World Rally Blue,4,1,3,RHD,99000,2,2900000,http://example.com/forestersti.jpg,"The ultimate sleeper wagon.",available,T8484,1,260,13,17
+VIN050HONODYSSEY,RB1,Honda,Odyssey Absolute,2006,Black,5,3,2,RHD,110000,2,900000,http://example.com/odyssey.jpg,"Sporty and practical minivan.",available,O6565,2,80,2,4
+VIN051MITDELICA,PD8W,Mitsubishi,Delica Space Gear,1998,Silver,,2,4,RHD,180000,3,1400000,http://example.com/delica.jpg,"Go-anywhere 4x4 van.",sold,N8585,3,320,22,25
+VIN052TOYCALDINA,ST246,Toyota,Caldina GT-Four,2003,Silver,3,2,3,RHD,95000,2,1700000,http://example.com/caldina.jpg,"AWD turbo wagon with aggressive styling.",available,T9595,1,140,5,8
+VIN053NISGLORIA,Y34,Nissan,Gloria Gran Turismo,2001,Black,1,3,1,RHD,90000,2,1300000,http://example.com/gloria.jpg,"Hardtop sedan with a powerful turbo V6.",available,O7676,2,100,4,6
+VIN054HONSTEPWGN,RF5,Honda,Stepwgn Spada,2004,White,5,2,2,RHD,115000,2,750000,http://example.com/stepwgn.jpg,"Practical and stylish JDM people mover.",available,N9696,3,70,3,5
+VIN055TOYALPHARD,ANH10,Toyota,Alphard,2007,Pearl White,,2,2,RHD,85000,1,1800000,http://example.com/alphard.jpg,"First-class travel on wheels.",reserved,T1717,1,240,16,22
+VIN056LEXSC430,UZZ40,Lexus,SC430,2002,Red,,2,1,LHD,92000,1,2500000,http://example.com/sc430.jpg,"Hardtop convertible with a smooth V8.",available,O8787,2,190,9,13
+VIN057SUZUKICAP,EA21R,Suzuki,Cappuccino,1995,Silver,3,1,1,RHD,95000,2,900000,http://example.com/cappuccino2.jpg,"Later model with K6A engine",sold,T2019,1,140,7,12
+VIN058HONDABEAT,PP1,Honda,Beat,1992,Red,5,1,1,RHD,110000,3,800000,http://example.com/beat2.jpg,"Zebra-stripe seats",sold,O3028,2,120,6,10
+VIN059MAZDAROAD,NA6CE,Mazda,Eunos Roadster,1990,Mariner Blue,3,1,1,RHD,130000,3,1200000,http://example.com/roadster.jpg,"The original Miata",sold,N4037,3,200,10,18
+VIN060NISSAN180SX,RPS13,Nissan,180SX Type X,1997,Black,3,1,1,RHD,105000,2,2500000,http://example.com/180sx.jpg,"Kouki taillights",sold,T5046,1,330,14,22
+VIN061TOYOTAMRS,ZZW30,Toyota,MR-S,2001,Yellow,3,1,1,RHD,89000,2,1500000,http://example.com/mrs.jpg,"Lightweight mid-engine convertible",sold,O6055,2,160,5,9
+VIN062MITSFTO,DE3A,Mitsubishi,FTO GPX,1999,Silver,2,2,2,RHD,98000,2,1300000,http://example.com/fto2.jpg,"MIVEC V6 engine",sold,N7064,3,100,4,7
+VIN063SUBVIVIO,KK4,Subaru,Vivio RX-R,1996,Blue,4,1,3,RHD,115000,3,950000,http://example.com/vivio.jpg,"Supercharged kei car",sold,T8073,1,90,3,6
+VIN064DAIMIRA,L502S,Daihatsu,Mira TR-XX Avanzato R,1997,Red,3,1,3,RHD,122000,3,850000,http://example.com/mira.jpg,"AWD turbo kei pocket rocket",sold,O9082,2,80,2,5
+VIN065TOYSERA,EXY10,Toyota,Sera,1991,Green,5,2,2,RHD,85000,2,1600000,http://example.com/sera.jpg,"Butterfly doors from the factory",sold,N1091,3,180,9,14
+VIN066NISSANPAO,PK10,Nissan,Pao,1989,Aqua Gray,3,2,2,RHD,99000,2,1000000,http://example.com/pao.jpg,"Pike factory retro car",sold,T2100,1,150,8,13
+VIN067HONCITYT2,AA,Honda,City Turbo II,1984,White,5,1,2,RHD,78000,2,2800000,http://example.com/cityturbo.jpg,"The 'Bulldog' with wide fenders",sold,O3119,2,250,12,20
+VIN068MITSTARION,A187A,Mitsubishi,Starion GSR-VR,1988,Red,3,1,1,RHD,92000,2,3200000,http://example.com/starion.jpg,"Widebody 80s turbo coupe",sold,N4128,3,280,13,21
+VIN069TOYCRESTA,JZX90,Toyota,Cresta Tourer V,1994,Dark Green,2,2,1,RHD,135000,3,2900000,http://example.com/cresta.jpg,"1JZ-GTE powered luxury sedan",sold,T5137,1,290,11,17
+VIN070NISLEOPARD,F31,Nissan,Leopard Ultima,1989,Gold,1,2,1,RHD,110000,3,2600000,http://example.com/leopard.jpg,"Classic bubble-era coupe",sold,O6146,2,230,10,16
+VIN071MAZSAVANNA,FC3S,Mazda,Savanna RX-7 GT-X,1990,White,2,1,1,RHD,88000,2,4800000,http://example.com/fc3s.jpg,"Iconic FC3S chassis",sold,N7155,3,420,20,35
+VIN072SUBLEGACYGTB,BG5,Subaru,Legacy GT-B,1997,Blue,4,1,3,RHD,140000,3,2200000,http://example.com/legacygtb.jpg,"Twin-turbo wagon",sold,T8164,1,200,9,15
+VIN073HONCRXDS,EG2,Honda,CR-X del Sol SiR,1995,Red,5,1,2,RHD,95000,2,1400000,http://example.com/delsol.jpg,"Targa top convertible",sold,O9173,2,170,7,11
+VIN074TOYAE86,AE86,Toyota,Corolla Levin GT-APEX,1986,Panda White/Black,5,1,1,RHD,150000,3,5500000,http://example.com/ae86.jpg,"The legendary Hachi-Roku",sold,N1182,3,600,40,80
+VIN075NISSKYGTS,HCR32,Nissan,Skyline GTS-t Type M,1992,Gunmetal Grey,1,1,1,RHD,128000,2,3800000,http://example.com/hcr32.jpg,"RB20DET power",sold,T2191,1,380,18,29
+VIN076MITGALANTVR4,E39A,Mitsubishi,Galant VR-4,1991,Black,3,1,3,RHD,133000,3,3500000,http://example.com/galantvr4.jpg,"WRC homologation special",sold,O3200,2,310,15,24

@@ -11,6 +11,9 @@ import csv
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from datetime import date, timedelta # Added for RFM analysis
+import re # Added for regex parsing of location strings
+from geopy.geocoders import Nominatim
 
 # --- Configuration and Setup ---
 # Load environment variables from .env file
@@ -25,6 +28,52 @@ db_credentials = {
     "port": os.getenv("DB_PORT")
 }
 
+# Initialize a geolocator for converting location names to coordinates
+geolocator = Nominatim(user_agent="car_dealership_dashboard/1.0")
+
+@functools.lru_cache(maxsize=256) # Cache up to 256 unique location lookups
+def get_lat_lon(location_str: str):
+    """
+    Geocodes a location string to (latitude, longitude).
+    Uses caching to avoid repeated API calls.
+    Returns None if location not found or on error.
+    """
+    if not location_str or not isinstance(location_str, str):
+        return None
+
+    # Store the original string for warning messages
+    original_location_str = location_str
+    
+    # Pre-process common problematic strings
+    processed_location_str = location_str.strip()
+
+    # Handle "In transit to X"
+    match_in_transit = re.match(r"In transit to (.+)", processed_location_str, re.IGNORECASE)
+    if match_in_transit:
+        city_or_region = match_in_transit.group(1).strip()
+        processed_location_str = city_or_region
+    
+    # Handle "Port of X" - apply only if not already handled by "In transit to"
+    elif re.match(r"Port of (.+)", processed_location_str, re.IGNORECASE):
+        port_name = re.match(r"Port of (.+)", processed_location_str, re.IGNORECASE).group(1).strip()
+        # Heuristic: if it's a known Japanese port from the examples, add Japan context
+        if "Osaka" in port_name or "Kyoto" in port_name:
+            processed_location_str = f"{port_name}, Japan"
+        else:
+            # For other ports, try just the name, Nominatim is often smart.
+            processed_location_str = port_name
+
+    try:
+        location = geolocator.geocode(processed_location_str, timeout=5)
+        if location:
+            return (location.latitude, location.longitude)
+        else:
+            st.warning(f"Geocoding failed for location: '{original_location_str}' (processed as '{processed_location_str}'). Pin might be inaccurate or missing.")
+            return None
+    except Exception:
+        # Catch any other errors during geocoding (e.g., network issues, Nominatim service down)
+        st.warning(f"Error geocoding '{original_location_str}' (processed as '{processed_location_str}'). Pin might be inaccurate or missing.")
+    return None
 # This configuration is copied from your main.py to make the Streamlit app self-contained.
 # It maps a logical name to the CSV file and database table information.
 csv_mappings: Dict[str, Dict[str, Any]] = {
@@ -186,6 +235,198 @@ def get_customer_demographics_data(_conn):
     """
     df = pd.read_sql_query(query, _conn)
     return df
+
+@st.cache_data(ttl=600)
+def get_sales_funnel_data(_conn):
+    """
+    Fetches aggregated data for a product engagement funnel.
+    Note: This is a product-centric funnel (total counts across all cars),
+    not a user-centric conversion funnel, due to schema limitations.
+    """
+    query_car_engagement = """
+        SELECT
+            SUM(view_count) AS total_views,
+            SUM(add_to_wishlist_count) AS total_wishlists,
+            SUM(add_to_cart_count) AS total_carts
+        FROM car;
+    """
+    query_orders = """
+        SELECT COUNT(order_id) AS total_orders
+        FROM "order"
+        WHERE order_status NOT IN ('cancelled', 'pending_confirmation'); -- Only count completed/shipped orders
+    """
+
+    car_engagement_df = pd.read_sql_query(query_car_engagement, _conn)
+    orders_df = pd.read_sql_query(query_orders, _conn)
+
+    # Combine into a single DataFrame for the funnel chart
+    funnel_data = pd.DataFrame({
+        'Stage': ['Product Views', 'Added to Wishlist', 'Added to Cart', 'Orders Placed'],
+        'Value': [
+            car_engagement_df['total_views'].iloc[0] if not car_engagement_df.empty else 0,
+            car_engagement_df['total_wishlists'].iloc[0] if not car_engagement_df.empty else 0,
+            car_engagement_df['total_carts'].iloc[0] if not car_engagement_df.empty else 0,
+            orders_df['total_orders'].iloc[0] if not orders_df.empty else 0
+        ]
+    })
+    return funnel_data
+
+@st.cache_data(ttl=600)
+def get_shipping_status_data(_conn):
+    """Fetches counts of shipments by delivery status."""
+    query = """
+        SELECT delivery_status, COUNT(shipping_id) AS count
+        FROM shipping_logistics
+        GROUP BY delivery_status
+        ORDER BY count DESC;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_shipping_carrier_performance_data(_conn):
+    """
+    Fetches average shipping cost and average delivery time by shipping company.
+    Only considers completed deliveries.
+    """
+    query = """
+        SELECT
+            shipping_company_name,
+            AVG(shipping_cost_jpy) AS average_cost_jpy,
+            AVG(EXTRACT(EPOCH FROM (actual_arrival_date - ship_date))) / (60*60*24) AS average_delivery_days -- Convert seconds to days
+        FROM shipping_logistics
+        WHERE delivery_status = 'delivered' AND ship_date IS NOT NULL AND actual_arrival_date IS NOT NULL
+        GROUP BY shipping_company_name
+        ORDER BY average_cost_jpy ASC;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_in_transit_shipments(_conn):
+    """Fetches details of shipments currently in transit, including origin and destination."""
+    query = """
+        SELECT
+            sl.tracking_number,
+            sl.shipping_company_name,
+            sl.ship_date,
+            sl.estimated_arrival_date,
+            sl.current_location,
+            sl.shipping_cost_jpy,
+            c.make,
+            c.model,
+            sup.location AS origin_location,
+            CONCAT(cust.city, ', ', cust.country) AS destination_location
+        FROM shipping_logistics sl
+        JOIN order_item oi ON sl.order_item_id = oi.order_item_id
+        JOIN car c ON oi.car_id = c.car_id
+        JOIN "order" o ON oi.order_id = o.order_id
+        JOIN customer cust ON o.customer_id = cust.customer_id
+        JOIN auction_supplier sup ON c.supplier_id = sup.supplier_id
+        WHERE sl.delivery_status = 'in_transit'
+        ORDER BY sl.estimated_arrival_date ASC;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_rfm_data(_conn):
+    """Fetches Recency, Frequency, and Monetary values for each customer."""
+    query = """
+        WITH CustomerOrders AS (
+            SELECT
+                c.customer_id,
+                c.first_name,
+                c.last_name,
+                o.order_date,
+                o.total_amount_jpy
+            FROM customer c
+            JOIN "order" o ON c.customer_id = o.customer_id
+            WHERE o.order_status NOT IN ('cancelled') -- Only consider valid orders
+        ),
+        RFM_Calculations AS (
+            SELECT
+                customer_id,
+                first_name,
+                last_name,
+                MAX(order_date) AS last_order_date,
+                COUNT(order_date) AS frequency,
+                SUM(total_amount_jpy) AS monetary_value,
+                (CURRENT_DATE - MAX(order_date)::date) AS recency_days -- Recency in days
+            FROM CustomerOrders
+            GROUP BY customer_id, first_name, last_name
+        )
+        SELECT
+            customer_id,
+            first_name,
+            last_name,
+            recency_days,
+            frequency,
+            monetary_value
+        FROM RFM_Calculations
+        ORDER BY recency_days ASC, frequency DESC, monetary_value DESC;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+def assign_rfm_segment(recency, frequency, monetary):
+    """
+    Assigns an RFM segment based on scores.
+    This is a simplified example; real-world RFM often uses quintiles or more complex rules.
+    """
+    if recency <= 30 and frequency >= 3 and monetary >= 1000000: # Example thresholds
+        return "Champions"
+    elif recency <= 60 and frequency >= 2 and monetary >= 500000:
+        return "Loyal Customers"
+    elif recency <= 90 and frequency >= 1 and monetary >= 100000:
+        return "Promising"
+    elif recency > 180 and frequency == 0: # Assuming 0 frequency means no orders or very old
+        return "Lost"
+    elif recency > 90:
+        return "At Risk"
+    else:
+        return "New/Other"
+
+@st.cache_data(ttl=600) # Cache the entire geocoded result for 10 mins
+def geocode_shipments_with_progress(_conn, in_transit_df: pd.DataFrame):
+    """
+    Takes the in-transit dataframe, geocodes all locations with a progress bar,
+    and returns the geocoded data. The results are cached by Streamlit based on the dataframe's content.
+    The _conn parameter is not used but helps Streamlit manage the cache context.
+    """
+    if in_transit_df.empty:
+        return []
+
+    # The progress bar will only show when this function is actually executed (i.e., on a cache miss)
+    st.markdown("##### Geocoding shipment locations...")
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+    total_rows = len(in_transit_df)
+    
+    geocoded_data = []
+
+    for i, row in enumerate(in_transit_df.itertuples()):
+        status_text.text(f"Processing shipment {i+1}/{total_rows}: {row.make} {row.model} (Tracking: {row.tracking_number})")
+        
+        # get_lat_lon is still cached with lru_cache for individual location lookups
+        origin_coords = get_lat_lon(row.origin_location)
+        dest_coords = get_lat_lon(row.destination_location)
+        current_coords = get_lat_lon(row.current_location)
+        
+        geocoded_data.append({
+            'origin': origin_coords, 'destination': dest_coords, 'current': current_coords,
+            'origin_location': row.origin_location, 'destination_location': row.destination_location,
+            'current_location': row.current_location, 'make': row.make, 'model': row.model,
+            'tracking_number': row.tracking_number
+        })
+        
+        progress_bar.progress((i + 1) / total_rows)
+
+    # Clear progress indicators once done
+    status_text.empty()
+    progress_bar.empty()
+    
+    return geocoded_data
 
 @functools.lru_cache(maxsize=None)
 def standardize_country_name(name: str) -> str | None:
@@ -448,7 +689,7 @@ with tab4:
     if not conn:
         st.error("Cannot display dashboards without a database connection.")
     else:
-        bi_tab1, bi_tab2, bi_tab3, bi_tab4 = st.tabs(["Sales Performance", "Top Brands", "Inventory Insights", "Customer Demographics"])
+        bi_tab1, bi_tab2, bi_tab3, bi_tab4, bi_tab5, bi_tab6, bi_tab7 = st.tabs(["Sales Performance", "Top Brands", "Inventory Insights", "Customer Demographics", "Sales Funnel", "Shipping Operations", "Customer RFM"])
 
         with bi_tab1:
             st.subheader("Revenue & Sales Volume")
@@ -630,3 +871,171 @@ with tab4:
 
                 with col2:  # Place the map in the center column
                      st.plotly_chart(fig_map, use_container_width=False)  # Disable automatic width adjustment
+
+        with bi_tab5:
+            st.subheader("Product Engagement Funnel")
+            st.markdown("""
+            This funnel illustrates the overall engagement with products, from initial views to final orders.
+            *Note: These are aggregated counts across all cars, not conversion rates for individual users or cars.*
+            """)
+            with st.spinner("Loading funnel data..."):
+                funnel_df = get_sales_funnel_data(conn)
+                if not funnel_df.empty:
+                    fig_funnel = px.funnel(
+                        funnel_df,
+                        x='Value',
+                        y='Stage',
+                        title='Product Engagement Funnel',
+                        labels={'Value': 'Count', 'Stage': 'Engagement Stage'}
+                    )
+                    st.plotly_chart(fig_funnel, use_container_width=True)
+                else:
+                    st.warning("No data available for sales funnel analysis.")
+
+        with bi_tab6:
+            st.subheader("Shipping & Logistics Operations")
+            st.markdown("Monitor the status and performance of your car shipments.")
+
+            col_status, col_carrier = st.columns(2)
+
+            with col_status:
+                st.subheader("Delivery Status Breakdown")
+                with st.spinner("Loading shipping status data..."):
+                    status_df = get_shipping_status_data(conn)
+                    if not status_df.empty:
+                        fig_status = px.pie(
+                            status_df,
+                            values='count',
+                            names='delivery_status',
+                            title='Shipment Delivery Status',
+                            hole=0.3
+                        )
+                        st.plotly_chart(fig_status, use_container_width=True)
+                    else:
+                        st.warning("No shipping status data available.")
+
+            with col_carrier:
+                st.subheader("Shipping Carrier Performance")
+                with st.spinner("Loading carrier performance data..."):
+                    carrier_df = get_shipping_carrier_performance_data(conn)
+                    if not carrier_df.empty:
+                        fig_carrier_cost = px.bar(
+                            carrier_df,
+                            x='shipping_company_name',
+                            y='average_cost_jpy',
+                            title='Average Shipping Cost by Carrier (JPY)',
+                            labels={'shipping_company_name': 'Carrier', 'average_cost_jpy': 'Average Cost (JPY)'}
+                        )
+                        st.plotly_chart(fig_carrier_cost, use_container_width=True)
+
+                        fig_carrier_time = px.bar(
+                            carrier_df,
+                            x='shipping_company_name',
+                            y='average_delivery_days',
+                            title='Average Delivery Time by Carrier (Days)',
+                            labels={'shipping_company_name': 'Carrier', 'average_delivery_days': 'Average Days'}
+                        )
+                        st.plotly_chart(fig_carrier_time, use_container_width=True)
+                    else:
+                        st.warning("No carrier performance data available.")
+
+            st.subheader("Live Shipment Progress Map")
+            in_transit_df = get_in_transit_shipments(conn)
+
+            if not in_transit_df.empty:
+                # --- Geocoding with Progress Bar (now cached) ---
+                # This function will only run if the in_transit_df has changed.
+                # Otherwise, it will return the cached result instantly.
+                geocoded_data = geocode_shipments_with_progress(conn, in_transit_df)
+                
+                # --- Plotting the Map ---
+                fig_map = go.Figure()
+
+                for item in geocoded_data:
+                    origin, dest, current = item['origin'], item['destination'], item['current']
+
+                    # Add lines connecting the points
+                    if origin and dest:
+                        fig_map.add_trace(go.Scattergeo(lon=[origin[1], dest[1]], lat=[origin[0], dest[0]], mode='lines', line=dict(width=1, color='gray', dash='dash'), hoverinfo='none', showlegend=False))
+                    if origin and current:
+                        fig_map.add_trace(go.Scattergeo(lon=[origin[1], current[1]], lat=[origin[0], current[0]], mode='lines', line=dict(width=2, color='blue'), hoverinfo='none', showlegend=False))
+
+                    # Add markers for points
+                    lons, lats, texts, marker_colors, marker_sizes = [], [], [], [], []
+                    if origin:
+                        lons.append(origin[1]); lats.append(origin[0]); texts.append(f"Origin: {item['origin_location']}"); marker_colors.append('green'); marker_sizes.append(8)
+                    if dest:
+                        lons.append(dest[1]); lats.append(dest[0]); texts.append(f"Destination: {item['destination_location']}"); marker_colors.append('red'); marker_sizes.append(8)
+                    if current:
+                        lons.append(current[1]); lats.append(current[0]); texts.append(f"Current: {item['current_location']}<br>Car: {item['make']} {item['model']}<br>Tracking: {item['tracking_number']}"); marker_colors.append('blue'); marker_sizes.append(12)
+
+                    if lons:
+                        fig_map.add_trace(go.Scattergeo(lon=lons, lat=lats, hoverinfo='text', text=texts, mode='markers', marker=dict(color=marker_colors, size=marker_sizes, line=dict(width=1, color='black')), showlegend=False))
+
+                fig_map.update_layout(
+                    title_text='Live Shipment Progress',
+                    showlegend=False,
+                    geo=dict(
+                        scope='world', projection_type='natural earth', showland=True,
+                        landcolor='rgb(243, 243, 243)', countrycolor='rgb(204, 204, 204)',
+                        # center=dict(lat=36, lon=138) # Reverted: Map will now use default centering
+                    ),
+                    margin={"r":0,"t":40,"l":0,"b":0}
+                )
+                st.plotly_chart(fig_map, use_container_width=True)
+            else:
+                st.info("No shipments currently in transit to display on map.")
+
+            st.subheader("In-Transit Shipments Details")
+            # Reuse the dataframe fetched for the map
+            if not in_transit_df.empty:
+                st.dataframe(in_transit_df, use_container_width=True)
+            else:
+                st.info("No shipments currently in transit.")
+
+        with bi_tab7:
+            st.subheader("Customer RFM Analysis")
+            st.markdown("Segment your customers based on Recency, Frequency, and Monetary value.")
+            with st.spinner("Loading customer RFM data..."):
+                rfm_df = get_rfm_data(conn)
+                if not rfm_df.empty:
+                    # Assign RFM segments
+                    rfm_df['rfm_segment'] = rfm_df.apply(
+                        lambda row: assign_rfm_segment(row['recency_days'], row['frequency'], row['monetary_value']),
+                        axis=1
+                    )
+
+                    col_rfm_scatter, col_rfm_segments = st.columns(2)
+
+                    with col_rfm_scatter:
+                        fig_rfm_scatter = px.scatter(
+                            rfm_df,
+                            x='recency_days',
+                            y='frequency',
+                            size='monetary_value',
+                            color='rfm_segment',
+                            hover_name='first_name',
+                            title='Customer RFM Scatter Plot',
+                            labels={'recency_days': 'Recency (Days Since Last Order)', 'frequency': 'Frequency (Total Orders)', 'monetary_value': 'Monetary Value (JPY)'}
+                        )
+                        st.plotly_chart(fig_rfm_scatter, use_container_width=True)
+
+                    with col_rfm_segments:
+                        segment_counts = rfm_df['rfm_segment'].value_counts().reset_index()
+                        segment_counts.columns = ['rfm_segment', 'count']
+                        fig_rfm_segments = px.bar(
+                            segment_counts,
+                            x='rfm_segment',
+                            y='count',
+                            title='Customer Segments Distribution',
+                            labels={'rfm_segment': 'RFM Segment', 'count': 'Number of Customers'}
+                        )
+                        st.plotly_chart(fig_rfm_segments, use_container_width=True)
+
+                    st.subheader("RFM Data Table")
+                    st.dataframe(rfm_df[['first_name', 'last_name', 'recency_days', 'frequency', 'monetary_value', 'rfm_segment']].rename(columns={
+                        'first_name': 'First Name', 'last_name': 'Last Name', 'recency_days': 'Recency (Days)', 'frequency': 'Frequency (Orders)', 'monetary_value': 'Monetary (JPY)', 'rfm_segment': 'Segment'
+                    }), use_container_width=True)
+
+                else:
+                    st.warning("No customer data available for RFM analysis. Ensure 'order' and 'customer' tables have data.")
