@@ -3,6 +3,8 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 import pandas as pd
+import functools
+import pycountry
 from psycopg2 import sql
 from typing import Dict, List, Any, Tuple
 import csv
@@ -172,6 +174,42 @@ def get_customer_demographics_data(_conn):
     """
     df = pd.read_sql_query(query, _conn)
     return df
+
+@functools.lru_cache(maxsize=None)
+def standardize_country_name(name: str) -> str | None:
+    """
+    Finds the standard country name using pycountry.
+    Returns the standard name, or the original name if not found.
+    Handles common abbreviations and edge cases.
+    """
+    if not isinstance(name, str) or not name.strip():
+        return None
+
+    # Manual mapping for common cases that fuzzy search might miss or get wrong
+    manual_map = {
+        'USA': 'United States',
+        'UK': 'United Kingdom',
+        'England': 'United Kingdom',
+        'UAE': 'United Arab Emirates',
+        'Russia': 'Russian Federation',
+        'Congo, Dem. Rep.': 'Congo, The Democratic Republic of the',
+        'Congo, Rep.': 'Congo',
+        'Korea, Rep.': 'Korea, Republic of',
+        'Korea, Dem. Rep.': "Korea, Democratic People's Republic of",
+    }
+    if name in manual_map:
+        name = manual_map[name]
+
+    try:
+        # pycountry's fuzzy search is good for slight misspellings or variations
+        results = pycountry.countries.search_fuzzy(name)
+        if results:
+            return results[0].name
+    except LookupError:
+        # If nothing is found, return the original name to see if Plotly can handle it
+        return name
+    # Fallback to original name
+    return name
 
 # --- Data Display and Insertion Functions ---
 
@@ -456,16 +494,75 @@ with tab4:
                     st.warning("No available inventory data to display.")
 
         with bi_tab4:
-            st.subheader("Customer Acquisition by Country")
-            with st.spinner("Loading customer data..."):
+            st.subheader("Customer Demographics by Country")
+            st.markdown("""
+            This choropleth map shows the distribution of customers across the globe. 
+            The color intensity of each country corresponds to its number of customers. 
+            This visualization is powered by Plotly's built-in mapping features and does not require any external API keys.
+            """)
+            with st.spinner("Loading and preparing map data..."):
                 customer_df = get_customer_demographics_data(conn)
+
+                # --- Country Name Standardization ---
+                # Standardize country names from the database to match what Plotly expects.
+                # This uses the `pycountry` library for robust fuzzy matching.
                 if not customer_df.empty:
-                    fig = px.bar(
-                        customer_df, x='country', y='number_of_customers',
-                        title='Customer Distribution by Country',
-                        labels={'country': 'Country', 'number_of_customers': 'Number of Customers'},
-                        text='number_of_customers'
+                    customer_df['country'] = customer_df['country'].apply(standardize_country_name)
+                    # After replacing, we group and sum again in case multiple names mapped to one
+                    # (e.g., 'USA' and 'United States' both become 'United States').
+                    customer_df = customer_df.groupby('country', as_index=False)['number_of_customers'].sum()
+
+                # --- Get a Complete List of Countries ---
+                # We generate a complete list of countries from `pycountry` to ensure the entire
+                # world map is drawn, not just countries present in our data.
+                try:
+                    all_countries_list = [{'country': country.name} for country in pycountry.countries]
+                    all_countries_df = pd.DataFrame(all_countries_list)
+                except Exception as e:
+                    st.error(f"Could not load country list from pycountry: {e}")
+                    st.info("Please ensure the `pycountry` library is installed (`pip install pycountry`).")
+                    # As a fallback, use an empty dataframe so the app doesn't crash.
+                    all_countries_df = pd.DataFrame(columns=['country'])
+
+                # Merge customer data with the comprehensive list of countries.
+                # This ensures all countries are present in the dataframe used for mapping.
+                # Countries without customer data will have NaN in 'number_of_customers'.
+                merged_df = pd.merge(
+                    all_countries_df,
+                    customer_df,
+                    on='country',
+                    how='left'
+                )
+
+                # Fill NaN values (countries with no customers) with 0.
+                merged_df['number_of_customers'] = merged_df['number_of_customers'].fillna(0)
+
+                if customer_df.empty:
+                    st.warning("No customer country data available. Displaying a world map with no customer-specific coloring.")
+
+                # Create the choropleth map using the merged_df.
+                # Countries with 0 customers will be colored with the lowest value in the colorscale.
+                fig_map = go.Figure(data=go.Choropleth(
+                    locations=merged_df['country'], # Use the standardized, complete list of country names
+                    locationmode='country names',  # Use country names to match locations
+                    z=merged_df['number_of_customers'],  # Data to be color-coded (0 for no customers)
+                    text=merged_df.apply(lambda row: f"{row['country']}: {int(row['number_of_customers'])} customers", axis=1), # Custom hover text
+                    colorscale='YlGnBu',
+                    autocolorscale=False,
+                    reversescale=False,
+                    marker_line_color='darkgray',
+                    marker_line_width=0.5,
+                    colorbar_title='Number of<br>Customers',
+                    hoverinfo='text' # Use custom text for hover
+                ))
+
+                fig_map.update_layout(
+                    title_text='Global Customer Distribution',
+                    geo=dict(
+                        showframe=False,
+                        showcoastlines=False,
+                        projection_type='natural earth'
                     )
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.warning("No customer country data available to display.")
+                )
+
+                st.plotly_chart(fig_map, use_container_width=True)
