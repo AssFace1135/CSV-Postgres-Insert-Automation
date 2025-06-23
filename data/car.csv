@@ -4,3 +4,23 @@ VIN002TOYOTASUP,JZA80,Toyota,Supra,1998,Red,2,1,1,RHD,92000,2,6500000,http://exa
 VIN003SUBARUWRX,GDB,Subaru,Impreza WRX STI,2004,White,4,1,3,RHD,110000,2,3500000,http://example.com/wrx.jpg,"Rally legend",available,N9101,3,180,3,7
 VIN004HONDACIVR,EK9,Honda,Civic Type R,1999,Yellow,5,1,2,RHD,88000,1,2800000,http://example.com/ek9.jpg,"Lightweight pocket rocket",sold,T1121,1,300,12,20
 VIN005MAZDARX7F,FD3S,Mazda,RX-7,2001,Black,,1,1,RHD,65000,1,5500000,http://example.com/rx7.jpg,"Rotary power",available,O3141,2,250,7,12
+VIN006HONDAS2000,AP1,Honda,S2000,2002,Silver,5,1,1,RHD,85000,2,2500000,http://example.com/s2000.jpg,"High-revving roadster",available,T2233,1,180,4,8
+VIN007MITSUEVO6,CP9A,Mitsubishi,Lancer Evo VI,1999,Blue,3,1,3,RHD,95000,2,3200000,http://example.com/evo6.jpg,"WRC Champion",available,O6677,2,210,6,11
+VIN008NISSANS15,S15,Nissan,Silvia Spec-R,2000,Pearl White,3,1,1,RHD,78000,1,2900000,http://example.com/s15.jpg,"Drift king",reserved,N8899,3,350,15,25
+VIN009TOYOTAMR2,SW20,Toyota,MR2 GT-S,1998,Red,3,1,1,RHD,105000,3,1800000,http://example.com/mr2.jpg,"Mid-engine fun",available,T3344,1,120,2,5
+VIN010MAZMIATANB,NB8C,Mazda,MX-5,2003,Green,,1,1,RHD,120000,2,950000,http://example.com/mx5nb.jpg,"Affordable fun",sold,O4455,2,90,5,3
+VIN011NISSAN300Z,Z32,Nissan,300ZX Twin Turbo,1996,Black,1,1,1,RHD,115000,3,2200000,http://example.com/300zx.jpg,"90s tech powerhouse",available,N7788,3,160,3,9
+VIN012TOYCELICA,ST205,Toyota,Celica GT-Four,1995,White,3,1,3,RHD,130000,2,2600000,http://example.com/gtfour.jpg,"Rally-bred coupe",available,T5566,1,190,5,12
+VIN013SUBLEGACY,BE5,Subaru,Legacy B4 RSK,2002,Silver,4,2,3,RHD,98000,2,1500000,http://example.com/legacyb4.jpg,"Sleeper sedan with twin turbos",available,O1122,2,110,1,4
+VIN014HONDADC2,DC2,Honda,Integra Type R,1998,White,5,1,2,RHD,82000,1,3100000,http://example.com/dc2.jpg,"Best FWD car ever?",sold,N3344,3,450,20,30
+VIN015ACURANSX,NA1,Acura,NSX,1992,Red,2,1,1,LHD,60000,1,8500000,http://example.com/nsx.jpg,"Japanese supercar icon",available,T9900,1,550,25,40
+VIN016TOYCHASER,JZX100,Toyota,Chaser Tourer V,1999,White,2,2,1,RHD,110000,2,3800000,http://example.com/chaser.jpg,"Legendary 1JZ engine",available,O8877,2,320,11,18
+VIN017NISSANGTIR,RNN14,Nissan,Pulsar GTI-R,1993,Black,3,1,3,RHD,140000,3,1900000,http://example.com/gtir.jpg,"Baby Godzilla",available,N6655,3,140,4,6
+VIN018MITSUEVO9,CT9A,Mitsubishi,Lancer Evo IX,2006,Red,3,1,3,RHD,70000,1,4200000,http://example.com/evo9.jpg,"Peak Lancer Evolution",reserved,T7788,1,400,18,28
+VIN019SUBARU22B,GC8,Subaru,Impreza 22B STI,1998,Sonic Blue,4,1,3,RHD,45000,5,15000000,http://example.com/22b.jpg,"The holy grail of Subarus",sold,O9988,2,800,50,100
+VIN020HONDAPREL,BB6,Honda,Prelude Type SH,2000,Black,5,2,2,RHD,125000,2,1200000,http://example.com/prelude.jpg,"Advanced handling with ATTS",available,N2211,3,85,2,3
+VIN021MAZDARX8,SE3P,Mazda,RX-8,2005,Velocity Red,,2,1,RHD,90000,3,800000,http://example.com/rx8.jpg,"Unique freestyle doors",available,T4433,1,100,3,7
+VIN022SUZCAPPU,EA11R,Suzuki,Cappuccino,1994,Red,3,1,1,RHD,88000,2,900000,http://example.com/cappuccino.jpg,"Kei car fun",available,O3322,2,130,8,15
+VIN023NISSANS14,S14,Nissan,Silvia K's,1997,Green,3,1,1,RHD,112000,2,2100000,http://example.com/s14.jpg,"Classic 90s drift platform",sold,N5544,3,280,10,14
+VIN024MITSUBGTO,Z16A,Mitsubishi,GTO Twin Turbo,1994,Red,1,1,3,RHD,95000,2,2400000,http://example.com/gto.jpg,"Active aero and all-wheel steer",available,T6655,1,170,6,10
+VIN025TOYOTASOAR,JZZ30,Toyota,Soarer 2.5GT,1996,Dark Green,2,2,1,RHD,135000,3,1600000,http://example.com/soarer.jpg,"Luxury GT with 1JZ power",available,O7766,2,150,4,9

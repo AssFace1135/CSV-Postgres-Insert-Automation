@@ -1,0 +1,334 @@
+[Running] python -u "c:\Users\damar\Desktop\Project Sveta\Posgres_data_Insert_automation\main.py"
+Connecting to the database...
+Connection successful!
+
+Starting database population process...
+
+Inserting data for Car_Condition_Rating into DB table car_condition_rating...
+Warning: Unique constraint violation for row in 'car_condition_rating'. Attempting to retrieve existing ID. CSV row (approx): {'rating_code': 'A', 'description': 'Excellent condition'}.
+Info: Retrieved existing ID 1 for row in 'car_condition_rating'.
+Warning: Unique constraint violation for row in 'car_condition_rating'. Attempting to retrieve existing ID. CSV row (approx): {'rating_code': 'B', 'description': 'Good condition, minor wear'}.
+Info: Retrieved existing ID 2 for row in 'car_condition_rating'.
+Warning: Unique constraint violation for row in 'car_condition_rating'. Attempting to retrieve existing ID. CSV row (approx): {'rating_code': 'C', 'description': 'Average condition, visible wear'}.
+Info: Retrieved existing ID 3 for row in 'car_condition_rating'.
+Warning: Unique constraint violation for row in 'car_condition_rating'. Attempting to retrieve existing ID. CSV row (approx): {'rating_code': 'D', 'description': 'Fair condition, needs repair'}.
+Info: Retrieved existing ID 4 for row in 'car_condition_rating'.
+Warning: Unique constraint violation for row in 'car_condition_rating'. Attempting to retrieve existing ID. CSV row (approx): {'rating_code': 'S', 'description': 'Showroom new'}.
+Info: Retrieved existing ID 5 for row in 'car_condition_rating'.
+Finished processing Car_Condition_Rating. Inserted 5 new rows out of 5 attempted.
+
+Inserting data for Engine_Type_Lookup into DB table engine_type_lookup...
+Warning: Unique constraint violation for row in 'engine_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'engine_code': 'RB26DETT', 'description': '2.6L Twin-Turbo Inline-6'}.
+Info: Retrieved existing ID 1 for row in 'engine_type_lookup'.
+Warning: Unique constraint violation for row in 'engine_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'engine_code': '2JZ-GTE', 'description': '3.0L Twin-Turbo Inline-6'}.
+Info: Retrieved existing ID 2 for row in 'engine_type_lookup'.
+Warning: Unique constraint violation for row in 'engine_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'engine_code': 'SR20DET', 'description': '2.0L Turbo Inline-4'}.
+Info: Retrieved existing ID 3 for row in 'engine_type_lookup'.
+Warning: Unique constraint violation for row in 'engine_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'engine_code': 'EJ20', 'description': '2.0L Turbo Boxer-4'}.
+Info: Retrieved existing ID 4 for row in 'engine_type_lookup'.
+Warning: Unique constraint violation for row in 'engine_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'engine_code': 'K20A', 'description': '2.0L NA Inline-4'}.
+Info: Retrieved existing ID 5 for row in 'engine_type_lookup'.
+Finished processing Engine_Type_Lookup. Inserted 5 new rows out of 5 attempted.
+
+Inserting data for Transmission_Type_Lookup into DB table transmission_type_lookup...
+Warning: Unique constraint violation for row in 'transmission_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'Manual', 'description': 'Manual Transmission'}.
+Info: Retrieved existing ID 1 for row in 'transmission_type_lookup'.
+Warning: Unique constraint violation for row in 'transmission_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'Automatic', 'description': 'Automatic Transmission'}.
+Info: Retrieved existing ID 2 for row in 'transmission_type_lookup'.
+Warning: Unique constraint violation for row in 'transmission_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'CVT', 'description': 'Continuously Variable Transmission'}.
+Info: Retrieved existing ID 3 for row in 'transmission_type_lookup'.
+Warning: Unique constraint violation for row in 'transmission_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'DCT', 'description': 'Dual-Clutch Transmission'}.
+Info: Retrieved existing ID 4 for row in 'transmission_type_lookup'.
+Finished processing Transmission_Type_Lookup. Inserted 4 new rows out of 4 attempted.
+
+Inserting data for Drivetrain_Type_Lookup into DB table drivetrain_type_lookup...
+Warning: Unique constraint violation for row in 'drivetrain_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'RWD', 'description': 'Rear-Wheel Drive'}.
+Info: Retrieved existing ID 1 for row in 'drivetrain_type_lookup'.
+Warning: Unique constraint violation for row in 'drivetrain_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'FWD', 'description': 'Front-Wheel Drive'}.
+Info: Retrieved existing ID 2 for row in 'drivetrain_type_lookup'.
+Warning: Unique constraint violation for row in 'drivetrain_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': 'AWD', 'description': 'All-Wheel Drive'}.
+Info: Retrieved existing ID 3 for row in 'drivetrain_type_lookup'.
+Warning: Unique constraint violation for row in 'drivetrain_type_lookup'. Attempting to retrieve existing ID. CSV row (approx): {'type_name': '4WD', 'description': 'Four-Wheel Drive'}.
+Info: Retrieved existing ID 4 for row in 'drivetrain_type_lookup'.
+Finished processing Drivetrain_Type_Lookup. Inserted 4 new rows out of 4 attempted.
+
+Inserting data for Auction_Supplier into DB table auction_supplier...
+Warning: Unique constraint violation for row in 'auction_supplier'. Attempting to retrieve existing ID. CSV row (approx): {'supplier_name': 'USS Tokyo', 'contact_person': 'Ken Tanaka', 'phone_number': '090-1111-2222', 'email': 'ken.tanaka@uss.co.jp', 'website': 'http://uss.co.jp', 'location': 'Tokyo, Japan'}.
+Info: Retrieved existing ID 1 for row in 'auction_supplier'.
+Warning: Unique constraint violation for row in 'auction_supplier'. Attempting to retrieve existing ID. CSV row (approx): {'supplier_name': 'IAAUC', 'contact_person': 'Yumi Sato', 'phone_number': '080-3333-4444', 'email': 'y.sato@iaauc.com', 'website': 'http://iaauc.com', 'location': 'Osaka, Japan'}.
+Info: Retrieved existing ID 2 for row in 'auction_supplier'.
+Warning: Unique constraint violation for row in 'auction_supplier'. Attempting to retrieve existing ID. CSV row (approx): {'supplier_name': 'JAA', 'contact_person': 'Haruto Ito', 'phone_number': '070-5555-6666', 'email': 'haruto@jaa.jp', 'website': 'http://jaa.jp', 'location': 'Nagoya, Japan'}.
+Info: Retrieved existing ID 3 for row in 'auction_supplier'.
+Finished processing Auction_Supplier. Inserted 3 new rows out of 3 attempted.
+
+Inserting data for Employee into DB table employee...
+Warning: Unique constraint violation for row in 'employee'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Admin', 'last_name': 'User', 'email': 'admin@example.com', 'password_hash': 'hash_admin_pw', 'phone_number': '03-1234-5678', 'job_title': 'System Administrator', 'hire_date': '2020-01-15', 'is_active': 'true'}.
+Info: Retrieved existing ID 1 for row in 'employee'.
+Warning: Unique constraint violation for row in 'employee'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Sales', 'last_name': 'Manager', 'email': 'sales.mgr@example.com', 'password_hash': 'hash_sales_mgr_pw', 'phone_number': '03-9876-5432', 'job_title': 'Sales Manager', 'hire_date': '2021-05-10', 'is_active': 'true'}.
+Info: Retrieved existing ID 2 for row in 'employee'.
+Warning: Unique constraint violation for row in 'employee'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Support', 'last_name': 'Staff', 'email': 'support@example.com', 'password_hash': 'hash_support_pw', 'phone_number': '03-1122-3344', 'job_title': 'Customer Support', 'hire_date': '2022-08-01', 'is_active': 'true'}.
+Info: Retrieved existing ID 3 for row in 'employee'.
+Finished processing Employee. Inserted 3 new rows out of 3 attempted.
+
+Inserting data for Customer into DB table customer...
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Alice', 'last_name': 'Smith', 'email': 'alice.smith@email.com', 'password_hash': 'hash_alice', 'phone_number': '09012345678', 'address_line1': '1-2-3 Sakura St', 'city': 'Tokyo', 'state_province': 'Tokyo', 'postal_code': '100-0001', 'country': 'Japan', 'last_login_date': '2023-10-25T10:00:00', 'total_orders_count': '2', 'total_spent_jpy': '1500000', 'last_activity_date': '2023-10-26T14:30:00', 'loyalty_score': '150', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 1 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Bob', 'last_name': 'Johnson', 'email': 'bob.j@email.com', 'password_hash': 'hash_bob', 'phone_number': '08098765432', 'address_line1': '4-5-6 Maple Ave', 'city': 'Osaka', 'state_province': 'Osaka', 'postal_code': '530-0002', 'country': 'Japan', 'last_login_date': '2023-10-24T09:15:00', 'total_orders_count': '1', 'total_spent_jpy': '800000', 'last_activity_date': '2023-10-24T11:00:00', 'loyalty_score': '80', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 2 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Charlie', 'last_name': 'Brown', 'email': 'charlie.b@email.com', 'password_hash': 'hash_charlie', 'phone_number': '07011223344', 'address_line1': '7-8-9 Oak Rd', 'city': 'Kyoto', 'state_province': 'Kyoto', 'postal_code': '600-8003', 'country': 'Japan', 'last_login_date': '2023-10-26T11:00:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-10-26T11:05:00', 'loyalty_score': '10', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 3 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Diana', 'last_name': 'Prince', 'email': 'diana.p@email.com', 'password_hash': 'hash_diana', 'phone_number': '', 'address_line1': '', 'city': '', 'state_province': '', 'postal_code': '', 'country': '', 'last_login_date': '2023-10-20T18:00:00', 'total_orders_count': '3', 'total_spent_jpy': '2500000', 'last_activity_date': '2023-10-22T10:00:00', 'loyalty_score': '250', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 4 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Ethan', 'last_name': 'Hunt', 'email': 'ethan.h@email.com', 'password_hash': 'hash_ethan', 'phone_number': '1-202-555-0149', 'address_line1': '123 Mission St', 'city': 'Los Angeles', 'state_province': 'CA', 'postal_code': '90001', 'country': 'USA', 'last_login_date': '2023-11-01T12:00:00', 'total_orders_count': '1', 'total_spent_jpy': '4500000', 'last_activity_date': '2023-11-01T12:30:00', 'loyalty_score': '450', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 33 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Fiona', 'last_name': 'Glenanne', 'email': 'fiona.g@email.com', 'password_hash': 'hash_fiona', 'phone_number': '44-20-7946-0958', 'address_line1': '221B Baker St', 'city': 'London', 'state_province': '', 'postal_code': 'SW1A 1AA', 'country': 'UK', 'last_login_date': '2023-11-02T14:00:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-02T14:05:00', 'loyalty_score': '5', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 34 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'George', 'last_name': 'Costanza', 'email': 'george.c@email.com', 'password_hash': 'hash_george', 'phone_number': '1-212-555-0199', 'address_line1': '129 West 81st Street', 'city': 'New York', 'state_province': 'NY', 'postal_code': '10024', 'country': 'USA', 'last_login_date': '2023-11-03T09:30:00', 'total_orders_count': '2', 'total_spent_jpy': '9800000', 'last_activity_date': '2023-11-03T10:00:00', 'loyalty_score': '980', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 35 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Haruka', 'last_name': 'Tanaka', 'email': 'haruka.t@email.com', 'password_hash': 'hash_haruka', 'phone_number': '090-5555-1234', 'address_line1': 'Shibuya Crossing 1-1', 'city': 'Shibuya', 'state_province': 'Tokyo', 'postal_code': '150-0042', 'country': 'Japan', 'last_login_date': '2023-11-04T18:00:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-04T18:10:00', 'loyalty_score': '15', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 36 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Ivan', 'last_name': 'Drago', 'email': 'ivan.d@email.com', 'password_hash': 'hash_ivan', 'phone_number': '7-495-555-0180', 'address_line1': 'Red Square 1', 'city': 'Moscow', 'state_province': '', 'postal_code': '109012', 'country': 'Russia', 'last_login_date': '2023-11-05T11:00:00', 'total_orders_count': '1', 'total_spent_jpy': '6200000', 'last_activity_date': '2023-11-05T11:20:00', 'loyalty_score': '620', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 37 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Julia', 'last_name': 'Chen', 'email': 'julia.c@email.com', 'password_hash': 'hash_julia', 'phone_number': '86-10-5555-0165', 'address_line1': '8 Wangfujing St', 'city': 'Beijing', 'state_province': '', 'postal_code': '100006', 'country': 'China', 'last_login_date': '2023-11-06T16:45:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-06T16:50:00', 'loyalty_score': '20', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 38 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Kenji', 'last_name': 'Watanabe', 'email': 'kenji.w@email.com', 'password_hash': 'hash_kenji', 'phone_number': '080-4321-9876', 'address_line1': 'Dotonbori 2-5', 'city': 'Namba', 'state_province': 'Osaka', 'postal_code': '542-0071', 'country': 'Japan', 'last_login_date': '2023-11-07T20:00:00', 'total_orders_count': '3', 'total_spent_jpy': '12500000', 'last_activity_date': '2023-11-07T20:30:00', 'loyalty_score': '1250', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 39 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Liam', 'last_name': 'Miller', 'email': 'liam.m@email.com', 'password_hash': 'hash_liam', 'phone_number': '1-416-555-0123', 'address_line1': '100 Queen St W', 'city': 'Toronto', 'state_province': 'ON', 'postal_code': 'M5H 2N2', 'country': 'Canada', 'last_login_date': '2023-11-08T13:15:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-08T13:20:00', 'loyalty_score': '5', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 40 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Maria', 'last_name': 'Garcia', 'email': 'maria.g@email.com', 'password_hash': 'hash_maria', 'phone_number': '34-91-555-0144', 'address_line1': 'Plaza Mayor 1', 'city': 'Madrid', 'state_province': '', 'postal_code': '28012', 'country': 'Spain', 'last_login_date': '2023-11-09T19:00:00', 'total_orders_count': '1', 'total_spent_jpy': '3300000', 'last_activity_date': '2023-11-09T19:15:00', 'loyalty_score': '330', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 41 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Noah', 'last_name': 'Kim', 'email': 'noah.k@email.com', 'password_hash': 'hash_noah', 'phone_number': '82-2-555-0177', 'address_line1': 'Gangnam-daero 396', 'city': 'Gangnam', 'state_province': 'Seoul', 'postal_code': '06132', 'country': 'South Korea', 'last_login_date': '2023-11-10T21:00:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-10T21:05:00', 'loyalty_score': '10', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 42 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Olivia', 'last_name': 'Dubois', 'email': 'olivia.d@email.com', 'password_hash': 'hash_olivia', 'phone_number': '33-1-5555-0188', 'address_line1': 'Champs-�lys�es 101', 'city': 'Paris', 'state_province': '', 'postal_code': '75008', 'country': 'France', 'last_login_date': '2023-11-11T10:00:00', 'total_orders_count': '2', 'total_spent_jpy': '7800000', 'last_activity_date': '2023-11-11T10:30:00', 'loyalty_score': '780', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 43 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Peter', 'last_name': 'Schmidt', 'email': 'peter.s@email.com', 'password_hash': 'hash_peter', 'phone_number': '49-30-555-0155', 'address_line1': 'Brandenburg Gate 1', 'city': 'Berlin', 'state_province': '', 'postal_code': '10117', 'country': 'Germany', 'last_login_date': '2023-11-12T15:00:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-12T15:10:00', 'loyalty_score': '25', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 44 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Quinn', 'last_name': 'Nguyen', 'email': 'quinn.n@email.com', 'password_hash': 'hash_quinn', 'phone_number': '84-28-555-0190', 'address_line1': '227 ?. Nguy?n V?n C?', 'city': 'District 5', 'state_province': 'Ho Chi Minh City', 'postal_code': '70000', 'country': 'Vietnam', 'last_login_date': '2023-11-13T08:00:00', 'total_orders_count': '1', 'total_spent_jpy': '2100000', 'last_activity_date': '2023-11-13T08:20:00', 'loyalty_score': '210', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 45 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Ravi', 'last_name': 'Patel', 'email': 'ravi.p@email.com', 'password_hash': 'hash_ravi', 'phone_number': '91-22-555-0111', 'address_line1': 'Marine Drive 1', 'city': 'Mumbai', 'state_province': '', 'postal_code': '400020', 'country': 'India', 'last_login_date': '2023-11-14T17:30:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-14T17:35:00', 'loyalty_score': '12', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 46 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Sofia', 'last_name': 'Rossi', 'email': 'sofia.r@email.com', 'password_hash': 'hash_sofia', 'phone_number': '39-06-555-0133', 'address_line1': 'Piazza Navona 1', 'city': 'Rome', 'state_province': '', 'postal_code': '00186', 'country': 'Italy', 'last_login_date': '2023-11-15T14:20:00', 'total_orders_count': '1', 'total_spent_jpy': '4900000', 'last_activity_date': '2023-11-15T14:40:00', 'loyalty_score': '490', 'preferred_contact_method': 'Phone'}.
+Info: Retrieved existing ID 47 for row in 'customer'.
+Warning: Unique constraint violation for row in 'customer'. Attempting to retrieve existing ID. CSV row (approx): {'first_name': 'Takeru', 'last_name': 'Sato', 'email': 'takeru.s@email.com', 'password_hash': 'hash_takeru', 'phone_number': '070-8888-7777', 'address_line1': 'Fushimi Inari 1', 'city': 'Fushimi', 'state_province': 'Kyoto', 'postal_code': '612-0882', 'country': 'Japan', 'last_login_date': '2023-11-16T11:50:00', 'total_orders_count': '0', 'total_spent_jpy': '0', 'last_activity_date': '2023-11-16T11:55:00', 'loyalty_score': '30', 'preferred_contact_method': 'Email'}.
+Info: Retrieved existing ID 48 for row in 'customer'.
+Finished processing Customer. Inserted 20 new rows out of 20 attempted.
+
+Inserting data for Car into DB table car...
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN001NISSANR34', 'chassis_code': 'BNR34', 'make': 'Nissan', 'model': 'Skyline GT-R', 'year': '1999', 'color': 'Blue', 'engine_type_id': 1, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '75000', 'condition_id': 1, 'current_listing_price_jpy': '7000000', 'photos_url': 'http://example.com/r34.jpg', 'description': 'Classic JDM sports car', 'status': 'available', 'auction_lot_number': 'T1234', 'supplier_id': 1, 'view_count': '150', 'add_to_cart_count': '5', 'add_to_wishlist': '10'}.
+Info: Retrieved existing ID 1 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN002TOYOTASUP', 'chassis_code': 'JZA80', 'make': 'Toyota', 'model': 'Supra', 'year': '1998', 'color': 'Red', 'engine_type_id': 2, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '92000', 'condition_id': 2, 'current_listing_price_jpy': '6500000', 'photos_url': 'http://example.com/supra.jpg', 'description': 'Iconic 2JZ engine', 'status': 'reserved', 'auction_lot_number': 'O5678', 'supplier_id': 2, 'view_count': '220', 'add_to_cart_count': '8', 'add_to_wishlist': '15'}.
+Info: Retrieved existing ID 2 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN003SUBARUWRX', 'chassis_code': 'GDB', 'make': 'Subaru', 'model': 'Impreza WRX STI', 'year': '2004', 'color': 'White', 'engine_type_id': 4, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '110000', 'condition_id': 2, 'current_listing_price_jpy': '3500000', 'photos_url': 'http://example.com/wrx.jpg', 'description': 'Rally legend', 'status': 'available', 'auction_lot_number': 'N9101', 'supplier_id': 3, 'view_count': '180', 'add_to_cart_count': '3', 'add_to_wishlist': '7'}.
+Info: Retrieved existing ID 3 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN004HONDACIVR', 'chassis_code': 'EK9', 'make': 'Honda', 'model': 'Civic Type R', 'year': '1999', 'color': 'Yellow', 'engine_type_id': 5, 'transmission_type_id': 1, 'drivetrain_type_id': 2, 'steering_side': 'RHD', 'mileage_km': '88000', 'condition_id': 1, 'current_listing_price_jpy': '2800000', 'photos_url': 'http://example.com/ek9.jpg', 'description': 'Lightweight pocket rocket', 'status': 'sold', 'auction_lot_number': 'T1121', 'supplier_id': 1, 'view_count': '300', 'add_to_cart_count': '12', 'add_to_wishlist': '20'}.
+Info: Retrieved existing ID 4 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN005MAZDARX7F', 'chassis_code': 'FD3S', 'make': 'Mazda', 'model': 'RX-7', 'year': '2001', 'color': 'Black', 'engine_type_id': '', 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '65000', 'condition_id': 1, 'current_listing_price_jpy': '5500000', 'photos_url': 'http://example.com/rx7.jpg', 'description': 'Rotary power', 'status': 'available', 'auction_lot_number': 'O3141', 'supplier_id': 2, 'view_count': '250', 'add_to_cart_count': '7', 'add_to_wishlist': '12'}.
+Info: Retrieved existing ID 5 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN006HONDAS2000', 'chassis_code': 'AP1', 'make': 'Honda', 'model': 'S2000', 'year': '2002', 'color': 'Silver', 'engine_type_id': 5, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '85000', 'condition_id': 2, 'current_listing_price_jpy': '2500000', 'photos_url': 'http://example.com/s2000.jpg', 'description': 'High-revving roadster', 'status': 'available', 'auction_lot_number': 'T2233', 'supplier_id': 1, 'view_count': '180', 'add_to_cart_count': '4', 'add_to_wishlist': '8'}.
+Info: Retrieved existing ID 46 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN007MITSUEVO6', 'chassis_code': 'CP9A', 'make': 'Mitsubishi', 'model': 'Lancer Evo VI', 'year': '1999', 'color': 'Blue', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '95000', 'condition_id': 2, 'current_listing_price_jpy': '3200000', 'photos_url': 'http://example.com/evo6.jpg', 'description': 'WRC Champion', 'status': 'available', 'auction_lot_number': 'O6677', 'supplier_id': 2, 'view_count': '210', 'add_to_cart_count': '6', 'add_to_wishlist': '11'}.
+Info: Retrieved existing ID 47 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN008NISSANS15', 'chassis_code': 'S15', 'make': 'Nissan', 'model': 'Silvia Spec-R', 'year': '2000', 'color': 'Pearl White', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '78000', 'condition_id': 1, 'current_listing_price_jpy': '2900000', 'photos_url': 'http://example.com/s15.jpg', 'description': 'Drift king', 'status': 'reserved', 'auction_lot_number': 'N8899', 'supplier_id': 3, 'view_count': '350', 'add_to_cart_count': '15', 'add_to_wishlist': '25'}.
+Info: Retrieved existing ID 48 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN009TOYOTAMR2', 'chassis_code': 'SW20', 'make': 'Toyota', 'model': 'MR2 GT-S', 'year': '1998', 'color': 'Red', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '105000', 'condition_id': 3, 'current_listing_price_jpy': '1800000', 'photos_url': 'http://example.com/mr2.jpg', 'description': 'Mid-engine fun', 'status': 'available', 'auction_lot_number': 'T3344', 'supplier_id': 1, 'view_count': '120', 'add_to_cart_count': '2', 'add_to_wishlist': '5'}.
+Info: Retrieved existing ID 49 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN010MAZMIATANB', 'chassis_code': 'NB8C', 'make': 'Mazda', 'model': 'MX-5', 'year': '2003', 'color': 'Green', 'engine_type_id': '', 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '120000', 'condition_id': 2, 'current_listing_price_jpy': '950000', 'photos_url': 'http://example.com/mx5nb.jpg', 'description': 'Affordable fun', 'status': 'sold', 'auction_lot_number': 'O4455', 'supplier_id': 2, 'view_count': '90', 'add_to_cart_count': '5', 'add_to_wishlist': '3'}.
+Info: Retrieved existing ID 50 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN011NISSAN300Z', 'chassis_code': 'Z32', 'make': 'Nissan', 'model': '300ZX Twin Turbo', 'year': '1996', 'color': 'Black', 'engine_type_id': 1, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '115000', 'condition_id': 3, 'current_listing_price_jpy': '2200000', 'photos_url': 'http://example.com/300zx.jpg', 'description': '90s tech powerhouse', 'status': 'available', 'auction_lot_number': 'N7788', 'supplier_id': 3, 'view_count': '160', 'add_to_cart_count': '3', 'add_to_wishlist': '9'}.
+Info: Retrieved existing ID 51 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN012TOYCELICA', 'chassis_code': 'ST205', 'make': 'Toyota', 'model': 'Celica GT-Four', 'year': '1995', 'color': 'White', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '130000', 'condition_id': 2, 'current_listing_price_jpy': '2600000', 'photos_url': 'http://example.com/gtfour.jpg', 'description': 'Rally-bred coupe', 'status': 'available', 'auction_lot_number': 'T5566', 'supplier_id': 1, 'view_count': '190', 'add_to_cart_count': '5', 'add_to_wishlist': '12'}.
+Info: Retrieved existing ID 52 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN013SUBLEGACY', 'chassis_code': 'BE5', 'make': 'Subaru', 'model': 'Legacy B4 RSK', 'year': '2002', 'color': 'Silver', 'engine_type_id': 4, 'transmission_type_id': 2, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '98000', 'condition_id': 2, 'current_listing_price_jpy': '1500000', 'photos_url': 'http://example.com/legacyb4.jpg', 'description': 'Sleeper sedan with twin turbos', 'status': 'available', 'auction_lot_number': 'O1122', 'supplier_id': 2, 'view_count': '110', 'add_to_cart_count': '1', 'add_to_wishlist': '4'}.
+Info: Retrieved existing ID 53 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN014HONDADC2', 'chassis_code': 'DC2', 'make': 'Honda', 'model': 'Integra Type R', 'year': '1998', 'color': 'White', 'engine_type_id': 5, 'transmission_type_id': 1, 'drivetrain_type_id': 2, 'steering_side': 'RHD', 'mileage_km': '82000', 'condition_id': 1, 'current_listing_price_jpy': '3100000', 'photos_url': 'http://example.com/dc2.jpg', 'description': 'Best FWD car ever?', 'status': 'sold', 'auction_lot_number': 'N3344', 'supplier_id': 3, 'view_count': '450', 'add_to_cart_count': '20', 'add_to_wishlist': '30'}.
+Info: Retrieved existing ID 54 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN015ACURANSX', 'chassis_code': 'NA1', 'make': 'Acura', 'model': 'NSX', 'year': '1992', 'color': 'Red', 'engine_type_id': 2, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'LHD', 'mileage_km': '60000', 'condition_id': 1, 'current_listing_price_jpy': '8500000', 'photos_url': 'http://example.com/nsx.jpg', 'description': 'Japanese supercar icon', 'status': 'available', 'auction_lot_number': 'T9900', 'supplier_id': 1, 'view_count': '550', 'add_to_cart_count': '25', 'add_to_wishlist': '40'}.
+Info: Retrieved existing ID 55 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN016TOYCHASER', 'chassis_code': 'JZX100', 'make': 'Toyota', 'model': 'Chaser Tourer V', 'year': '1999', 'color': 'White', 'engine_type_id': 2, 'transmission_type_id': 2, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '110000', 'condition_id': 2, 'current_listing_price_jpy': '3800000', 'photos_url': 'http://example.com/chaser.jpg', 'description': 'Legendary 1JZ engine', 'status': 'available', 'auction_lot_number': 'O8877', 'supplier_id': 2, 'view_count': '320', 'add_to_cart_count': '11', 'add_to_wishlist': '18'}.
+Info: Retrieved existing ID 56 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN017NISSANGTIR', 'chassis_code': 'RNN14', 'make': 'Nissan', 'model': 'Pulsar GTI-R', 'year': '1993', 'color': 'Black', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '140000', 'condition_id': 3, 'current_listing_price_jpy': '1900000', 'photos_url': 'http://example.com/gtir.jpg', 'description': 'Baby Godzilla', 'status': 'available', 'auction_lot_number': 'N6655', 'supplier_id': 3, 'view_count': '140', 'add_to_cart_count': '4', 'add_to_wishlist': '6'}.
+Info: Retrieved existing ID 57 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN018MITSUEVO9', 'chassis_code': 'CT9A', 'make': 'Mitsubishi', 'model': 'Lancer Evo IX', 'year': '2006', 'color': 'Red', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '70000', 'condition_id': 1, 'current_listing_price_jpy': '4200000', 'photos_url': 'http://example.com/evo9.jpg', 'description': 'Peak Lancer Evolution', 'status': 'reserved', 'auction_lot_number': 'T7788', 'supplier_id': 1, 'view_count': '400', 'add_to_cart_count': '18', 'add_to_wishlist': '28'}.
+Info: Retrieved existing ID 58 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN019SUBARU22B', 'chassis_code': 'GC8', 'make': 'Subaru', 'model': 'Impreza 22B STI', 'year': '1998', 'color': 'Sonic Blue', 'engine_type_id': 4, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '45000', 'condition_id': 5, 'current_listing_price_jpy': '15000000', 'photos_url': 'http://example.com/22b.jpg', 'description': 'The holy grail of Subarus', 'status': 'sold', 'auction_lot_number': 'O9988', 'supplier_id': 2, 'view_count': '800', 'add_to_cart_count': '50', 'add_to_wishlist': '100'}.
+Info: Retrieved existing ID 59 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN020HONDAPREL', 'chassis_code': 'BB6', 'make': 'Honda', 'model': 'Prelude Type SH', 'year': '2000', 'color': 'Black', 'engine_type_id': 5, 'transmission_type_id': 2, 'drivetrain_type_id': 2, 'steering_side': 'RHD', 'mileage_km': '125000', 'condition_id': 2, 'current_listing_price_jpy': '1200000', 'photos_url': 'http://example.com/prelude.jpg', 'description': 'Advanced handling with ATTS', 'status': 'available', 'auction_lot_number': 'N2211', 'supplier_id': 3, 'view_count': '85', 'add_to_cart_count': '2', 'add_to_wishlist': '3'}.
+Info: Retrieved existing ID 60 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN021MAZDARX8', 'chassis_code': 'SE3P', 'make': 'Mazda', 'model': 'RX-8', 'year': '2005', 'color': 'Velocity Red', 'engine_type_id': '', 'transmission_type_id': 2, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '90000', 'condition_id': 3, 'current_listing_price_jpy': '800000', 'photos_url': 'http://example.com/rx8.jpg', 'description': 'Unique freestyle doors', 'status': 'available', 'auction_lot_number': 'T4433', 'supplier_id': 1, 'view_count': '100', 'add_to_cart_count': '3', 'add_to_wishlist': '7'}.
+Info: Retrieved existing ID 61 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN022SUZCAPPU', 'chassis_code': 'EA11R', 'make': 'Suzuki', 'model': 'Cappuccino', 'year': '1994', 'color': 'Red', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '88000', 'condition_id': 2, 'current_listing_price_jpy': '900000', 'photos_url': 'http://example.com/cappuccino.jpg', 'description': 'Kei car fun', 'status': 'available', 'auction_lot_number': 'O3322', 'supplier_id': 2, 'view_count': '130', 'add_to_cart_count': '8', 'add_to_wishlist': '15'}.
+Info: Retrieved existing ID 62 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN023NISSANS14', 'chassis_code': 'S14', 'make': 'Nissan', 'model': "Silvia K's", 'year': '1997', 'color': 'Green', 'engine_type_id': 3, 'transmission_type_id': 1, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '112000', 'condition_id': 2, 'current_listing_price_jpy': '2100000', 'photos_url': 'http://example.com/s14.jpg', 'description': 'Classic 90s drift platform', 'status': 'sold', 'auction_lot_number': 'N5544', 'supplier_id': 3, 'view_count': '280', 'add_to_cart_count': '10', 'add_to_wishlist': '14'}.
+Info: Retrieved existing ID 63 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN024MITSUBGTO', 'chassis_code': 'Z16A', 'make': 'Mitsubishi', 'model': 'GTO Twin Turbo', 'year': '1994', 'color': 'Red', 'engine_type_id': 1, 'transmission_type_id': 1, 'drivetrain_type_id': 3, 'steering_side': 'RHD', 'mileage_km': '95000', 'condition_id': 2, 'current_listing_price_jpy': '2400000', 'photos_url': 'http://example.com/gto.jpg', 'description': 'Active aero and all-wheel steer', 'status': 'available', 'auction_lot_number': 'T6655', 'supplier_id': 1, 'view_count': '170', 'add_to_cart_count': '6', 'add_to_wishlist': '10'}.
+Info: Retrieved existing ID 64 for row in 'car'.
+Warning: Unique constraint violation for row in 'car'. Attempting to retrieve existing ID. CSV row (approx): {'vin': 'VIN025TOYOTASOAR', 'chassis_code': 'JZZ30', 'make': 'Toyota', 'model': 'Soarer 2.5GT', 'year': '1996', 'color': 'Dark Green', 'engine_type_id': 2, 'transmission_type_id': 2, 'drivetrain_type_id': 1, 'steering_side': 'RHD', 'mileage_km': '135000', 'condition_id': 3, 'current_listing_price_jpy': '1600000', 'photos_url': 'http://example.com/soarer.jpg', 'description': 'Luxury GT with 1JZ power', 'status': 'available', 'auction_lot_number': 'O7766', 'supplier_id': 2, 'view_count': '150', 'add_to_cart_count': '4', 'add_to_wishlist': '9'}.
+Info: Retrieved existing ID 65 for row in 'car'.
+Finished processing Car. Inserted 25 new rows out of 25 attempted.
+
+Inserting data for Salary into DB table salary...
+Finished processing Salary. Inserted 4 new rows out of 4 attempted.
+
+Inserting data for Saved_Address into DB table saved_address...
+Finished processing Saved_Address. Inserted 9 new rows out of 9 attempted.
+
+Inserting data for Customer_Preference into DB table customer_preference...
+Finished processing Customer_Preference. Inserted 10 new rows out of 10 attempted.
+
+Inserting data for Shopping_Cart into DB table shopping_cart...
+Warning: Unique constraint violation for row in 'shopping_cart'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 1}.
+Info: Retrieved existing ID 1 for row in 'shopping_cart'.
+Warning: Unique constraint violation for row in 'shopping_cart'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 2}.
+Info: Retrieved existing ID 2 for row in 'shopping_cart'.
+Warning: Unique constraint violation for row in 'shopping_cart'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 3}.
+Info: Retrieved existing ID 3 for row in 'shopping_cart'.
+Finished processing Shopping_Cart. Inserted 3 new rows out of 3 attempted.
+
+Inserting data for Wishlist into DB table wishlist...
+Warning: Unique constraint violation for row in 'wishlist'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 1}.
+Info: Retrieved existing ID 1 for row in 'wishlist'.
+Warning: Unique constraint violation for row in 'wishlist'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 2}.
+Info: Retrieved existing ID 2 for row in 'wishlist'.
+Warning: Unique constraint violation for row in 'wishlist'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 4}.
+Info: Retrieved existing ID 3 for row in 'wishlist'.
+Finished processing Wishlist. Inserted 3 new rows out of 3 attempted.
+
+Inserting data for Search_History into DB table search_history...
+Finished processing Search_History. Inserted 5 new rows out of 5 attempted.
+
+Inserting data for Customer_Activity_Log into DB table customer_activity_log...
+Finished processing Customer_Activity_Log. Inserted 7 new rows out of 7 attempted.
+
+Inserting data for Order into DB table "order"...
+Finished processing Order. Inserted 25 new rows out of 25 attempted.
+
+Inserting data for Cart_Item into DB table cart_item...
+Warning: Unique constraint violation for row in 'cart_item'. Attempting to retrieve existing ID. CSV row (approx): {'cart_id': 1, 'car_id': 3, 'quantity': '1'}.
+Warning: Unique violation occurred for 'cart_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'cart_id': 1, 'car_id': 3, 'quantity': '1'}
+Warning: Unique constraint violation for row in 'cart_item'. Attempting to retrieve existing ID. CSV row (approx): {'cart_id': 1, 'car_id': 5, 'quantity': '1'}.
+Warning: Unique violation occurred for 'cart_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'cart_id': 1, 'car_id': 5, 'quantity': '1'}
+Warning: Unique constraint violation for row in 'cart_item'. Attempting to retrieve existing ID. CSV row (approx): {'cart_id': 2, 'car_id': 1, 'quantity': '1'}.
+Warning: Unique violation occurred for 'cart_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'cart_id': 2, 'car_id': 1, 'quantity': '1'}
+Warning: Unique constraint violation for row in 'cart_item'. Attempting to retrieve existing ID. CSV row (approx): {'cart_id': 2, 'car_id': 4, 'quantity': '1'}.
+Warning: Unique violation occurred for 'cart_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'cart_id': 2, 'car_id': 4, 'quantity': '1'}
+Warning: Unique constraint violation for row in 'cart_item'. Attempting to retrieve existing ID. CSV row (approx): {'cart_id': 3, 'car_id': 3, 'quantity': '1'}.
+Warning: Unique violation occurred for 'cart_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'cart_id': 3, 'car_id': 3, 'quantity': '1'}
+Finished processing Cart_Item. Inserted 0 new rows out of 5 attempted.
+
+Inserting data for Wishlist_Item into DB table wishlist_item...
+Warning: Unique constraint violation for row in 'wishlist_item'. Attempting to retrieve existing ID. CSV row (approx): {'wishlist_id': 1, 'car_id': 2, 'notification_preference': 'Price Drop'}.
+Warning: Unique violation occurred for 'wishlist_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'wishlist_id': 1, 'car_id': 2, 'notification_preference': 'Price Drop'}
+Warning: Unique constraint violation for row in 'wishlist_item'. Attempting to retrieve existing ID. CSV row (approx): {'wishlist_id': 1, 'car_id': 4, 'notification_preference': 'Back in Stock'}.
+Warning: Unique violation occurred for 'wishlist_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'wishlist_id': 1, 'car_id': 4, 'notification_preference': 'Back in Stock'}
+Warning: Unique constraint violation for row in 'wishlist_item'. Attempting to retrieve existing ID. CSV row (approx): {'wishlist_id': 2, 'car_id': 3, 'notification_preference': 'Any Update'}.
+Warning: Unique violation occurred for 'wishlist_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'wishlist_id': 2, 'car_id': 3, 'notification_preference': 'Any Update'}
+Warning: Unique constraint violation for row in 'wishlist_item'. Attempting to retrieve existing ID. CSV row (approx): {'wishlist_id': 2, 'car_id': 5, 'notification_preference': 'Price Drop'}.
+Warning: Unique violation occurred for 'wishlist_item' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {'wishlist_id': 2, 'car_id': 5, 'notification_preference': 'Price Drop'}
+Finished processing Wishlist_Item. Inserted 0 new rows out of 4 attempted.
+
+Inserting data for Product_View_History into DB table product_view_history...
+Finished processing Product_View_History. Inserted 30 new rows out of 30 attempted.
+
+Inserting data for Review into DB table review...
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 1, 'car_id': 1, 'rating': '5', 'comment': 'Excellent car, true classic!', 'is_approved': 'true'}.
+Info: Retrieved existing ID 4 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 2, 'car_id': 2, 'rating': '4', 'comment': 'Great condition, fast shipping.', 'is_approved': 'true'}.
+Info: Retrieved existing ID 5 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 1, 'car_id': 4, 'rating': '3', 'comment': 'Was okay, some minor issues.', 'is_approved': 'false'}.
+Info: Retrieved existing ID 6 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 3, 'car_id': 3, 'rating': '5', 'comment': 'Amazing car, exactly as described!', 'is_approved': 'true'}.
+Info: Retrieved existing ID 22 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 33, 'car_id': 55, 'rating': '5', 'comment': 'Dream car acquired. Process was smooth.', 'is_approved': 'true'}.
+Info: Retrieved existing ID 87 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 35, 'car_id': 48, 'rating': '4', 'comment': 'Car was as described, but delivery was a bit slow.', 'is_approved': 'true'}.
+Info: Retrieved existing ID 88 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 39, 'car_id': 56, 'rating': '5', 'comment': '1JZ for life! Great example of a Chaser.', 'is_approved': 'true'}.
+Info: Retrieved existing ID 89 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 43, 'car_id': 59, 'rating': '5', 'comment': "Absolutely perfect. A collector's dream.", 'is_approved': 'true'}.
+Info: Retrieved existing ID 90 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 45, 'car_id': 62, 'rating': '4', 'comment': 'So much fun in a small package. A few scratches but that was expected.', 'is_approved': 'false'}.
+Info: Retrieved existing ID 91 for row in 'review'.
+Warning: Unique constraint violation for row in 'review'. Attempting to retrieve existing ID. CSV row (approx): {'customer_id': 47, 'car_id': 64, 'rating': '3', 'comment': 'Lots of tech, some of which is a bit dated now. Still a cool car.', 'is_approved': 'true'}.
+Info: Retrieved existing ID 92 for row in 'review'.
+Finished processing Review. Inserted 10 new rows out of 10 attempted.
+
+Inserting data for Order_Item into DB table order_item...
+Finished processing Order_Item. Inserted 25 new rows out of 25 attempted.
+
+Inserting data for Payment_Transaction into DB table payment_transaction...
+Finished processing Payment_Transaction. Inserted 25 new rows out of 25 attempted.
+
+Inserting data for Shipping_Logistics into DB table shipping_logistics...
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 219, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'NE12345JP', 'ship_date': '2023-10-28T00:00:00', 'estimated_arrival_date': '2023-11-15T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Yokohama', 'shipping_cost_jpy': '150000', 'delivery_status': 'in_transit', 'container_id': 'CONT001'}.
+Info: Retrieved existing ID 7 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 220, 'shipping_company_name': 'DHL Global', 'tracking_number': 'DHL67890US', 'ship_date': '2023-10-29T00:00:00', 'estimated_arrival_date': '2023-11-20T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Osaka', 'shipping_cost_jpy': '180000', 'delivery_status': 'in_transit', 'container_id': 'CONT002'}.
+Info: Retrieved existing ID 8 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 222, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'FX001122DE', 'ship_date': '2023-10-20T00:00:00', 'estimated_arrival_date': '2023-11-05T00:00:00', 'actual_arrival_date': '2023-11-04T00:00:00', 'current_location': 'Delivered to Customer', 'shipping_cost_jpy': '160000', 'delivery_status': 'delivered', 'container_id': 'CONT003'}.
+Info: Retrieved existing ID 9 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 223, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'NE54321JP', 'ship_date': '2023-10-30T00:00:00', 'estimated_arrival_date': '2023-11-18T00:00:00', 'actual_arrival_date': '', 'current_location': 'Warehouse Tokyo', 'shipping_cost_jpy': '140000', 'delivery_status': 'in_transit', 'container_id': 'CONT004'}.
+Info: Retrieved existing ID 144 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 224, 'shipping_company_name': 'DHL Global', 'tracking_number': 'SHP_006', 'ship_date': '2023-11-25T00:00:00', 'estimated_arrival_date': '2023-12-15T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Los Angeles', 'shipping_cost_jpy': '180000', 'delivery_status': 'in_transit', 'container_id': 'CONT005'}.
+Info: Retrieved existing ID 145 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 225, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'SHP_007', 'ship_date': '2023-11-26T00:00:00', 'estimated_arrival_date': '2023-12-20T00:00:00', 'actual_arrival_date': '', 'current_location': 'Warehouse London', 'shipping_cost_jpy': '200000', 'delivery_status': 'pending_pickup', 'container_id': 'CONT006'}.
+Info: Retrieved existing ID 146 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 226, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'SHP_008', 'ship_date': '2023-11-27T00:00:00', 'estimated_arrival_date': '2023-12-18T00:00:00', 'actual_arrival_date': '', 'current_location': 'In transit to New York', 'shipping_cost_jpy': '220000', 'delivery_status': 'in_transit', 'container_id': 'CONT007'}.
+Info: Retrieved existing ID 147 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 227, 'shipping_company_name': 'Maersk', 'tracking_number': 'SHP_009', 'ship_date': '2023-11-28T00:00:00', 'estimated_arrival_date': '2024-01-05T00:00:00', 'actual_arrival_date': '', 'current_location': 'Awaiting customs clearance', 'shipping_cost_jpy': '190000', 'delivery_status': 'delayed', 'container_id': 'CONT008'}.
+Info: Retrieved existing ID 148 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 228, 'shipping_company_name': 'DHL Global', 'tracking_number': 'SHP_010', 'ship_date': '2023-11-29T00:00:00', 'estimated_arrival_date': '2023-12-10T00:00:00', 'actual_arrival_date': '2023-12-09T00:00:00', 'current_location': 'Delivered to Customer', 'shipping_cost_jpy': '250000', 'delivery_status': 'delivered', 'container_id': 'CONT009'}.
+Info: Retrieved existing ID 149 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 229, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'SHP_011', 'ship_date': '2023-11-30T00:00:00', 'estimated_arrival_date': '2023-12-22T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Shanghai', 'shipping_cost_jpy': '170000', 'delivery_status': 'in_transit', 'container_id': 'CONT010'}.
+Info: Retrieved existing ID 150 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 230, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'SHP_012', 'ship_date': '2023-12-01T00:00:00', 'estimated_arrival_date': '2023-12-25T00:00:00', 'actual_arrival_date': '', 'current_location': 'In transit to Toronto', 'shipping_cost_jpy': '210000', 'delivery_status': 'in_transit', 'container_id': 'CONT011'}.
+Info: Retrieved existing ID 151 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 231, 'shipping_company_name': 'Maersk', 'tracking_number': 'SHP_013', 'ship_date': '2023-12-02T00:00:00', 'estimated_arrival_date': '2024-01-10T00:00:00', 'actual_arrival_date': '', 'current_location': 'Warehouse Madrid', 'shipping_cost_jpy': '185000', 'delivery_status': 'pending_pickup', 'container_id': 'CONT012'}.
+Info: Retrieved existing ID 152 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 232, 'shipping_company_name': 'DHL Global', 'tracking_number': 'SHP_014', 'ship_date': '2023-12-03T00:00:00', 'estimated_arrival_date': '2023-12-28T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Busan', 'shipping_cost_jpy': '160000', 'delivery_status': 'in_transit', 'container_id': 'CONT013'}.
+Info: Retrieved existing ID 153 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 233, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'SHP_015', 'ship_date': '2023-12-04T00:00:00', 'estimated_arrival_date': '2024-01-15T00:00:00', 'actual_arrival_date': '', 'current_location': 'Awaiting customs clearance', 'shipping_cost_jpy': '195000', 'delivery_status': 'delayed', 'container_id': 'CONT014'}.
+Info: Retrieved existing ID 154 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 234, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'SHP_016', 'ship_date': '2023-12-05T00:00:00', 'estimated_arrival_date': '2024-01-02T00:00:00', 'actual_arrival_date': '', 'current_location': 'In transit to Paris', 'shipping_cost_jpy': '230000', 'delivery_status': 'in_transit', 'container_id': 'CONT015'}.
+Info: Retrieved existing ID 155 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 235, 'shipping_company_name': 'Maersk', 'tracking_number': 'SHP_017', 'ship_date': '2023-12-06T00:00:00', 'estimated_arrival_date': '2023-12-20T00:00:00', 'actual_arrival_date': '2023-12-19T00:00:00', 'current_location': 'Delivered to Customer', 'shipping_cost_jpy': '240000', 'delivery_status': 'delivered', 'container_id': 'CONT016'}.
+Info: Retrieved existing ID 156 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 236, 'shipping_company_name': 'DHL Global', 'tracking_number': 'SHP_018', 'ship_date': '2023-12-07T00:00:00', 'estimated_arrival_date': '2024-01-18T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Haiphong', 'shipping_cost_jpy': '150000', 'delivery_status': 'in_transit', 'container_id': 'CONT017'}.
+Info: Retrieved existing ID 157 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 237, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'SHP_019', 'ship_date': '2023-12-08T00:00:00', 'estimated_arrival_date': '2024-01-20T00:00:00', 'actual_arrival_date': '', 'current_location': 'Warehouse Mumbai', 'shipping_cost_jpy': '205000', 'delivery_status': 'pending_pickup', 'container_id': 'CONT018'}.
+Info: Retrieved existing ID 158 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 238, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'SHP_020', 'ship_date': '2023-12-09T00:00:00', 'estimated_arrival_date': '2024-01-10T00:00:00', 'actual_arrival_date': '', 'current_location': 'In transit to Rome', 'shipping_cost_jpy': '215000', 'delivery_status': 'in_transit', 'container_id': 'CONT019'}.
+Info: Retrieved existing ID 159 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 239, 'shipping_company_name': 'Maersk', 'tracking_number': 'SHP_021', 'ship_date': '2023-12-10T00:00:00', 'estimated_arrival_date': '2024-01-22T00:00:00', 'actual_arrival_date': '', 'current_location': 'Port of Kyoto', 'shipping_cost_jpy': '175000', 'delivery_status': 'in_transit', 'container_id': 'CONT020'}.
+Info: Retrieved existing ID 160 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 240, 'shipping_company_name': 'DHL Global', 'tracking_number': 'SHP_022', 'ship_date': '2023-12-11T00:00:00', 'estimated_arrival_date': '2023-12-28T00:00:00', 'actual_arrival_date': '2023-12-27T00:00:00', 'current_location': 'Delivered to Customer', 'shipping_cost_jpy': '260000', 'delivery_status': 'delivered', 'container_id': 'CONT021'}.
+Info: Retrieved existing ID 161 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 241, 'shipping_company_name': 'Nippon Express', 'tracking_number': 'SHP_023', 'ship_date': '2023-12-12T00:00:00', 'estimated_arrival_date': '2024-01-25T00:00:00', 'actual_arrival_date': '', 'current_location': 'Awaiting customs clearance', 'shipping_cost_jpy': '180000', 'delivery_status': 'delayed', 'container_id': 'CONT022'}.
+Info: Retrieved existing ID 162 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 242, 'shipping_company_name': 'FedEx Trade', 'tracking_number': 'SHP_024', 'ship_date': '2023-12-13T00:00:00', 'estimated_arrival_date': '2024-01-15T00:00:00', 'actual_arrival_date': '', 'current_location': 'In transit to New York', 'shipping_cost_jpy': '225000', 'delivery_status': 'in_transit', 'container_id': 'CONT023'}.
+Info: Retrieved existing ID 163 for row in 'shipping_logistics'.
+Warning: Unique constraint violation for row in 'shipping_logistics'. Attempting to retrieve existing ID. CSV row (approx): {'order_item_id': 243, 'shipping_company_name': 'Maersk', 'tracking_number': 'SHP_025', 'ship_date': '2023-12-14T00:00:00', 'estimated_arrival_date': '2024-01-30T00:00:00', 'actual_arrival_date': '', 'current_location': 'Warehouse Tokyo', 'shipping_cost_jpy': '190000', 'delivery_status': 'pending_pickup', 'container_id': 'CONT024'}.
+Info: Retrieved existing ID 164 for row in 'shipping_logistics'.
+Finished processing Shipping_Logistics. Inserted 24 new rows out of 24 attempted.
+
+Inserting data for Activity_Data into DB table activity_data...
+Warning: Could not resolve FK for Activity_Data.cart_item_id (value: 2). Parent ID not found in map. Setting to NULL.
+Warning: Could not resolve FK for Activity_Data.wishlist_item_id (value: 3). Parent ID not found in map. Setting to NULL.
+Warning: Skipping row in table 'activity_data' due to database/unexpected error. CSV row (approx): {'activity_data_id': '1001', 'activity_id': 96, 'wishlist_item_id': '', 'cart_item_id': '', 'from_date': '2023-10-25T10:02:00', 'to_date': '2023-10-25T10:04:00'}. Error: relation "activity_data" does not exist
+LINE 1:         INSERT INTO activity_data ("activity_data_id", "acti...
+                            ^
+
+Warning: Skipping row in table 'activity_data' due to database/unexpected error. CSV row (approx): {'activity_data_id': '1002', 'activity_id': 97, 'wishlist_item_id': '', 'cart_item_id': None, 'from_date': '2023-10-24T09:20:00', 'to_date': ''}. Error: relation "activity_data" does not exist
+LINE 1:         INSERT INTO activity_data ("activity_data_id", "acti...
+                            ^
+
+Warning: Skipping row in table 'activity_data' due to database/unexpected error. CSV row (approx): {'activity_data_id': '1003', 'activity_id': 99, 'wishlist_item_id': None, 'cart_item_id': '', 'from_date': '2023-10-26T11:08:00', 'to_date': '2023-10-26T11:15:00'}. Error: relation "activity_data" does not exist
+LINE 1:         INSERT INTO activity_data ("activity_data_id", "acti...
+                            ^
+
+Finished processing Activity_Data. Inserted 0 new rows out of 3 attempted.
+
+Database population successful. All changes have been committed.
+
+Database connection closed.
+
+[Done] exited with code=0 in 0.444 seconds
+

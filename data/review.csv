@@ -3,3 +3,9 @@ customer_id,car_id,rating,comment,is_approved
 2,2,4,"Great condition, fast shipping.",true
 1,4,3,"Was okay, some minor issues.",false
 3,3,5,"Amazing car, exactly as described!",true
+5,15,5,"Dream car acquired. Process was smooth.",true
+7,8,4,"Car was as described, but delivery was a bit slow.",true
+11,16,5,"1JZ for life! Great example of a Chaser.",true
+15,19,5,"Absolutely perfect. A collector's dream.",true
+17,22,4,"So much fun in a small package. A few scratches but that was expected.",false
+19,24,3,"Lots of tech, some of which is a bit dated now. Still a cool car.",true

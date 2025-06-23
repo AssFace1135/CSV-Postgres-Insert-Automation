@@ -25,6 +25,20 @@ import csv
 from dotenv import load_dotenv
 import os
 from typing import Dict, List, Any, Tuple
+import sys
+
+def safe_print(message: Any):
+    """
+    Prints a message to the console, replacing any characters that cannot be
+    encoded in the console's default encoding.
+    """
+    # Convert the message to a string first.
+    message_str = str(message)
+    # Get the console's encoding, falling back to utf-8 if it's not set.
+    encoding = sys.stdout.encoding or 'utf-8'
+    # Encode the string, replacing errors, then decode it back.
+    safe_message = message_str.encode(encoding, errors='replace').decode(encoding)
+    print(safe_message)
 
 def connect_to_db(credentials):
     """Establishes a connection to the PostgreSQL database."""
@@ -34,7 +48,7 @@ def connect_to_db(credentials):
         print("Connection successful!")
         return conn
     except psycopg2.OperationalError as e:
-        print(f"Could not connect to the database: {e}")
+        safe_print(f"Could not connect to the database: {e}")
         return None
 
 def read_csv_data(file_path: str, table_name_for_logging: str = "") -> List[Dict[str, Any]]:
@@ -46,7 +60,7 @@ def read_csv_data(file_path: str, table_name_for_logging: str = "") -> List[Dict
     data = []
     # Check if file is empty before trying to read
     if os.path.getsize(file_path) == 0:
-        print(f"Info: CSV file '{file_path}' for table '{table_name_for_logging}' is empty.")
+        safe_print(f"Info: CSV file '{file_path}' for table '{table_name_for_logging}' is empty.")
         return data
         
     with open(file_path, 'r', encoding='utf-8') as csvfile:
@@ -55,60 +69,54 @@ def read_csv_data(file_path: str, table_name_for_logging: str = "") -> List[Dict
             data.append(row)
     return data
 
-def insert_data_from_csv(cursor, csv_file_path: str, db_table_sql_identifier: str, csv_to_db_map: Dict[str, str], db_id_col_name: str) -> Tuple[List[int], int]:
+def insert_processed_data(cursor, data_to_insert: List[Dict[str, Any]], db_table_sql_identifier: str, csv_to_db_map: Dict[str, str], db_id_col_name: str, natural_key_columns: List[str] = None) -> Tuple[List[int], int]:
     """
     Inserts data from a CSV file into a specified table.
     Skips rows that cause IntegrityErrors (e.g., unique constraint violations)
-    and continues with other rows.
+    and continues with other rows. If a unique violation occurs and natural
+    keys are provided, it attempts to fetch the existing row's ID.
     
     Args:
         cursor: Database cursor
-        csv_file_path: Path to the CSV file.
-        db_table_sql_identifier: The SQL identifier for the database table (e.g., "my_table" or "order").
+        data_to_insert: A list of dictionaries, where each dictionary is a row to be inserted.
+        db_table_sql_identifier: The SQL identifier for the database table (e.g., "my_table" or '"order"').
         csv_to_db_map: Dictionary mapping CSV column headers to database column names.
         db_id_col_name: Name of the primary key column in the database for the RETURNING clause.
+        natural_key_columns: Optional list of database column names that form a unique key.
+                             Used to retrieve existing IDs on unique constraint violation.
 
     Returns:
         A tuple containing:
-            - List of successfully inserted row IDs.
+            - List of successfully inserted or retrieved row IDs.
             - Total number of rows attempted from the CSV.
     """
-    # read_csv_data can raise FileNotFoundError, which will be caught in the calling function (main)
-    data_from_csv = read_csv_data(csv_file_path, db_table_sql_identifier) # Use db_table_sql_identifier for logging context
-    total_rows_in_csv = len(data_from_csv)
+    total_rows_to_insert = len(data_to_insert)
 
-    if not data_from_csv:
+    if not data_to_insert:
         return [], 0 # No data to process
 
     inserted_ids = []
     
     db_columns_to_insert = list(csv_to_db_map.values())
     placeholders = ', '.join(['%s'] * len(db_columns_to_insert))
-    # db_table_sql_identifier is already correctly formatted (e.g., "my_table" or """order""")
-    # db_columns_to_insert contains simple snake_case names; these should be quoted.
-    # db_id_col_name is a simple snake_case name; this should be quoted.
     sql = f"""\
         INSERT INTO {db_table_sql_identifier} ({', '.join(f'"{col}"' for col in db_columns_to_insert)})
         VALUES ({placeholders})
         RETURNING "{db_id_col_name}";
     """
 
-    for i, row_dict in enumerate(data_from_csv):
+    for i, row_dict in enumerate(data_to_insert):
         values_tuple = []
         try:
-            # Prepare values for insertion
-            for csv_col_header in csv_to_db_map.keys(): # Iterate over CSV headers defined in map
+            for csv_col_header in csv_to_db_map.keys():
                 value = row_dict.get(csv_col_header)
-                # Convert empty strings to None for potentially nullable fields
-                # This is especially important for date/timestamp fields
                 if value == '':
                     value = None
                 values_tuple.append(value)
         except Exception as e:
-            print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to error preparing data. CSV row (approx): {row_dict}. Error: {e}")
-            continue # Skip to next row
+            safe_print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to error preparing data. CSV row (approx): {row_dict}. Error: {e}")
+            continue
 
-        # Sanitize table_name for savepoint if it contains special characters (though current ones are fine)
         safe_table_name_for_sp = "".join(c if c.isalnum() else "_" for c in db_table_sql_identifier)
         savepoint_name = f"sp_csv_{safe_table_name_for_sp}_row_{i}"
         try:
@@ -117,19 +125,50 @@ def insert_data_from_csv(cursor, csv_file_path: str, db_table_sql_identifier: st
             fetched_id = cursor.fetchone()
             if fetched_id:
                 inserted_ids.append(fetched_id[0])
-            # cursor.execute(f"RELEASE SAVEPOINT {savepoint_name};") # Optional: good practice
-        except psycopg2.IntegrityError as e: # Catches UniqueViolation, ForeignKeyViolation, NotNullViolation etc.
+        except psycopg2.IntegrityError as e:
             cursor.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name};")
-            # Check if it's specifically a unique constraint violation (common for "same values added")
-            if hasattr(e, 'diag') and hasattr(e.diag, 'sqlstate') and e.diag.sqlstate == '23505': # '23505' is the SQLSTATE for unique_violation
-                print(f"Warning: There is nothing new to add for this row in '{db_table_sql_identifier}'. CSV row (approx): {row_dict}.")
+            if hasattr(e, 'diag') and e.diag.sqlstate == '23505':
+                safe_print(f"Warning: Unique constraint violation for row in '{db_table_sql_identifier}'. Attempting to retrieve existing ID. CSV row (approx): {row_dict}.")
+                if natural_key_columns:
+                    where_clauses = []
+                    select_values = []
+                    for db_col_name in natural_key_columns:
+                        csv_col_header = next((k for k, v in csv_to_db_map.items() if v == db_col_name), None)
+                        if csv_col_header is None:
+                            safe_print(f"Error: Natural key column '{db_col_name}' not found in csv_to_db_map for '{db_table_sql_identifier}'. Cannot retrieve existing ID.")
+                            break
+                        value = row_dict.get(csv_col_header)
+                        if value == '' or value is None:
+                            where_clauses.append(f'"{db_col_name}" IS NULL')
+                        else:
+                            where_clauses.append(f'"{db_col_name}" = %s')
+                            select_values.append(value)
+
+                    if where_clauses and len(where_clauses) == len(natural_key_columns):
+                        select_sql = f"""
+                            SELECT "{db_id_col_name}" FROM {db_table_sql_identifier}
+                            WHERE {' AND '.join(where_clauses)};
+                        """
+                        try:
+                            cursor.execute(select_sql, select_values)
+                            existing_id = cursor.fetchone()
+                            if existing_id:
+                                inserted_ids.append(existing_id[0])
+                                safe_print(f"Info: Retrieved existing ID {existing_id[0]} for row in '{db_table_sql_identifier}'.")
+                            else:
+                                safe_print(f"Warning: Unique violation occurred but existing row not found via natural keys for '{db_table_sql_identifier}'. This might indicate a data inconsistency or incorrect natural_key_columns. Row: {row_dict}")
+                        except psycopg2.Error as select_err:
+                            safe_print(f"Error: Failed to retrieve existing ID for '{db_table_sql_identifier}' after unique violation. Error: {select_err}. Row: {row_dict}")
+                    else:
+                        safe_print(f"Warning: Cannot retrieve existing ID for '{db_table_sql_identifier}' because natural_key_columns could not be fully mapped from CSV data. Skipping row. Row: {row_dict}")
+                else:
+                    safe_print(f"Warning: Unique violation occurred for '{db_table_sql_identifier}' but no natural_key_columns provided to retrieve existing ID. Skipping row. Row: {row_dict}")
             else:
-                # For other integrity errors (e.g., foreign key, not null)
-                print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to other integrity violation. CSV row (approx): {row_dict}. Details: {e}")
-        except (psycopg2.Error, Exception) as e: # Catch other psycopg2 specific errors or general Python errors for this row
+                safe_print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to other integrity violation. CSV row (approx): {row_dict}. Details: {e}")
+        except (psycopg2.Error, Exception) as e:
             cursor.execute(f"ROLLBACK TO SAVEPOINT {savepoint_name};")
-            print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to database/unexpected error. CSV row (approx): {row_dict}. Error: {e}")
-    return inserted_ids, total_rows_in_csv
+            safe_print(f"Warning: Skipping row in table '{db_table_sql_identifier}' due to database/unexpected error. CSV row (approx): {row_dict}. Error: {e}")
+    return inserted_ids, total_rows_to_insert
 
 def main():
     """Main function to run the database population process."""
@@ -152,6 +191,10 @@ def main():
     # Use a single transaction for all insertions
     try:
         with conn.cursor() as cursor:
+            # This dictionary will store the mapping of a CSV's 0-based row index
+            # to the actual database ID generated upon insertion.
+            # Format: { 'ConfigKey': { 0: db_id_1, 1: db_id_2, ... } }
+            csv_row_to_db_id_maps: Dict[str, Dict[int, int]] = {}
             print("\nStarting database population process...")
             
             # Define CSV file paths and column mappings for each table
@@ -159,6 +202,7 @@ def main():
             # "db_identifier_for_sql" is the actual SQL table name (quoted if necessary).
             # "csv_to_db_column_map" maps CSV headers to DB column names (all DB names are snake_case).
             # "db_id_column_name" is the DB primary key name (snake_case).
+            # "fk_configs" defines the foreign key relationships for robust insertion.
             csv_mappings: Dict[str, Dict[str, Any]] = {
                 # Level 0: No FK dependencies to other tables
                 "Car_Condition_Rating": {
@@ -168,7 +212,9 @@ def main():
                         "rating_code": "rating_code",
                         "description": "description"
                     },
-                    "db_id_column_name": "condition_id"
+                    "db_id_column_name": "condition_id", # Primary key column
+                    "natural_key_columns": ["rating_code"], # Columns that form a unique key
+                    "fk_configs": []
                 },
                 "Engine_Type_Lookup": {
                     "csv_file_path": "data/engine_type_lookup.csv",
@@ -177,7 +223,9 @@ def main():
                         "engine_code": "engine_code",
                         "description": "description"
                     },
-                    "db_id_column_name": "engine_type_id"
+                    "db_id_column_name": "engine_type_id", # Primary key column
+                    "natural_key_columns": ["engine_code"], # Columns that form a unique key
+                    "fk_configs": []
                 },
                 "Transmission_Type_Lookup": {
                     "csv_file_path": "data/transmission_type_lookup.csv",
@@ -186,7 +234,9 @@ def main():
                         "type_name": "type_name",
                         "description": "description"
                     },
-                    "db_id_column_name": "transmission_type_id"
+                    "db_id_column_name": "transmission_type_id", # Primary key column
+                    "natural_key_columns": ["type_name"], # Columns that form a unique key
+                    "fk_configs": []
                 },
                 "Drivetrain_Type_Lookup": {
                     "csv_file_path": "data/drivetrain_type_lookup.csv",
@@ -195,7 +245,9 @@ def main():
                         "type_name": "type_name",
                         "description": "description"
                     },
-                    "db_id_column_name": "drivetrain_type_id"
+                    "db_id_column_name": "drivetrain_type_id", # Primary key column
+                    "natural_key_columns": ["type_name"], # Columns that form a unique key
+                    "fk_configs": []
                 },
                 "Auction_Supplier": {
                     "csv_file_path": "data/auction_supplier.csv",
@@ -208,7 +260,9 @@ def main():
                         "website": "website",
                         "location": "location"
                     },
-                    "db_id_column_name": "supplier_id"
+                    "db_id_column_name": "supplier_id", # Primary key column
+                    "natural_key_columns": ["supplier_name"], # Assuming supplier_name is unique
+                    "fk_configs": []
                 },
                 "Employee": {
                     "csv_file_path": "data/employee.csv",
@@ -223,7 +277,9 @@ def main():
                         "hire_date": "hire_date", # NOT NULL in schema
                         "is_active": "is_active"
                     },
-                    "db_id_column_name": "employee_id"
+                    "db_id_column_name": "employee_id", # Primary key column
+                    "natural_key_columns": ["email"], # Assuming email is unique
+                    "fk_configs": []
                 },
                 "Customer": {
                     "csv_file_path": "data/customer.csv",
@@ -248,7 +304,9 @@ def main():
                         "loyalty_score": "loyalty_score",
                         "preferred_contact_method": "preferred_contact_method"
                     },
-                    "db_id_column_name": "customer_id"
+                    "db_id_column_name": "customer_id", # Primary key column
+                    "natural_key_columns": ["email"], # Assuming email is unique
+                    "fk_configs": []
                 },
                 # Level 1: Depends only on Level 0 tables
                 "Car": {
@@ -278,7 +336,15 @@ def main():
                         "add_to_cart_count": "add_to_cart_count",
                         "add_to_wishlist": "add_to_wishlist_count" # Renamed in schema
                     },
-                    "db_id_column_name": "car_id"
+                    "db_id_column_name": "car_id",
+                    "natural_key_columns": ["vin"],
+                    "fk_configs": [
+                        {"csv_fk_column": "engine_type_id", "parent_config_key": "Engine_Type_Lookup", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "transmission_type_id", "parent_config_key": "Transmission_Type_Lookup", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "drivetrain_type_id", "parent_config_key": "Drivetrain_Type_Lookup", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "condition_id", "parent_config_key": "Car_Condition_Rating", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "supplier_id", "parent_config_key": "Auction_Supplier", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Salary": {
                     "csv_file_path": "data/salary.csv",
@@ -289,7 +355,10 @@ def main():
                         "from_date": "from_date", # TIMESTAMPTZ
                         "to_date": "to_date"
                     },
-                    "db_id_column_name": "salary_id"
+                    "db_id_column_name": "salary_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "employee_id", "parent_config_key": "Employee", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Saved_Address": {
                     "csv_file_path": "data/saved_address.csv",
@@ -304,7 +373,10 @@ def main():
                         "shipping_postal_code": "shipping_postal_code",
                         "shipping_country": "shipping_country"
                     },
-                    "db_id_column_name": "saved_address_id"
+                    "db_id_column_name": "saved_address_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Customer_Preference": {
                     "csv_file_path": "data/customer_preference.csv",
@@ -319,7 +391,10 @@ def main():
                         "preferred_specs": "preferred_specs",
                         "preferred_condition": "preferred_condition"
                     },
-                    "db_id_column_name": "preference_id"
+                    "db_id_column_name": "preference_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Shopping_Cart": {
                     "csv_file_path": "data/shopping_cart.csv",
@@ -328,7 +403,11 @@ def main():
                         "customer_id": "customer_id"
                         # created_date, last_updated_date have defaults
                     },
-                    "db_id_column_name": "cart_id"
+                    "natural_key_columns": ["customer_id"], # A customer has only one cart
+                    "db_id_column_name": "cart_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Wishlist": {
                     "csv_file_path": "data/wishlist.csv",
@@ -337,7 +416,11 @@ def main():
                         "customer_id": "customer_id"
                         # created_date, last_updated_date have defaults
                     },
-                    "db_id_column_name": "wishlist_id"
+                    "natural_key_columns": ["customer_id"], # A customer has only one wishlist
+                    "db_id_column_name": "wishlist_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Search_History": {
                     "csv_file_path": "data/search_history.csv",
@@ -350,7 +433,10 @@ def main():
                         "filter_applied": "filter_applied"
                         # search_timestamp has DEFAULT
                     },
-                    "db_id_column_name": "search_id"
+                    "db_id_column_name": "search_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Customer_Activity_Log": {
                     "csv_file_path": "data/customer_activity_log.csv",
@@ -364,7 +450,10 @@ def main():
                         "user_agent": "user_agent"
                         # activity_timestamp has DEFAULT
                     },
-                    "db_id_column_name": "activity_id"
+                    "db_id_column_name": "activity_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Order": {
                     "csv_file_path": "data/order.csv",
@@ -379,7 +468,11 @@ def main():
                         "managed_by_employee_id": "managed_by_employee_id"
                         # order_date has DEFAULT
                     },
-                    "db_id_column_name": "order_id"
+                    "db_id_column_name": "order_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "managed_by_employee_id", "parent_config_key": "Employee", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 # Level 2: Depends on Level 1 and/or Level 0 tables
                 "Cart_Item": {
@@ -391,7 +484,12 @@ def main():
                         "quantity": "quantity" # Default is 1, CSV can override
                         # added_date has DEFAULT
                     },
-                    "db_id_column_name": "cart_item_id"
+                    "natural_key_columns": ["cart_id", "car_id"],
+                    "db_id_column_name": "cart_item_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "cart_id", "parent_config_key": "Shopping_Cart", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "car_id", "parent_config_key": "Car", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Wishlist_Item": {
                     "csv_file_path": "data/wishlist_item.csv",
@@ -402,7 +500,12 @@ def main():
                         "notification_preference": "notification_preference"
                         # added_date has DEFAULT
                     },
-                    "db_id_column_name": "wishlist_item_id"
+                    "natural_key_columns": ["wishlist_id", "car_id"],
+                    "db_id_column_name": "wishlist_item_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "wishlist_id", "parent_config_key": "Wishlist", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "car_id", "parent_config_key": "Car", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Product_View_History": {
                     "csv_file_path": "data/product_view_history.csv",
@@ -415,7 +518,11 @@ def main():
                         "source": "source"
                         # view_timestamp has DEFAULT
                     },
-                    "db_id_column_name": "product_view_id"
+                    "db_id_column_name": "product_view_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "car_id", "parent_config_key": "Car", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Review": {
                     "csv_file_path": "data/review.csv",
@@ -428,7 +535,12 @@ def main():
                         "is_approved": "is_approved" # Has default
                         # review_date has DEFAULT
                     },
-                    "db_id_column_name": "review_id"
+                    "natural_key_columns": ["customer_id", "car_id"], # A customer can review a car only once
+                    "db_id_column_name": "review_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "customer_id", "parent_config_key": "Customer", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "car_id", "parent_config_key": "Car", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Order_Item": {
                     "csv_file_path": "data/order_item.csv",
@@ -441,7 +553,11 @@ def main():
                         "item_status": "item_status", # Enum, has default
                         "customs_documentation_status": "customs_documentation_status" # Enum, has default
                     },
-                    "db_id_column_name": "order_item_id"
+                    "db_id_column_name": "order_item_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "order_id", "parent_config_key": "Order", "placeholder_is_1_based_index": True},
+                        {"csv_fk_column": "car_id", "parent_config_key": "Car", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Payment_Transaction": {
                     "csv_file_path": "data/payment_transaction.csv",
@@ -454,7 +570,10 @@ def main():
                         "payment_gateway_ref_id": "payment_gateway_ref_id"
                         # payment_date has DEFAULT
                     },
-                    "db_id_column_name": "transaction_id"
+                    "db_id_column_name": "transaction_id",
+                    "fk_configs": [
+                        {"csv_fk_column": "order_id", "parent_config_key": "Order", "placeholder_is_1_based_index": True},
+                    ]
                 },
                 "Shipping_Logistics": {
                     "csv_file_path": "data/shipping_logistics.csv",
@@ -473,49 +592,85 @@ def main():
                         "delivery_status": "delivery_status", # Enum, has default
                         "container_id": "container_id"
                     },
-                    "db_id_column_name": "shipping_id"
+                    "natural_key_columns": ["tracking_number"],
+                    "db_id_column_name": "shipping_id",
+                    "fk_configs": [
+                        # Corrected based on schema: FK is to order_item, not order.
+                        {"csv_fk_column": "order_item_id", "parent_config_key": "Order_Item", "placeholder_is_1_based_index": True},
+                    ]
                 },
             }
             
             # Insert data from each CSV file in the correct order
-            # The order in this dictionary is important for handling foreign key dependencies.
-            # Ensure parent tables are populated before child tables.
             for config_key, config_values in csv_mappings.items():
                 try:
-                    print(f"\nInserting data for {config_key} into DB table {config_values['db_identifier_for_sql']}...")
-                    inserted_ids, total_attempted = insert_data_from_csv(
+                    safe_print(f"\nInserting data for {config_key} into DB table {config_values['db_identifier_for_sql']}...")
+                    
+                    # 1. Read the raw data from the CSV file
+                    raw_csv_data = read_csv_data(config_values["csv_file_path"], config_key)
+                    if not raw_csv_data:
+                        safe_print(f"Finished processing {config_key}. No data to insert.")
+                        continue
+
+                    # 2. Process rows to resolve foreign keys
+                    processed_rows_to_insert = []
+                    for raw_row in raw_csv_data:
+                        processed_row = raw_row.copy()
+                        for fk_conf in config_values.get("fk_configs", []):
+                            fk_col = fk_conf["csv_fk_column"]
+                            parent_key = fk_conf["parent_config_key"]
+                            placeholder_val_str = processed_row.get(fk_col)
+
+                            if placeholder_val_str and placeholder_val_str.isdigit():
+                                # Assumes placeholder is a 1-based index into the parent's CSV
+                                parent_row_index = int(placeholder_val_str) - 1
+                                actual_db_id = csv_row_to_db_id_maps.get(parent_key, {}).get(parent_row_index)
+                                if actual_db_id:
+                                    processed_row[fk_col] = actual_db_id
+                                else:
+                                    safe_print(f"Warning: Could not resolve FK for {config_key}.{fk_col} (value: {placeholder_val_str}). Parent ID not found in map. Setting to NULL.")
+                                    processed_row[fk_col] = None # Set to None to avoid FK violation if column is nullable
+                        processed_rows_to_insert.append(processed_row)
+
+                    # 3. Insert the processed data
+                    inserted_ids, total_attempted = insert_processed_data(
                         cursor,
-                        config_values["csv_file_path"],
+                        processed_rows_to_insert,
                         config_values["db_identifier_for_sql"],
                         config_values["csv_to_db_column_map"],
-                        config_values["db_id_column_name"]
+                        config_values["db_id_column_name"],
+                        config_values.get("natural_key_columns") # Pass the new argument
                     )
-                    print(f"Finished processing {config_key}. Inserted {len(inserted_ids)} new rows out of {total_attempted} attempted.")
-                except FileNotFoundError as e: # Catches FNF from read_csv_data (via insert_data_from_csv)
-                    print(f"Warning: {e} Skipping this table.") # The error message from read_csv_data is already informative
+                    # 4. Store the mapping of CSV row index to the new DB ID for future lookups
+                    if inserted_ids:
+                        csv_row_to_db_id_maps[config_key] = {i: db_id for i, db_id in enumerate(inserted_ids)}
+
+                    safe_print(f"Finished processing {config_key}. Inserted {len(inserted_ids)} new rows out of {total_attempted} attempted.")
+                except FileNotFoundError as e:
+                    safe_print(f"Warning: {e} Skipping this table.") # The error message from read_csv_data is already informative
                     continue # Continue to the next table
                 except Exception as e: # Catches more critical errors during a table's processing setup
-                    print(f"Critical error during processing of {config_key} (DB table: {config_values['db_identifier_for_sql']}): {e}. Further processing for this table halted.")
+                    safe_print(f"Critical error during processing of {config_key} (DB table: {config_values['db_identifier_for_sql']}): {e}. Further processing for this table halted.")
                     raise # This will cause the main transaction to rollback
 
             # If all insertions are successful, commit the transaction
             conn.commit()
-            print("\nDatabase population successful. All changes have been committed.")
+            safe_print("\nDatabase population successful. All changes have been committed.")
 
     except psycopg2.Error as e:
-        print(f"\nAn error occurred: {e}")
-        print("Transaction is being rolled back.")
+        safe_print(f"\nAn error occurred: {e}")
+        safe_print("Transaction is being rolled back.")
         if conn:
             conn.rollback()
     except Exception as e:
-        print(f"\nAn unexpected error occurred: {e}")
+        safe_print(f"\nAn unexpected error occurred: {e}")
         if conn:
             conn.rollback()
     finally:
         # Always close the connection
         if conn:
             conn.close()
-            print("\nDatabase connection closed.")
+            safe_print("\nDatabase connection closed.")
 
 if __name__ == "__main__":
     main()

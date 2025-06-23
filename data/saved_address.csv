@@ -1,3 +1,10 @@
 customer_id,address_label,shipping_address_line1,shipping_address_line2,shipping_city,shipping_state_province,shipping_postal_code,shipping_country
 1,Home,"1-2-3 Sakura St","Apt 101",Tokyo,Tokyo,100-0001,Japan
 2,Work,"4-5-6 Maple Ave",,Osaka,Osaka,530-0002,Japan
+5,Home,"123 Mission St","",Los Angeles,CA,90001,USA
+7,Office,"129 West 81st Street","Apt 5A",New York,NY,10024,USA
+8,Home,"Shibuya Crossing 1-1","Shibuya Mark City",Shibuya,Tokyo,150-0042,Japan
+11,Parents,"Dotonbori 2-5","",Namba,Osaka,542-0071,Japan
+13,Home,"Plaza Mayor 1","",Madrid,,28012,Spain
+15,Home,"Champs-Élysées 101","Floor 3",Paris,,75008,France
+20,Home,"Fushimi Inari 1","",Fushimi,Kyoto,612-0882,Japan

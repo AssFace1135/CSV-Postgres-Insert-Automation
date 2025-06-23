@@ -3,3 +3,23 @@ order_item_id,shipping_company_name,tracking_number,ship_date,estimated_arrival_
 2,"DHL Global",DHL67890US,2023-10-29T00:00:00,2023-11-20T00:00:00,,"Port of Osaka",180000,in_transit,CONT002
 4,"FedEx Trade",FX001122DE,2023-10-20T00:00:00,2023-11-05T00:00:00,2023-11-04T00:00:00,"Delivered to Customer",160000,delivered,CONT003
 5,"Nippon Express",NE54321JP,2023-10-30T00:00:00,2023-11-18T00:00:00,,"Warehouse Tokyo",140000,in_transit,CONT004
+6,"DHL Global",SHP_006,2023-11-25T00:00:00,2023-12-15T00:00:00,,"Port of Los Angeles",180000,in_transit,CONT005
+7,"Nippon Express",SHP_007,2023-11-26T00:00:00,2023-12-20T00:00:00,,"Warehouse London",200000,pending_pickup,CONT006
+8,"FedEx Trade",SHP_008,2023-11-27T00:00:00,2023-12-18T00:00:00,,"In transit to New York",220000,in_transit,CONT007
+9,"Maersk",SHP_009,2023-11-28T00:00:00,2024-01-05T00:00:00,,"Awaiting customs clearance",190000,delayed,CONT008
+10,"DHL Global",SHP_010,2023-11-29T00:00:00,2023-12-10T00:00:00,2023-12-09T00:00:00,"Delivered to Customer",250000,delivered,CONT009
+11,"Nippon Express",SHP_011,2023-11-30T00:00:00,2023-12-22T00:00:00,,"Port of Shanghai",170000,in_transit,CONT010
+12,"FedEx Trade",SHP_012,2023-12-01T00:00:00,2023-12-25T00:00:00,,"In transit to Toronto",210000,in_transit,CONT011
+13,"Maersk",SHP_013,2023-12-02T00:00:00,2024-01-10T00:00:00,,"Warehouse Madrid",185000,pending_pickup,CONT012
+14,"DHL Global",SHP_014,2023-12-03T00:00:00,2023-12-28T00:00:00,,"Port of Busan",160000,in_transit,CONT013
+15,"Nippon Express",SHP_015,2023-12-04T00:00:00,2024-01-15T00:00:00,,"Awaiting customs clearance",195000,delayed,CONT014
+16,"FedEx Trade",SHP_016,2023-12-05T00:00:00,2024-01-02T00:00:00,,"In transit to Paris",230000,in_transit,CONT015
+17,"Maersk",SHP_017,2023-12-06T00:00:00,2023-12-20T00:00:00,2023-12-19T00:00:00,"Delivered to Customer",240000,delivered,CONT016
+18,"DHL Global",SHP_018,2023-12-07T00:00:00,2024-01-18T00:00:00,,"Port of Haiphong",150000,in_transit,CONT017
+19,"Nippon Express",SHP_019,2023-12-08T00:00:00,2024-01-20T00:00:00,,"Warehouse Mumbai",205000,pending_pickup,CONT018
+20,"FedEx Trade",SHP_020,2023-12-09T00:00:00,2024-01-10T00:00:00,,"In transit to Rome",215000,in_transit,CONT019
+21,"Maersk",SHP_021,2023-12-10T00:00:00,2024-01-22T00:00:00,,"Port of Kyoto",175000,in_transit,CONT020
+22,"DHL Global",SHP_022,2023-12-11T00:00:00,2023-12-28T00:00:00,2023-12-27T00:00:00,"Delivered to Customer",260000,delivered,CONT021
+23,"Nippon Express",SHP_023,2023-12-12T00:00:00,2024-01-25T00:00:00,,"Awaiting customs clearance",180000,delayed,CONT022
+24,"FedEx Trade",SHP_024,2023-12-13T00:00:00,2024-01-15T00:00:00,,"In transit to New York",225000,in_transit,CONT023
+25,"Maersk",SHP_025,2023-12-14T00:00:00,2024-01-30T00:00:00,,"Warehouse Tokyo",190000,pending_pickup,CONT024
