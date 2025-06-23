@@ -506,6 +506,22 @@ with tab4:
             This visualization is powered by Plotly's built-in mapping features and does not require any external API keys.
             """)
             with st.spinner("Loading and preparing map data..."):
+                
+                # Insert CSS for vertical centering, targeting only the map in bi_tab4
+                st.markdown(
+                    """
+                    <style>
+                        div[data-testid="stVerticalBlock"] > div:nth-child(2) > div:has(div.plotly-chart) {
+                            justify-content: center;
+                            align-items: center;
+                            display: flex;
+                            min-height: 80vh;
+                        }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
+
                 customer_df = get_customer_demographics_data(conn)
 
                 # --- Country Name Standardization ---
@@ -566,8 +582,13 @@ with tab4:
                     geo=dict(
                         showframe=False,
                         showcoastlines=False,
-                        projection_type='natural earth'
-                    )
+                        projection_type='natural earth',
+                    ),
+                    width=1000,  # Set the desired width here
+                    height=600   # You can also adjust the height if needed
                 )
 
-                st.plotly_chart(fig_map, use_container_width=True)
+                col1, col2, col3 = st.columns([1, 3, 1])  # Create columns with a 3:1:1 ratio
+
+                with col2:  # Place the map in the center column
+                     st.plotly_chart(fig_map, use_container_width=False)  # Disable automatic width adjustment
