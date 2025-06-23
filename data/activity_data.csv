@@ -1,3 +1,4 @@
 activity_data_id,activity_id,wishlist_item_id,cart_item_id,from_date,to_date
 1001,2,,,2023-10-25T10:02:00,2023-10-25T10:04:00
 1002,3,,2,2023-10-24T09:20:00,
+1003,5,3,,2023-10-26T11:08:00,2023-10-26T11:15:00

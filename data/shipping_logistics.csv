@@ -2,3 +2,4 @@ order_item_id,shipping_company_name,tracking_number,ship_date,estimated_arrival_
 1,"Nippon Express",NE12345JP,2023-10-28T00:00:00,2023-11-15T00:00:00,,"Port of Yokohama",150000,in_transit,CONT001
 2,"DHL Global",DHL67890US,2023-10-29T00:00:00,2023-11-20T00:00:00,,"Port of Osaka",180000,in_transit,CONT002
 4,"FedEx Trade",FX001122DE,2023-10-20T00:00:00,2023-11-05T00:00:00,2023-11-04T00:00:00,"Delivered to Customer",160000,delivered,CONT003
+5,"Nippon Express",NE54321JP,2023-10-30T00:00:00,2023-11-18T00:00:00,,"Warehouse Tokyo",140000,in_transit,CONT004

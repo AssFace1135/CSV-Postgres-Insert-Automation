@@ -2,3 +2,5 @@ customer_id,search_query,search_timestamp,result_count,filter_applied
 1,"Nissan Skyline R34",2023-10-26T10:00:00,5,"year:1999-2002"
 1,"Toyota Supra JZA80",2023-10-26T10:05:00,3,"color:Red"
 2,"Mazda RX-7 FD",2023-10-25T14:00:00,2,""
+2,"Honda Civic Type R",2023-10-25T14:10:00,4,"condition:A"
+3,"Subaru Impreza",2023-10-26T11:05:00,7,"year:2000-2005"

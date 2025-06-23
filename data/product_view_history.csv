@@ -3,3 +3,5 @@ customer_id,car_id,view_timestamp,time_on_page_seconds,source
 1,2,2023-10-25T10:05:00,180,Search
 2,2,2023-10-24T09:18:00,90,Homepage
 3,5,2023-10-26T11:10:00,60,Recommendation
+2,5,2023-10-25T14:05:00,110,Direct
+3,3,2023-10-26T11:12:00,200,Search
