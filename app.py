@@ -116,20 +116,27 @@ def get_table_columns(_conn, table_name: str) -> List[str]:
 # --- BI Dashboard Functions ---
 
 @st.cache_data(ttl=600)
-def get_sales_performance_data(_conn):
-    """Fetches monthly sales revenue and volume."""
-    query = """
+def get_sales_performance_data(_conn, period: str = 'Monthly'):
+    """Fetches sales revenue and volume for a given period (Daily, Weekly, Monthly)."""
+    period_map = {
+        'Daily': 'day',
+        'Weekly': 'week',
+        'Monthly': 'month'
+    }
+    trunc_period = period_map.get(period, 'month')
+
+    query = sql.SQL("""
         SELECT
-            TO_CHAR(o.order_date, 'YYYY-MM') AS order_month,
+            DATE_TRUNC({trunc_period}, o.order_date)::date AS order_period,
             SUM(o.total_amount_jpy) AS total_revenue,
             COUNT(oi.order_item_id) AS cars_sold
         FROM "order" o
         JOIN order_item oi ON o.order_id = oi.order_id
         WHERE o.order_status NOT IN ('cancelled')
-        GROUP BY order_month
-        ORDER BY order_month;
-    """
-    df = pd.read_sql_query(query, _conn)
+        GROUP BY order_period
+        ORDER BY order_period;
+    """).format(trunc_period=sql.Literal(trunc_period))
+    df = pd.read_sql_query(query.as_string(_conn), _conn)
     return df
 
 @st.cache_data(ttl=600)
@@ -444,36 +451,67 @@ with tab4:
         bi_tab1, bi_tab2, bi_tab3, bi_tab4 = st.tabs(["Sales Performance", "Top Brands", "Inventory Insights", "Customer Demographics"])
 
         with bi_tab1:
-            st.subheader("Monthly Revenue & Sales Volume")
-            with st.spinner("Loading sales data..."):
-                sales_df = get_sales_performance_data(conn)
+            st.subheader("Revenue & Sales Volume")
+            period = st.radio(
+                "Select Period",
+                ('Monthly', 'Weekly', 'Daily'),
+                horizontal=True,
+                key='sales_period'
+            )
+            with st.spinner(f"Loading {period.lower()} sales data..."):
+                sales_df = get_sales_performance_data(conn, period)
                 if not sales_df.empty:
                     fig = make_subplots(specs=[[{"secondary_y": True}]])
-                    fig.add_trace(go.Bar(x=sales_df['order_month'], y=sales_df['cars_sold'], name='Cars Sold'), secondary_y=False)
-                    fig.add_trace(go.Scatter(x=sales_df['order_month'], y=sales_df['total_revenue'], name='Revenue (JPY)', mode='lines+markers'), secondary_y=True)
-                    fig.update_layout(title_text="Monthly Revenue and Sales Volume", legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
-                    fig.update_xaxes(title_text="Month")
+                    fig.add_trace(go.Bar(x=sales_df['order_period'], y=sales_df['cars_sold'], name='Cars Sold'), secondary_y=False)
+                    fig.add_trace(go.Scatter(x=sales_df['order_period'], y=sales_df['total_revenue'], name='Revenue (JPY)', mode='lines+markers'), secondary_y=True)
+                    fig.update_layout(
+                        title_text=f"{period} Revenue and Sales Volume",
+                        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
+                    fig.update_xaxes(title_text=f"Period ({period})")
                     fig.update_yaxes(title_text="<b>Cars Sold</b> (Units)", secondary_y=False)
                     fig.update_yaxes(title_text="<b>Revenue</b> (JPY)", secondary_y=True)
                     st.plotly_chart(fig, use_container_width=True)
                 else:
-                    st.warning("No sales data available to display.")
+                    st.warning(f"No sales data available for the {period.lower()} view.")
 
         with bi_tab2:
             st.subheader("Sales by Car Make")
             with st.spinner("Loading brand data..."):
                 make_df = get_sales_by_make_data(conn)
-                if not make_df.empty:
-                    fig = px.bar(
-                        make_df, x='units_sold', y='make', orientation='h',
-                        title='Top 15 Car Makes by Units Sold',
-                        labels={'units_sold': 'Number of Units Sold', 'make': 'Car Make'},
-                        text='units_sold', hover_data=['total_revenue_jpy']
-                    )
-                    fig.update_layout(yaxis={'categoryorder':'total ascending'})
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
+                if make_df.empty:
                     st.warning("No sales data available to display.")
+
+                # Option 1: Treemap
+                fig_treemap = px.treemap(
+                    make_df, path=['make'], values='units_sold',
+                    title='Sales by Car Make (Treemap)',
+                    hover_data=['total_revenue_jpy'],
+                    labels={'units_sold': 'Units Sold', 'make': 'Car Make'}
+                )                
+
+                # Update the hover template and add text in the middle of the boxes
+                fig_treemap.update_traces(
+                    hovertemplate="<b>%{label}</b><br>Units Sold: %{value}<br>Total Revenue: %{customdata[0]:.2f} JPY<extra></extra>",
+                    customdata=make_df[['total_revenue_jpy']].values,
+                    textinfo='value',  # Display the value (units_sold) in the center
+                    textposition='middle center', # Ensure text is centered
+                    textfont_size=20,  # Increase font size
+                    textfont_weight='bold'  # Make font bold
+                )
+
+
+
+                # Display the treemap in Streamlit
+                st.plotly_chart(fig_treemap, use_container_width=True)
+
+                # # Option 2: Pie Chart (if you prefer)
+                # fig_pie = px.pie(
+                #     make_df, values='units_sold', names='make',
+                #     title='Sales by Car Make (Pie Chart)',
+                #     hover_data=['total_revenue_jpy']
+                # )
+                # st.plotly_chart(fig_pie, use_container_width=True)
 
         with bi_tab3:
             st.subheader("Inventory 'Hotness' Map")

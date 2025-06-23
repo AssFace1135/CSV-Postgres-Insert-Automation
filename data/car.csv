@@ -24,3 +24,13 @@ VIN022SUZCAPPU,EA11R,Suzuki,Cappuccino,1994,Red,3,1,1,RHD,88000,2,900000,http://
 VIN023NISSANS14,S14,Nissan,Silvia K's,1997,Green,3,1,1,RHD,112000,2,2100000,http://example.com/s14.jpg,"Classic 90s drift platform",sold,N5544,3,280,10,14
 VIN024MITSUBGTO,Z16A,Mitsubishi,GTO Twin Turbo,1994,Red,1,1,3,RHD,95000,2,2400000,http://example.com/gto.jpg,"Active aero and all-wheel steer",available,T6655,1,170,6,10
 VIN025TOYOTASOAR,JZZ30,Toyota,Soarer 2.5GT,1996,Dark Green,2,2,1,RHD,135000,3,1600000,http://example.com/soarer.jpg,"Luxury GT with 1JZ power",available,O7766,2,150,4,9
+VIN026HONDABEAT,PP1,Honda,Beat,1991,Yellow,5,1,1,RHD,98000,2,750000,http://example.com/beat.jpg,"Mid-engine Kei roadster",available,T1029,1,70,2,4
+VIN027AUTAZ1,PG6SA,Autozam,AZ-1,1992,Siberia Blue,3,1,1,RHD,76000,1,2500000,http://example.com/az1.jpg,"Gullwing doors on a Kei car",available,O2038,2,150,6,11
+VIN028TOYSTARLET,EP82,Toyota,Starlet GT Turbo,1994,Black,4,1,2,RHD,125000,3,1100000,http://example.com/starlet.jpg,"Lightweight hot hatch",sold,N3047,3,120,9,7
+VIN029NISSANFIGARO,FK10,Nissan,Figaro,1991,Emerald Green,3,2,2,RHD,85000,2,1300000,http://example.com/figaro.jpg,"Retro-styled convertible",available,T4056,1,95,3,8
+VIN030MITSFTO,DE3A,Mitsubishi,FTO GP Version R,1998,White,2,1,2,RHD,92000,1,1700000,http://example.com/fto.jpg,"High-revving V6",available,O5065,2,110,5,9
+VIN031SUBARUSVX,CXD,Subaru,Alcyone SVX,1993,Dark Teal,4,2,3,RHD,110000,3,900000,http://example.com/svx.jpg,"Giugiaro-designed window-in-window",available,N6074,3,60,1,3
+VIN032ISUZUPIAZZA,JR120,Isuzu,Piazza Turbo,1988,White,3,1,1,RHD,130000,4,850000,http://example.com/piazza.jpg,"Handling by Lotus",reserved,T7083,1,40,2,2
+VIN033TOYOTACROWN,JZS171,Toyota,Crown Athlete V,2001,Pearl White,2,2,1,RHD,88000,2,2200000,http://example.com/crown.jpg,"Luxury sedan with 1JZ-GTE",available,O8092,2,180,7,13
+VIN034NISSANLAUREL,HC35,Nissan,Laurel Club S,1999,Silver,1,2,1,RHD,105000,2,1400000,http://example.com/laurel.jpg,"RB25DE powered sedan",available,N9101,3,90,3,6
+VIN035MAZDAEUNOS,JC,Eunos,Cosmo 20B,1992,Black,1,2,1,RHD,75000,1,4500000,http://example.com/cosmo.jpg,"The only production 3-rotor car",sold,T1210,1,300,15,22

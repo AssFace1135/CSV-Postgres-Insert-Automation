@@ -24,3 +24,23 @@ order_id,amount_jpy,payment_method,transaction_status,payment_gateway_ref_id
 23,3500000,"Credit Card",pending,PAY_REF_023
 24,5500000,PayPal,completed,PAY_REF_024
 25,6500000,"Bank Transfer",completed,PAY_REF_025
+26,7500000,"Credit Card",completed,PAY_REF_026
+27,5200000,"Bank Transfer",completed,PAY_REF_027
+28,3100000,PayPal,completed,PAY_REF_028
+29,9000000,"Credit Card",completed,PAY_REF_029
+30,6800000,"Bank Transfer",completed,PAY_REF_030
+31,1100000,PayPal,completed,PAY_REF_031
+32,4500000,"Credit Card",completed,PAY_REF_032
+33,1300000,"Bank Transfer",pending,PAY_REF_033
+34,1700000,PayPal,completed,PAY_REF_034
+35,900000,"Credit Card",completed,PAY_REF_035
+36,2200000,"Credit Card",completed,PAY_REF_036
+37,3800000,"Bank Transfer",completed,PAY_REF_037
+38,2600000,PayPal,completed,PAY_REF_038
+39,1500000,"Credit Card",completed,PAY_REF_039
+40,1900000,"Bank Transfer",completed,PAY_REF_040
+41,8500000,PayPal,completed,PAY_REF_041
+42,1200000,"Credit Card",completed,PAY_REF_042
+43,800000,"Bank Transfer",completed,PAY_REF_043
+44,900000,PayPal,completed,PAY_REF_044
+45,2400000,"Credit Card",completed,PAY_REF_045

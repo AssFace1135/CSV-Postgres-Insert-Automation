@@ -9,3 +9,53 @@ customer_id,car_id,rating,comment,is_approved
 15,19,5,"Absolutely perfect. A collector's dream.",true
 17,22,4,"So much fun in a small package. A few scratches but that was expected.",false
 19,24,3,"Lots of tech, some of which is a bit dated now. Still a cool car.",true
+4,5,4,"Great car, very clean. The 2JZ is a monster.",true
+5,6,5,"Perfect S2000. High revs are addictive. Approved.",true
+6,7,4,"Solid Evo VI, a real rally machine. Some expected wear.",true
+9,18,5,"The Evo IX is peak Mitsubishi. Flawless transaction.",true
+10,11,3,"300ZX is a cool car but needs some TLC. Fair price.",false
+12,12,4,"The GT-Four is a beast in the corners. Happy with my purchase.",true
+16,20,5,"Prelude handles amazingly well with the ATTS system.",true
+17,21,4,"RX-8 is fun, but be ready for the rotary maintenance!",true
+20,25,4,"Soarer is a comfortable and powerful GT cruiser.",true
+21,15,5,"My dream NSX! The seller was fantastic. A smooth process from start to finish.",true
+22,26,4,"The Beat is pure joy. So small and nimble. Great service.",true
+23,27,5,"An AZ-1 is a conversation starter everywhere. Car was in amazing shape.",true
+24,29,4,"Figaro is a beautiful little car. Perfect for city driving.",false
+25,30,3,"FTO is quick, but the interior had more wear than I expected.",true
+26,31,4,"The SVX is quirky and cool. Very smooth ride. Happy with it.",true
+28,33,5,"Crown Athlete is the perfect blend of luxury and JDM power. A+.",true
+29,34,4,"Clean Laurel, runs great. A solid platform for a project.",true
+30,35,5,"The Eunos Cosmo is a masterpiece. The 3-rotor engine is incredible.",false
+1,10,2,"Not as fun as I hoped. A bit slow for the price.",true
+8,23,4,"S14 is a great drift car, just as I expected. Solid purchase.",true
+22,26,4,"The Beat is pure joy. So small and nimble. Great service.",true
+23,27,5,"An AZ-1 is a conversation starter everywhere. Car was in amazing shape.",true
+24,29,4,"Figaro is a beautiful little car. Perfect for city driving.",false
+25,30,3,"FTO is quick, but the interior had more wear than I expected.",true
+26,31,4,"The SVX is quirky and cool. Very smooth ride. Happy with it.",true
+28,33,5,"Crown Athlete is the perfect blend of luxury and JDM power. A+.",true
+29,34,4,"Clean Laurel, runs great. A solid platform for a project.",true
+30,35,5,"The Eunos Cosmo is a masterpiece. The 3-rotor engine is incredible.",false
+1,10,2,"Not as fun as I hoped. A bit slow for the price.",true
+8,23,4,"S14 is a great drift car, just as I expected. Solid purchase.",true
+31,11,5,"Fantastic 300ZX, a true 90s hero. The car was immaculate.",true
+32,16,5,"This Chaser is a dream. The 1JZ sounds amazing. 5 stars!",true
+33,12,4,"GT-Four arrived safely. A few minor scratches as expected for the age.",true
+34,13,5,"The Legacy B4 is such an underrated car. Very happy with the purchase.",false
+35,17,4,"Pulsar GTI-R is a rocket! So much fun to drive.",true
+36,15,5,"The NSX is a work of art. Worth every penny. Thank you!",true
+37,20,4,"A clean Prelude is hard to find. This one is great.",true
+38,21,3,"The RX-8 is a unique experience. Be prepared for rotary life.",false
+39,22,5,"This Cappuccino is the most fun I've had on four wheels.",true
+40,24,4,"The GTO is a beast. A bit heavy but a great cruiser.",true
+5,1,5,"The R34 GT-R is a legend for a reason. Car was in perfect condition.",true
+6,2,4,"Supra is amazing. A few paint chips but it's a 90s car, so it's expected.",true
+7,3,5,"The WRX STI is a rally icon. So much fun on back roads.",true
+12,5,4,"My dream RX-7. The rotary engine is so smooth. Shipping was fast.",true
+13,6,5,"S2000 is a perfect driver's car. The high-revving engine is a blast.",false
+14,7,4,"Evo VI is a monster. Handles like it's on rails.",true
+21,8,5,"The S15 Silvia is the ultimate drift machine. Came as described.",true
+22,9,3,"MR2 is fun, but the mid-engine layout takes some getting used to.",true
+23,10,4,"The MX-5 is pure, simple fun. Can't beat it for the price.",false
+24,14,5,"Integra Type R is one of the best FWD cars ever made. A masterpiece.",true
