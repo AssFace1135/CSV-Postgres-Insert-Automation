@@ -6,6 +6,9 @@ import pandas as pd
 from psycopg2 import sql
 from typing import Dict, List, Any, Tuple
 import csv
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # --- Configuration and Setup ---
 # Load environment variables from .env file
@@ -107,6 +110,68 @@ def get_table_columns(_conn, table_name: str) -> List[str]:
     except Exception as e:
         st.error(f"Error fetching columns for table `{table_name}`: {e}")
         return []
+
+# --- BI Dashboard Functions ---
+
+@st.cache_data(ttl=600)
+def get_sales_performance_data(_conn):
+    """Fetches monthly sales revenue and volume."""
+    query = """
+        SELECT
+            TO_CHAR(o.order_date, 'YYYY-MM') AS order_month,
+            SUM(o.total_amount_jpy) AS total_revenue,
+            COUNT(oi.order_item_id) AS cars_sold
+        FROM "order" o
+        JOIN order_item oi ON o.order_id = oi.order_id
+        WHERE o.order_status NOT IN ('cancelled')
+        GROUP BY order_month
+        ORDER BY order_month;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_sales_by_make_data(_conn):
+    """Fetches sales data grouped by car make, limited to the top 15."""
+    query = """
+        SELECT
+            c.make,
+            COUNT(oi.order_item_id) AS units_sold,
+            SUM(oi.unit_price_jpy) AS total_revenue_jpy
+        FROM order_item oi
+        JOIN car c ON oi.car_id = c.car_id
+        GROUP BY c.make
+        ORDER BY units_sold DESC
+        LIMIT 15;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_inventory_hotness_data(_conn):
+    """Fetches car engagement metrics for available inventory."""
+    query = """
+        SELECT
+            make, model, year, view_count, add_to_cart_count,
+            add_to_wishlist_count, current_listing_price_jpy,
+            (add_to_cart_count + add_to_wishlist_count) as engagement_score
+        FROM car
+        WHERE status = 'available' AND view_count > 0;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
+
+@st.cache_data(ttl=600)
+def get_customer_demographics_data(_conn):
+    """Fetches customer counts by country."""
+    query = """
+        SELECT country, COUNT(customer_id) AS number_of_customers
+        FROM customer
+        WHERE country IS NOT NULL AND country <> ''
+        GROUP BY country ORDER BY number_of_customers DESC;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
 
 # --- Data Display and Insertion Functions ---
 
@@ -219,7 +284,7 @@ st.title("PostgreSQL Database Interface")
 conn = get_db_connection()
 table_names = get_table_names(conn) if conn else []
 
-tab1, tab2, tab3 = st.tabs(["📊 View Data", "⬆️ Insert from File", "✍️ Add New Record"])
+tab1, tab2, tab3, tab4 = st.tabs(["📊 View Data", "⬆️ Insert from File", "✍️ Add New Record", "📈 Business Intelligence"])
 
 with tab1:
     st.header("Database Table Viewer")
@@ -322,3 +387,85 @@ with tab3:
                         st.warning("No data entered. Please add and fill at least one row.")
         else:
             st.warning(f"Could not retrieve columns for table `{selected_table_for_insert}`.")
+
+with tab4:
+    st.header("Business Intelligence Dashboard")
+    st.markdown("""
+    This dashboard provides live visualizations based on the data in the database.
+    *(Note: You may need to run `pip install plotly` to view these charts.)*
+    """)
+
+    if not conn:
+        st.error("Cannot display dashboards without a database connection.")
+    else:
+        bi_tab1, bi_tab2, bi_tab3, bi_tab4 = st.tabs(["Sales Performance", "Top Brands", "Inventory Insights", "Customer Demographics"])
+
+        with bi_tab1:
+            st.subheader("Monthly Revenue & Sales Volume")
+            with st.spinner("Loading sales data..."):
+                sales_df = get_sales_performance_data(conn)
+                if not sales_df.empty:
+                    fig = make_subplots(specs=[[{"secondary_y": True}]])
+                    fig.add_trace(go.Bar(x=sales_df['order_month'], y=sales_df['cars_sold'], name='Cars Sold'), secondary_y=False)
+                    fig.add_trace(go.Scatter(x=sales_df['order_month'], y=sales_df['total_revenue'], name='Revenue (JPY)', mode='lines+markers'), secondary_y=True)
+                    fig.update_layout(title_text="Monthly Revenue and Sales Volume", legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+                    fig.update_xaxes(title_text="Month")
+                    fig.update_yaxes(title_text="<b>Cars Sold</b> (Units)", secondary_y=False)
+                    fig.update_yaxes(title_text="<b>Revenue</b> (JPY)", secondary_y=True)
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("No sales data available to display.")
+
+        with bi_tab2:
+            st.subheader("Sales by Car Make")
+            with st.spinner("Loading brand data..."):
+                make_df = get_sales_by_make_data(conn)
+                if not make_df.empty:
+                    fig = px.bar(
+                        make_df, x='units_sold', y='make', orientation='h',
+                        title='Top 15 Car Makes by Units Sold',
+                        labels={'units_sold': 'Number of Units Sold', 'make': 'Car Make'},
+                        text='units_sold', hover_data=['total_revenue_jpy']
+                    )
+                    fig.update_layout(yaxis={'categoryorder':'total ascending'})
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("No sales data available to display.")
+
+        with bi_tab3:
+            st.subheader("Inventory 'Hotness' Map")
+            st.markdown("Which available cars get high views but low engagement, and which are your hidden gems?")
+            with st.spinner("Loading inventory data..."):
+                hotness_df = get_inventory_hotness_data(conn)
+                if not hotness_df.empty:
+                    fig = px.scatter(
+                        hotness_df, x='view_count', y='engagement_score',
+                        size='current_listing_price_jpy', color='make',
+                        hover_name='model', hover_data=['year', 'current_listing_price_jpy'],
+                        title='Inventory "Hotness" Map (Available Cars)',
+                        labels={
+                            'view_count': 'Product Page Views',
+                            'engagement_score': 'Engagement (Adds to Cart/Wishlist)',
+                            'current_listing_price_jpy': 'Price (JPY)',
+                            'make': 'Car Make'
+                        },
+                        log_x=True
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("No available inventory data to display.")
+
+        with bi_tab4:
+            st.subheader("Customer Acquisition by Country")
+            with st.spinner("Loading customer data..."):
+                customer_df = get_customer_demographics_data(conn)
+                if not customer_df.empty:
+                    fig = px.bar(
+                        customer_df, x='country', y='number_of_customers',
+                        title='Customer Distribution by Country',
+                        labels={'country': 'Country', 'number_of_customers': 'Number of Customers'},
+                        text='number_of_customers'
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("No customer country data available to display.")
