@@ -39,7 +39,7 @@ Stella,Kim,stella.k@email.com,hash_stella,82-2-2181-2844,"N Seoul Tower",Seoul,,
 Leo,Rossi,leo.r@email.com,hash_leo,39-06-6982,"Colosseum",Rome,,00184,Italy,2023-12-08T17:00:00,1,800000,2023-12-08T17:20:00,80,Phone
 Maya,Dubois,maya.d@email.com,hash_maya,1-514-398-4455,"McGill University",Montreal,QC,H3A 0G4,Canada,2023-12-09T18:00:00,1,900000,2023-12-09T18:30:00,90,Email
 Omar,Al-Farsi,omar.a@email.com,hash_omar,971-4-308-0000,"Burj Al Arab",Dubai,,00000,UAE,2023-12-10T19:00:00,1,2400000,2023-12-10T19:20:00,240,Phone
-John,Doe,john.doe@example.com,hash_johndoe,1-555-555-0100,"123 Main Street",Anytown,Anystate,12345,USA,2023-12-15T10:00:00,1,18000000,2023-12-15T10:05:00,1800,Email
+John,Doe,john.doe@example.com,hash_johndoe,1-555-555-0100,"123 Main Street",Kansas,Anystate,12345,USA,2023-12-15T10:00:00,1,18000000,2023-12-15T10:05:00,1800,Email
 Liam,O'Connor,liam.oc@email.ie,hash_liamoc,353-87-555-0101,"1 Grafton Street",Dublin,,D02,Ireland,2024-01-10T10:00:00,1,900000,2024-01-10T10:05:00,90,Email
 Sofia,Johansson,sofia.j@email.se,hash_sofiaj,46-70-555-0102,"Gamla Stan 1",Stockholm,,111 29,Sweden,2024-01-10T11:00:00,1,800000,2024-01-10T11:05:00,80,Phone
 Lucas,Müller,lucas.m@email.de,hash_lucasm,49-176-555-0103,"Marienplatz 1",Munich,Bavaria,80331,Germany,2024-01-11T09:00:00,1,1200000,2024-01-11T09:05:00,120,Email

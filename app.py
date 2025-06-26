@@ -189,39 +189,41 @@ def get_sales_performance_data(_conn, period: str = 'Monthly'):
     return df
 
 @st.cache_data(ttl=600)
-def get_sales_by_make_data(_conn, limit: int = 15, sort_column: str = 'units_sold', sort_order: str = 'DESC'):
-    """Fetches sales data grouped by car make, with dynamic limit and sorting."""
+def get_sales_by_make_model_data(_conn):
+    """Fetches sales data grouped by car make and model."""
     query = """
         SELECT
             c.make,
+            c.model,
             COUNT(oi.order_item_id) AS units_sold,
             SUM(oi.unit_price_jpy) AS total_revenue_jpy
         FROM order_item oi
-        JOIN car c ON oi.car_id = c.car_id -- Assuming car_id is the correct join key
-        GROUP BY c.make
-        ORDER BY {sort_column} {sort_order}
-        LIMIT %s;
+        JOIN car c ON oi.car_id = c.car_id
+        JOIN "order" o ON oi.order_id = o.order_id
+        WHERE o.order_status NOT IN ('cancelled')
+        GROUP BY c.make, c.model;
     """
-    # Use psycopg2.sql.SQL for safe dynamic query construction
-    formatted_query = sql.SQL(query).format(
-        sort_column=sql.Identifier(sort_column),
-        sort_order=sql.SQL(sort_order)
-    )
-    df = pd.read_sql_query(formatted_query.as_string(_conn), _conn, params=(limit,))
+    df = pd.read_sql_query(query, _conn)
     return df
 
 @st.cache_data(ttl=600)
 def get_inventory_hotness_data(_conn):
-    """Fetches car engagement metrics for available inventory."""
+    """Fetches car engagement metrics and aging for available inventory."""
     query = """
         SELECT
             make, model, year, view_count, add_to_cart_count,
             add_to_wishlist_count, current_listing_price_jpy,
+            date_added_to_inventory,
             (add_to_cart_count + add_to_wishlist_count) as engagement_score
         FROM car
-        WHERE status = 'available' AND view_count > 0;
+        WHERE status = 'available';
     """
     df = pd.read_sql_query(query, _conn)
+    # Calculate inventory age in days
+    if not df.empty and 'date_added_to_inventory' in df.columns:
+        # Ensure the datetime column is timezone-aware (UTC) for accurate calculations
+        df['date_added_to_inventory'] = pd.to_datetime(df['date_added_to_inventory'], utc=True)
+        df['inventory_age_days'] = (pd.Timestamp.now(tz='UTC') - df['date_added_to_inventory']).dt.days
     return df
 
 @st.cache_data(ttl=600)
@@ -239,34 +241,51 @@ def get_customer_demographics_data(_conn):
 @st.cache_data(ttl=600)
 def get_sales_funnel_data(_conn):
     """
-    Fetches aggregated data for a product engagement funnel.
-    Note: This is a product-centric funnel (total counts across all cars),
-    not a user-centric conversion funnel, due to schema limitations.
+    Fetches data for a more accurate, user-centric sales funnel.
+    This funnel tracks the number of unique customers at each stage.
     """
-    query_car_engagement = """
-        SELECT
-            SUM(view_count) AS total_views,
-            SUM(add_to_wishlist_count) AS total_wishlists,
-            SUM(add_to_cart_count) AS total_carts
-        FROM car;
-    """
-    query_orders = """
-        SELECT COUNT(order_id) AS total_orders
-        FROM "order"
-        WHERE order_status NOT IN ('cancelled', 'pending_confirmation'); -- Only count completed/shipped orders
+    # Stage 1: Unique customers who viewed any product
+    query_viewers = "SELECT COUNT(DISTINCT customer_id) FROM product_view_history;"
+
+    # Stage 2: Unique customers who added any item to their cart
+    query_cart_adders = """
+        SELECT COUNT(DISTINCT sc.customer_id)
+        FROM cart_item ci
+        JOIN shopping_cart sc ON ci.cart_id = sc.cart_id;
     """
 
-    car_engagement_df = pd.read_sql_query(query_car_engagement, _conn)
-    orders_df = pd.read_sql_query(query_orders, _conn)
+    # Stage 3: Unique customers who placed a valid order
+    query_purchasers = """
+        SELECT COUNT(DISTINCT o.customer_id)
+        FROM "order" o
+        WHERE o.order_status NOT IN ('cancelled', 'pending_confirmation');
+    """
+
+    total_viewers, total_cart_adders, total_purchasers = 0, 0, 0
+    try:
+        with _conn.cursor() as cursor:
+            cursor.execute(query_viewers)
+            total_viewers = cursor.fetchone()[0]
+
+            cursor.execute(query_cart_adders)
+            total_cart_adders = cursor.fetchone()[0]
+
+            cursor.execute(query_purchasers)
+            total_purchasers = cursor.fetchone()[0]
+
+    except (psycopg2.Error, TypeError, IndexError) as e:
+        # Catch DB errors or issues if fetchone() is None or returns an empty row
+        st.warning(f"Could not calculate all funnel stages, some data might be missing. Error: {e}")
+        # We can still return a partial funnel if some queries succeeded
+        pass
 
     # Combine into a single DataFrame for the funnel chart
     funnel_data = pd.DataFrame({
-        'Stage': ['Product Views', 'Added to Wishlist', 'Added to Cart', 'Orders Placed'],
+        'Stage': ['Unique Product Viewers', 'Added to Cart', 'Placed Order'],
         'Value': [
-            car_engagement_df['total_views'].iloc[0] if not car_engagement_df.empty else 0,
-            car_engagement_df['total_wishlists'].iloc[0] if not car_engagement_df.empty else 0,
-            car_engagement_df['total_carts'].iloc[0] if not car_engagement_df.empty else 0,
-            orders_df['total_orders'].iloc[0] if not orders_df.empty else 0
+            total_viewers or 0,
+            total_cart_adders or 0,
+            total_purchasers or 0
         ]
     })
     return funnel_data
@@ -717,65 +736,119 @@ with tab4:
                     st.warning(f"No sales data available for the {period.lower()} view.")
 
         with bi_tab2:
-            st.subheader("Sales by Car Make")
+            st.subheader("Sales by Car Make and Model")
+            st.markdown("This treemap shows sales grouped by car make. **Click on any make** to drill down and see the sales distribution by model.")
             with st.spinner("Loading brand data..."):
-                make_df = get_sales_by_make_data(conn)
-                if make_df.empty:
+                make_model_df = get_sales_by_make_model_data(conn)
+                if make_model_df.empty:
                     st.warning("No sales data available to display.")
+                else:
+                    # Treemap with drill-down capability
+                    fig_treemap = px.treemap(
+                        make_model_df,
+                        path=[px.Constant("All Makes"), 'make', 'model'],
+                        values='units_sold',
+                        color='total_revenue_jpy',
+                        color_continuous_scale='YlGnBu',
+                        title='Sales by Car Make and Model (Click a make to expand)'
+                    )
 
-                # Option 1: Treemap
-                fig_treemap = px.treemap(
-                    make_df, path=['make'], values='units_sold',
-                    title='Sales by Car Make (Treemap)',
-                    hover_data=['total_revenue_jpy'],
-                    labels={'units_sold': 'Units Sold', 'make': 'Car Make'}
-                )                
-
-                # Update the hover template and add text in the middle of the boxes
-                fig_treemap.update_traces(
-                    hovertemplate="<b>%{label}</b><br>Units Sold: %{value}<br>Total Revenue: %{customdata[0]:.2f} JPY<extra></extra>",
-                    customdata=make_df[['total_revenue_jpy']].values,
-                    textinfo='value',  # Display the value (units_sold) in the center
-                    textposition='middle center', # Ensure text is centered
-                    textfont_size=20,  # Increase font size
-                    textfont_weight='bold'  # Make font bold
-                )
-
-
-
-                # Display the treemap in Streamlit
-                st.plotly_chart(fig_treemap, use_container_width=True)
-
-                # # Option 2: Pie Chart (if you prefer)
-                # fig_pie = px.pie(
-                #     make_df, values='units_sold', names='make',
-                #     title='Sales by Car Make (Pie Chart)',
-                #     hover_data=['total_revenue_jpy']
-                # )
-                # st.plotly_chart(fig_pie, use_container_width=True)
+                    # The hovertemplate uses the aggregated color value for revenue, which is correct for parent nodes.
+                    fig_treemap.update_traces(
+                        hovertemplate="<b>%{label}</b><br>Units Sold: %{value}<br>Total Revenue: %{color:,.0f} JPY<extra></extra>",
+                        textinfo='label+value',
+                        textfont_size=14
+                    )
+                    
+                    st.plotly_chart(fig_treemap, use_container_width=True)
 
         with bi_tab3:
-            st.subheader("Inventory 'Hotness' Map")
-            st.markdown("Which available cars get high views but low engagement, and which are your hidden gems?")
+            st.subheader("Inventory Insights")
+            st.markdown("Analyze the current state of available car inventory, from value and age to customer engagement.")
             with st.spinner("Loading inventory data..."):
-                hotness_df = get_inventory_hotness_data(conn)
-                if not hotness_df.empty:
-                    fig = px.scatter(
-                        hotness_df, x='view_count', y='engagement_score',
-                        size='current_listing_price_jpy', color='make',
-                        hover_name='model', hover_data=['year', 'current_listing_price_jpy'],
-                        title='Inventory "Hotness" Map (Available Cars)',
-                        labels={
-                            'view_count': 'Product Page Views',
-                            'engagement_score': 'Engagement (Adds to Cart/Wishlist)',
-                            'current_listing_price_jpy': 'Price (JPY)',
-                            'make': 'Car Make'
-                        },
-                        log_x=True
-                    )
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
+                inventory_df = get_inventory_hotness_data(conn)
+                if inventory_df.empty:
                     st.warning("No available inventory data to display.")
+                else:
+                    # --- Key Metrics ---
+                    total_inventory_count = len(inventory_df)
+                    total_inventory_value = inventory_df['current_listing_price_jpy'].sum()
+                    average_age = inventory_df['inventory_age_days'].mean() if 'inventory_age_days' in inventory_df.columns else 0
+
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric("Total Cars in Inventory", f"{total_inventory_count:,}")
+                    col2.metric("Total Inventory Value (JPY)", f"¥{total_inventory_value:,.0f}")
+                    col3.metric("Average Inventory Age (Days)", f"{average_age:.1f}")
+
+                    st.divider()
+
+                    # --- Inventory Aging ---
+                    if 'inventory_age_days' in inventory_df.columns:
+                        st.subheader("Inventory Aging Distribution")
+                        fig_age = px.histogram(
+                            inventory_df,
+                            x='inventory_age_days',
+                            nbins=20,
+                            title='Distribution of Inventory Age',
+                            labels={'inventory_age_days': 'Age in Days', 'count': 'Number of Cars'}
+                        )
+                        st.plotly_chart(fig_age, use_container_width=True)
+                        st.divider()
+
+                    # --- Hotness Map (existing chart) ---
+                    st.subheader("Inventory 'Hotness' Map")
+                    st.markdown("Which available cars get high views but low engagement, and which are your hidden gems? (Bubble size represents price)")
+                    
+                    # Filter for cars with at least one view for a more meaningful scatter plot
+                    hotness_df = inventory_df[inventory_df['view_count'] > 0].copy()
+                    if not hotness_df.empty:
+                        hover_cols = ['year', 'current_listing_price_jpy']
+                        if 'inventory_age_days' in hotness_df.columns:
+                            hover_cols.append('inventory_age_days')
+                        
+                        fig_hotness = px.scatter(
+                            hotness_df, x='view_count', y='engagement_score',
+                            size='current_listing_price_jpy', color='make',
+                            hover_name='model', hover_data=hover_cols,
+                            title='Inventory "Hotness" Map (Available Cars with Views)',
+                            labels={
+                                'view_count': 'Product Page Views',
+                                'engagement_score': 'Engagement (Adds to Cart/Wishlist)',
+                                'current_listing_price_jpy': 'Price (JPY)',
+                                'make': 'Car Make',
+                                'inventory_age_days': 'Age (Days)'
+                            },
+                            log_x=True
+                        )
+                        st.plotly_chart(fig_hotness, use_container_width=True)
+
+                        st.divider()
+
+                        # --- Opportunity Tables ---
+                        st.subheader("Actionable Inventory Segments")
+                        col_opportunity1, col_opportunity2 = st.columns(2)
+
+                        # Define thresholds for segmentation
+                        view_threshold = hotness_df['view_count'].quantile(0.75) # Top 25% views
+                        engagement_threshold = 1 # Simple threshold: at least one engagement action
+                        
+                        with col_opportunity1:
+                            st.markdown("##### 🧐 High Views, Low Engagement")
+                            st.markdown("_Consider reviewing price, photos, or description._")
+                            high_views_low_engagement = hotness_df[(hotness_df['view_count'] >= view_threshold) & (hotness_df['engagement_score'] < engagement_threshold)].sort_values('view_count', ascending=False)
+                            display_cols = ['make', 'model', 'year', 'view_count', 'engagement_score']
+                            if 'inventory_age_days' in high_views_low_engagement.columns: display_cols.append('inventory_age_days')
+                            st.dataframe(high_views_low_engagement[display_cols], use_container_width=True, height=300)
+
+                        with col_opportunity2:
+                            st.markdown("##### ✨ Hidden Gems (High Engagement, Low Views)")
+                            st.markdown("_Consider promoting these cars to increase visibility._")
+                            low_views_high_engagement = hotness_df[(hotness_df['view_count'] < view_threshold) & (hotness_df['engagement_score'] >= engagement_threshold)].sort_values('engagement_score', ascending=False)
+                            display_cols = ['make', 'model', 'year', 'view_count', 'engagement_score']
+                            if 'inventory_age_days' in low_views_high_engagement.columns: display_cols.append('inventory_age_days')
+                            st.dataframe(low_views_high_engagement[display_cols], use_container_width=True, height=300)
+                    else:
+                        st.info("No cars with view data to display in the 'Hotness' map or actionable segments.")
 
         with bi_tab4:
             st.subheader("Customer Demographics by Country")
@@ -873,24 +946,27 @@ with tab4:
                      st.plotly_chart(fig_map, use_container_width=False)  # Disable automatic width adjustment
 
         with bi_tab5:
-            st.subheader("Product Engagement Funnel")
+            st.subheader("Customer Conversion Funnel")
             st.markdown("""
-            This funnel illustrates the overall engagement with products, from initial views to final orders.
-            *Note: These are aggregated counts across all cars, not conversion rates for individual users or cars.*
+            This funnel tracks the journey of unique customers from initial product interest to a final purchase.
+            It helps identify at which stage customers are dropping off.
+            - **Unique Product Viewers**: The number of distinct customers who have viewed at least one car.
+            - **Added to Cart**: The number of distinct customers who have added at least one car to their shopping cart.
+            - **Placed Order**: The number of distinct customers who have successfully placed an order.
             """)
             with st.spinner("Loading funnel data..."):
                 funnel_df = get_sales_funnel_data(conn)
-                if not funnel_df.empty:
+                if not funnel_df.empty and funnel_df['Value'].sum() > 0:
                     fig_funnel = px.funnel(
                         funnel_df,
                         x='Value',
                         y='Stage',
-                        title='Product Engagement Funnel',
-                        labels={'Value': 'Count', 'Stage': 'Engagement Stage'}
+                        title='Customer Conversion Funnel',
+                        labels={'Value': 'Number of Unique Customers', 'Stage': 'Conversion Stage'}
                     )
                     st.plotly_chart(fig_funnel, use_container_width=True)
                 else:
-                    st.warning("No data available for sales funnel analysis.")
+                    st.warning("No data available for sales funnel analysis. Ensure tables like `product_view_history`, `cart_item`, and `order` are populated.")
 
         with bi_tab6:
             st.subheader("Shipping & Logistics Operations")

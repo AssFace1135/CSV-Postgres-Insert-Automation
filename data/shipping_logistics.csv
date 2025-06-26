@@ -43,7 +43,7 @@ order_item_id,shipping_company_name,tracking_number,ship_date,estimated_arrival_
 43,"FedEx Trade",FX88899IT,2024-01-01T00:00:00,2024-01-29T00:00:00,2024-01-28T00:00:00,Delivered to Customer,260000,delivered,CONT042
 44,"DHL Global",DHL99900CA,2024-01-02T00:00:00,2024-01-24T00:00:00,2024-01-23T00:00:00,Delivered to Customer,245000,delivered,CONT043
 45,"Maersk",MSK00011AE,2024-01-03T00:00:00,2024-02-15T00:00:00,2024-02-14T00:00:00,Delivered to Customer,270000,delivered,CONT044
-46,"UPS",UPS12345US,2023-12-16T00:00:00,2024-01-10T00:00:00,,In transit to Anytown,250000,in_transit,CONT045
+46,"UPS",UPS12345US,2023-12-16T00:00:00,2024-01-10T00:00:00,,In transit to Los Angeles,250000,in_transit,CONT045
 47,"Nippon Express",NE12346IE,2024-01-11T00:00:00,2024-02-15T00:00:00,,In transit to Dublin,280000,in_transit,CONT046
 48,"DHL Global",DHL67891SE,2024-01-11T00:00:00,2024-02-16T00:00:00,,In transit to Stockholm,290000,in_transit,CONT047
 49,"FedEx Trade",FX001123DE,2024-01-12T00:00:00,2024-02-10T00:00:00,,Port of Hamburg,270000,in_transit,CONT048
