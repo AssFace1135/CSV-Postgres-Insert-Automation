@@ -357,21 +357,24 @@ def get_rfm_data(_conn):
                 c.customer_id,
                 c.first_name,
                 c.last_name,
-                o.order_date,
-                o.total_amount_jpy
+                o.order_date, -- Can be NULL for customers with no orders
+                o.total_amount_jpy -- Can be NULL for customers with no orders
             FROM customer c
-            JOIN "order" o ON c.customer_id = o.customer_id
-            WHERE o.order_status NOT IN ('cancelled') -- Only consider valid orders
+            LEFT JOIN "order" o ON c.customer_id = o.customer_id
+            WHERE o.order_status NOT IN ('cancelled') OR o.order_id IS NULL -- Include customers with no orders
         ),
         RFM_Calculations AS (
             SELECT
                 customer_id,
                 first_name,
                 last_name,
-                MAX(order_date) AS last_order_date,
-                COUNT(order_date) AS frequency,
-                SUM(total_amount_jpy) AS monetary_value,
-                (CURRENT_DATE - MAX(order_date)::date) AS recency_days -- Recency in days
+                MAX(order_date) AS last_order_date, -- NULL if no orders
+                COUNT(order_date) AS frequency, -- 0 if no orders
+                COALESCE(SUM(total_amount_jpy), 0) AS monetary_value, -- 0 if no orders
+                CASE
+                    WHEN MAX(order_date) IS NOT NULL THEN (CURRENT_DATE - MAX(order_date)::date)
+                    ELSE NULL -- Recency is NULL for customers with no orders
+                END AS recency_days
             FROM CustomerOrders
             GROUP BY customer_id, first_name, last_name
         )
@@ -390,21 +393,57 @@ def get_rfm_data(_conn):
 
 def assign_rfm_segment(recency, frequency, monetary):
     """
-    Assigns an RFM segment based on scores.
-    This is a simplified example; real-world RFM often uses quintiles or more complex rules.
+    Assigns an RFM segment based on more granular and distinct rules.
+    The order of checks is crucial, moving from most valuable/recent to least.
+    Handles customers with no purchases (frequency = 0) as a separate segment.
     """
-    if recency <= 30 and frequency >= 3 and monetary >= 1000000: # Example thresholds
-        return "Champions"
-    elif recency <= 60 and frequency >= 2 and monetary >= 500000:
+    # Handle customers with no purchases (frequency == 0)
+    if frequency == 0:
+        return "Prospects (No Purchase)"
+
+    # For customers with purchases (frequency >= 1)
+    # 1. True Champions: Very recent, very frequent, very high spend
+    if recency <= 15 and frequency >= 4 and monetary >= 20000000:
+        return "True Champions"
+
+    # 2. Loyal Customers: Recent, frequent, high spend
+    elif recency <= 30 and frequency >= 3 and monetary >= 5000000:
         return "Loyal Customers"
-    elif recency <= 90 and frequency >= 1 and monetary >= 100000:
-        return "Promising"
-    elif recency > 180 and frequency == 0: # Assuming 0 frequency means no orders or very old
-        return "Lost"
-    elif recency > 90:
+
+    # 3. Recent Promising: Very recent, but maybe less frequent or lower spend than Loyal/Champions
+    elif recency <= 45 and monetary >= 1000000:
+        return "Recent Promising"
+
+    # 4. Potential Loyalists: Recent, some frequency, decent spend
+    elif recency <= 60 and frequency >= 2 and monetary >= 500000:
+        return "Potential Loyalists"
+
+    # 5. New Customers: Recent, single purchase
+    elif recency <= 60 and frequency == 1:
+        return "New Customers"
+
+    # 6. Active but Infrequent: Still somewhat recent, but not very frequent
+    elif recency <= 90 and frequency >= 1:
+        return "Active but Infrequent"
+
+    # 7. Needs Attention: Getting older, but still within a few months
+    elif recency <= 120 and frequency >= 1:
+        return "Needs Attention"
+
+    # 8. At Risk: Approaching 6 months of inactivity
+    elif recency <= 180 and frequency >= 1:
         return "At Risk"
-    else:
-        return "New/Other"
+
+    # 9. Hibernating: Inactive for a longer period, but not completely lost
+    elif recency <= 365 and frequency >= 1:
+        return "Hibernating"
+
+    # 10. Lost: No purchase in over a year (but had purchases in the past)
+    elif recency > 365 and frequency >= 1:
+        return "Lost"
+
+    # Fallback for any edge cases (should ideally not be hit if logic is comprehensive)
+    return "Undefined Segment"
 
 @st.cache_data(ttl=600) # Cache the entire geocoded result for 10 mins
 def geocode_shipments_with_progress(_conn, in_transit_df: pd.DataFrame):
