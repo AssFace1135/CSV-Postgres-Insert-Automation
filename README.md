@@ -29,7 +29,7 @@ Posgres_data_Insert_automation/
 ## Pre-requisites
 
 1.  **PostgreSQL**: A running PostgreSQL server instance.
-2.  **Database Schema**: The target database and schema (tables, enums, etc.) must be created before running the application.
+2.  **Database Schema**: The target database and schema (tables, enums, etc.) must be created before running the application. You can use the schema provided in schema.sql file to make the database.
 3.  **Python 3.x**: Make sure you have a recent version of Python installed.
 4.  **Python Libraries**: Install the necessary libraries. Based on the project, you'll need `streamlit`, `psycopg2-binary`, `pandas`, and `python-dotenv`.
 
