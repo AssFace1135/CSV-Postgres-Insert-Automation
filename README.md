@@ -35,10 +35,7 @@ Posgres_data_Insert_automation/
 4.  **Python Libraries**: Install the necessary libraries using pip. These include `streamlit` for the web app, `psycopg2-binary` for PostgreSQL connection, `pandas` for data manipulation, `python-dotenv` for configuration, `plotly` for interactive charts, and `geopy` for geocoding addresses.
 
 ```
---    pip install streamlit psycopg2-binary pandas python-dotenv
--+    pip install streamlit psycopg2-binary pandas python-dotenv plotly geopy
-+    pip install streamlit psycopg2-binary pandas python-dotenv plotly geopy
-
+   pip install streamlit psycopg2-binary pandas python-dotenv plotly geopy
 ```
 
 
