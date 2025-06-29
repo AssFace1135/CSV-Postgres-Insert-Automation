@@ -14,6 +14,7 @@ from plotly.subplots import make_subplots
 from datetime import date, timedelta # Added for RFM analysis
 import re # Added for regex parsing of location strings
 from geopy.geocoders import Nominatim
+from diskcache import Cache # Import diskcache for persistent caching
 
 # --- Configuration and Setup ---
 # Load environment variables from .env file
@@ -31,7 +32,14 @@ db_credentials = {
 # Initialize a geolocator for converting location names to coordinates
 geolocator = Nominatim(user_agent="car_dealership_dashboard/1.0")
 
-@functools.lru_cache(maxsize=256) # Cache up to 256 unique location lookups
+# Initialize diskcache for persistent geocoding results
+# This cache will store results in a directory named 'geocoding_cache'
+# The cache will persist across Streamlit runs and application restarts.
+# Set a reasonable size limit (e.g., 100 MB) or None for unlimited.
+GEOCACHE_DIR = "geocoding_cache"
+os.makedirs(GEOCACHE_DIR, exist_ok=True) # Ensure the cache directory exists
+geocache = Cache(GEOCACHE_DIR, size_limit=100 * 1024 * 1024) # 100 MB cache limit
+
 def get_lat_lon(location_str: str):
     """
     Geocodes a location string to (latitude, longitude).
@@ -62,13 +70,21 @@ def get_lat_lon(location_str: str):
         else:
             # For other ports, try just the name, Nominatim is often smart.
             processed_location_str = port_name
+    
+    # Check diskcache first
+    cached_result = geocache.get(processed_location_str)
+    if cached_result is not None:
+        return cached_result # Return cached (lat, lon) or None if previously failed
 
     try:
         location = geolocator.geocode(processed_location_str, timeout=5)
         if location:
-            return (location.latitude, location.longitude)
+            result = (location.latitude, location.longitude)
+            geocache.set(processed_location_str, result) # Cache successful result
+            return result
         else:
             st.warning(f"Geocoding failed for location: '{original_location_str}' (processed as '{processed_location_str}'). Pin might be inaccurate or missing.")
+            geocache.set(processed_location_str, None) # Cache failure to avoid re-attempting
             return None
     except Exception:
         # Catch any other errors during geocoding (e.g., network issues, Nominatim service down)
@@ -240,7 +256,7 @@ def get_customer_demographics_data(_conn):
 
 @st.cache_data(ttl=600)
 def get_sales_funnel_data(_conn):
-    """
+    """ 
     Fetches data for a more accurate, user-centric sales funnel.
     This funnel tracks the number of unique customers at each stage.
     """
@@ -289,6 +305,41 @@ def get_sales_funnel_data(_conn):
         ]
     })
     return funnel_data
+
+@st.cache_data(ttl=600)
+def get_top_abandoned_cars_data(_conn):
+    """
+    Fetches the top 10 cars that are most frequently added to carts but have never been sold.
+    This helps identify cars that might have issues with pricing, description, or availability.
+    """
+    query = """
+        WITH CartAdditions AS (
+            -- Count how many times each car has been added to any cart
+            SELECT
+                car_id,
+                COUNT(cart_item_id) AS times_added_to_cart
+            FROM cart_item
+            GROUP BY car_id
+        ),
+        SoldCars AS (
+            -- Get a unique list of cars that have been part of a successful order
+            SELECT DISTINCT car_id
+            FROM order_item oi
+            JOIN "order" o ON oi.order_id = o.order_id
+            WHERE o.order_status NOT IN ('cancelled', 'pending_confirmation')
+        )
+        -- Select cars that have been added to a cart but never sold
+        SELECT
+            c.make, c.model, c.year, c.current_listing_price_jpy, ca.times_added_to_cart
+        FROM CartAdditions ca
+        JOIN car c ON ca.car_id = c.car_id
+        LEFT JOIN SoldCars sc ON ca.car_id = sc.car_id
+        WHERE sc.car_id IS NULL -- The crucial filter: car has never been sold
+        ORDER BY ca.times_added_to_cart DESC
+        LIMIT 10;
+    """
+    df = pd.read_sql_query(query, _conn)
+    return df
 
 @st.cache_data(ttl=600)
 def get_shipping_status_data(_conn):
@@ -372,7 +423,7 @@ def get_rfm_data(_conn):
                 COUNT(order_date) AS frequency, -- 0 if no orders
                 COALESCE(SUM(total_amount_jpy), 0) AS monetary_value, -- 0 if no orders
                 CASE
-                    WHEN MAX(order_date) IS NOT NULL THEN (CURRENT_DATE - MAX(order_date)::date)
+                    WHEN MAX(order_date) IS NOT NULL THEN GREATEST(0, (CURRENT_DATE - MAX(order_date)::date))
                     ELSE NULL -- Recency is NULL for customers with no orders
                 END AS recency_days
             FROM CustomerOrders
@@ -984,26 +1035,42 @@ with tab4:
                 with col2:  # Place the map in the center column
                      st.plotly_chart(fig_map, use_container_width=False)  # Disable automatic width adjustment
 
-        with bi_tab5:
+        with bi_tab5: # Sales Funnel
             st.subheader("Customer Conversion Funnel")
             st.markdown("""
             This funnel tracks the journey of unique customers from initial product interest to a final purchase.
             It helps identify at which stage customers are dropping off.
             - **Unique Product Viewers**: The number of distinct customers who have viewed at least one car.
             - **Added to Cart**: The number of distinct customers who have added at least one car to their shopping cart.
-            - **Placed Order**: The number of distinct customers who have successfully placed an order.
+            - **Placed Order**: The number of distinct customers who have successfully placed a valid order.
             """)
             with st.spinner("Loading funnel data..."):
                 funnel_df = get_sales_funnel_data(conn)
                 if not funnel_df.empty and funnel_df['Value'].sum() > 0:
                     fig_funnel = px.funnel(
-                        funnel_df,
-                        x='Value',
-                        y='Stage',
+                        funnel_df, x='Value', y='Stage',
                         title='Customer Conversion Funnel',
                         labels={'Value': 'Number of Unique Customers', 'Stage': 'Conversion Stage'}
                     )
+                    # This update adds the conversion rate from the previous stage directly onto the funnel chart.
+                    fig_funnel.update_traces(textposition='inside', textinfo='value+percent previous')
                     st.plotly_chart(fig_funnel, use_container_width=True)
+
+                    st.divider()
+
+                    # --- Abandoned Cart Analysis ---
+                    st.subheader("Top Abandoned Cars in Carts")
+                    st.markdown("These are the top 10 cars most frequently added to shopping carts but **never purchased**. This could indicate issues with price, shipping costs, or the checkout process for these specific items.")
+                    with st.spinner("Analyzing abandoned carts..."):
+                        abandoned_cars_df = get_top_abandoned_cars_data(conn)
+                        if not abandoned_cars_df.empty:
+                            st.dataframe(abandoned_cars_df.rename(columns={
+                                'make': 'Make', 'model': 'Model', 'year': 'Year',
+                                'current_listing_price_jpy': 'Price (JPY)',
+                                'times_added_to_cart': 'Times Added to Cart'
+                            }), use_container_width=True)
+                        else:
+                            st.info("No data available for abandoned cart analysis.")
                 else:
                     st.warning("No data available for sales funnel analysis. Ensure tables like `product_view_history`, `cart_item`, and `order` are populated.")
 

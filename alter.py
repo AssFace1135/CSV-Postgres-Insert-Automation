@@ -45,8 +45,8 @@ def randomize_order_dates(conn):
     """
     # Define the date range for randomization: +/- 1 year from today.
     today = date.today()
-    start_date = today - timedelta(days=365)
-    end_date = today + timedelta(days=365)
+    start_date = today - timedelta(days=730) # Go back 2 years
+    end_date = today - timedelta(days=1) # Ensure all dates are at least 1 day in the past
     time_between_dates = end_date - start_date
     days_between_dates = time_between_dates.days
 
