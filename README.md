@@ -11,7 +11,7 @@ This project provides a Streamlit-based web application to interact with a Postg
     - **Customer Demographics**: Visualize customer locations on a geographic map, with optimized performance via geocoding caching.
     - **RFM Customer Segmentation**: Perform Recency, Frequency, and Monetary (RFM) analysis to identify and segment key customer groups.
 - **Transactional Integrity**: Ensures all data is inserted in a single, atomic transaction to maintain data consistency.
-- **Optimized Geocoding**: Caches geocoding results to a local database (`cache.db`) to speed up map visualizations and reduce redundant API calls.
+- **Optimized Geocoding**: Caches geocoding results to a local SQLite database (`geocoding_cache/cache.db`) to speed up map visualizations and reduce redundant API calls.
 
 ## Project Structure
 ```
@@ -33,14 +33,16 @@ Posgres_data_Insert_automation/
 -2.  **Database Schema**: The target database and schema (tables, enums, etc.) must be created before running the application. You can use the schema provided in schema.sql file to make the database.
 -3.  **Python 3.x**: Make sure you have a recent version of Python installed.
 -4.  **Python Libraries**: Install the necessary libraries. Based on the project, you'll need `streamlit`, `psycopg2-binary`, `pandas`, and `python-dotenv`.
-+2.  **Database Schema**: Before running the application, you must create the database and its schema. You can execute the `schema.sql` script using a tool like `psql` or your favorite SQL client to set up the required tables and types.
-+3.  **Python 3.8+**: Make sure you have a recent version of Python installed.
-+4.  **Python Libraries**: Install the necessary libraries using pip. These include `streamlit` for the web app, `psycopg2-binary` for PostgreSQL connection, `pandas` for data manipulation, `python-dotenv` for configuration, `plotly` for interactive charts, and `geopy` for geocoding addresses.
+2.  **Database Schema**: Before running the application, you must create the database and its schema. You can execute the `schema.sql` script using a tool like `psql` or your favorite SQL client to set up the required tables and types.
+3.  **Python 3.8+**: Make sure you have a recent version of Python installed.
+4.  **Python Libraries**: Install the necessary libraries using pip. These include `streamlit` for the web app, `psycopg2-binary` for PostgreSQL connection, `pandas` for data manipulation, `python-dotenv` for configuration, `plotly` for interactive charts, and `geopy` for geocoding addresses.
 
     ```bash
--    pip install streamlit psycopg2-binary pandas python-dotenv
+--    pip install streamlit psycopg2-binary pandas python-dotenv
+-+    pip install streamlit psycopg2-binary pandas python-dotenv plotly geopy
 +    pip install streamlit psycopg2-binary pandas python-dotenv plotly geopy
     ```
+
 
 
 ## Configuration
